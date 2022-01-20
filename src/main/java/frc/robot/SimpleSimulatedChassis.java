@@ -115,11 +115,12 @@ public class SimpleSimulatedChassis {
         m_leftEncoderValue += TICKS_PER_SECOND * leftPower * delta;
         m_rightEncoderValue += TICKS_PER_SECOND * rightPower * delta;
 
-        /* Rotation is just scaling the max speed by how fast we're turning,
-         * multiplying the result by delta to scale by the faction of time passed, and
-         * adding it to the current rotation
+        /* Rotation is just scaling the max speed (as rotations per second * 2 * PI) by 
+         * how fast we're turning (divided by 2, since at full turn we have one motor at 100% and one at -100%), 
+         * multiplying the result by delta to scale by the faction
+         * of time passed, and adding it to the current rotation
          */
-        m_rotationRadians += ROTATIONS_PER_SECOND * turn * delta;
+        m_rotationRadians += ROTATIONS_PER_SECOND * Math.PI * turn * delta;
 
         /* Override encoders wtih simulated value */
         m_leftEncoder.set((int)m_leftEncoderValue);
