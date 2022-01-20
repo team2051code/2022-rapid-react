@@ -16,7 +16,7 @@ public class SimpleSimulatedChassis {
     private SimulatedEncoder m_rightEncoder;
     private double m_leftEncoderValue = 0;
     private double m_rightEncoderValue = 0;
-    private double m_rotation = 0;
+    private double m_rotationRadians;
 
 
 
@@ -56,6 +56,7 @@ public class SimpleSimulatedChassis {
         m_leftEncoder = leftEncoder;
         m_rightEncoder = rightEncoder;
         m_lastUpdateTime = Timer.getFPGATimestamp();
+        m_rotationRadians = Math.toRadians(42);
 
        /*
         double newX = 16;
@@ -118,8 +119,7 @@ public class SimpleSimulatedChassis {
          * multiplying the result by delta to scale by the faction of time passed, and
          * adding it to the current rotation
          */
-        m_rotation += ROTATIONS_PER_SECOND * turn * delta;
-
+        m_rotationRadians += ROTATIONS_PER_SECOND * turn * delta;
 
         /* Override encoders wtih simulated value */
         m_leftEncoder.set((int)m_leftEncoderValue);
@@ -129,6 +129,6 @@ public class SimpleSimulatedChassis {
          * Note: angle on gyro is flipped from right-hand rule; counterclockwise
          * chassis rotation makes angle more negative 
          */
-       m_gyro.simulateAngleZ(m_rotation * -360.0);
+       m_gyro.simulateAngleZ(-Math.toDegrees( m_rotationRadians));
     }
 }

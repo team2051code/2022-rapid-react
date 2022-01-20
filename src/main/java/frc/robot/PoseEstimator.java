@@ -10,7 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class PoseEstimator {
     private int m_lastLeftEncoderValue;
     private int m_lastRightEncoderValue;
-    private Pose2d m_pose = new Pose2d();
+    private Pose2d m_pose = new Pose2d(new Translation2d(8.722,5.421), new Rotation2d(1));
  
     /**
      * Number of encoder counts per full wheel revolution
