@@ -56,7 +56,7 @@ public class SimpleSimulatedChassis {
         m_leftEncoder = leftEncoder;
         m_rightEncoder = rightEncoder;
         m_lastUpdateTime = Timer.getFPGATimestamp();
-        m_rotationRadians = Math.toRadians(42);
+        m_rotationRadians = Math.toRadians(37.4);
 
        /*
         double newX = 16;
