@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Drive;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,18 +32,18 @@ public class Robot extends TimedRobot {
 
   private XboxController xbox = new XboxController(0);
 
-  CANSparkMax Right1 = new CANSparkMax(1, MotorType.kBrushless);
-  CANSparkMax Right2 = new CANSparkMax(2, MotorType.kBrushless);
-  CANSparkMax Left1 = new CANSparkMax(3, MotorType.kBrushless);
-  CANSparkMax Left2 = new CANSparkMax(4, MotorType.kBrushless);
+  CANSparkMax Right = new CANSparkMax(1, MotorType.kBrushless);
+  CANSparkMax RightFollow = new CANSparkMax(2, MotorType.kBrushless);
+  CANSparkMax Left = new CANSparkMax(3, MotorType.kBrushless);
+  CANSparkMax LeftFollow = new CANSparkMax(4, MotorType.kBrushless);
   //CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
   //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
 
   private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
   private WPI_TalonFX talonRight = new WPI_TalonFX(2);
 
-  private MotorControllerGroup LeftSide = new MotorControllerGroup(Left1, Left2);
-  private MotorControllerGroup RightSide = new MotorControllerGroup(Right1, Right2);
+  private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
+  private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);
 
   private RelativeEncoder encoder;
@@ -51,14 +54,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    encoder = Left1.getEncoder();
+    encoder = Left.getEncoder();
     System.out.println("Line");
     System.out.println(encoder.getPositionConversionFactor());
 
     encoder.getPositionConversionFactor();
     encoder.setPosition(0);
-    Left1.setInverted(true);
-    Left2.setInverted(true);
+    Left.setInverted(true);
+    LeftFollow.setInverted(true);
     talonRight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -102,38 +105,19 @@ private double encoderTicksPerInches(double ticks){
    */
   @Override
   public void autonomousInit() {
-
+    SequentialCommandGroup commands = new SequentialCommandGroup(
+    new Drive(LeftSide, RightSide, Left.getEncoder())
+    );
+    CommandScheduler.getInstance().schedule(commands);
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
 
+    CommandScheduler.getInstance().run();
 
-
-    //Distance from the middle of the starting outline to the edge of the starting outline
-    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 12;
-    //Distance from The Edge of the starting outline to the nearest blue ball
-    double DistanceFromEdgeOfStartingAreaToBlueBall = 0;
-    //Addition of the distances to group them together
-    double DesiredDistance = (DistanceFromEdgeOfStartingAreaToBlueBall + DistanceFromMiddleStartingAreaToEdgeOfStartingArea);
-    //Sets the distance to zero
-    double DistanceInInches = encoderTicksPerInches(encoder.getPosition());
-
-    
-    //While our desired distance is greater than our current distance keep running the drive motors
-    if(DesiredDistance >= DistanceInInches)
-  {
-    //sets the motors to use 30% of their power
-    LeftSide.set(.1);
-    RightSide.set(.1);
   }
-  else
-  {
-    LeftSide.set(0);
-    RightSide.set(0);
-  }
-}
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -163,10 +147,10 @@ private double encoderTicksPerInches(double ticks){
       //talonRight.set(wheelSpeed);
     }
 
-    Right1.set(xbox.getRawAxis(1) * .1);
-    Right2.set(xbox.getRawAxis(1) * .1);
-    Left1.set(xbox.getRawAxis(1) * .1);
-    Left2.set(xbox.getRawAxis(1) * .1);
+    Right.set(xbox.getRawAxis(1) * .1);
+    RightFollow.set(xbox.getRawAxis(1) * .1);
+    Left.set(xbox.getRawAxis(1) * .1);
+    LeftFollow.set(xbox.getRawAxis(1) * .1);
 
 
   }
