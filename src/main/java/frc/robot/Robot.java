@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
     //Distance from the middle of the starting outline to the edge of the starting outline
-    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 100;
+    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 50;
     //Distance from The Edge of the starting outline to the nearest blue ball
     double DistanceFromEdgeOfStartingAreaToBlueBall = 100;
     //Addition of the distances to group them together
