@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -32,24 +33,30 @@ public class Robot extends TimedRobot {
   CANSparkMax Right2 = new CANSparkMax(2, MotorType.kBrushless);
   CANSparkMax Left1 = new CANSparkMax(3, MotorType.kBrushless);
   CANSparkMax Left2 = new CANSparkMax(4, MotorType.kBrushless);
-  CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
-  CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
+  //CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
+  //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
 
   private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
   private WPI_TalonFX talonRight = new WPI_TalonFX(2);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left1, Left2);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right1, Right2);
-  private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);
+  //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);
 
-  private RelativeEncoder Encoder;
+  private RelativeEncoder encoder;
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    
+    encoder = Left1.getEncoder();
+    System.out.println("Line");
+    System.out.println(encoder.getPositionConversionFactor());
+
+    encoder.getPositionConversionFactor();
+    encoder.setPosition(0);
     Left1.setInverted(true);
     Left2.setInverted(true);
     talonRight.setInverted(true);
@@ -65,8 +72,24 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+  
 
+  SmartDashboard.putNumber("DistanceInInches", encoderTicksPerInches(encoder.getPosition()));
+  SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+  }
+
+private double encoderTicksPerInches(double ticks){
+
+  //Possibility that GearRatio is actually 10.75
+  final double GearRatio = (10.75);
+  //Math to calculate the number of motor pulses based on our rotations
+  
+  final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
+  //Math to calculate the current distance of the motor using the previous equation
+   return(ticks * PulsesPerInch);
+
+}
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java
@@ -86,40 +109,38 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
+
+
     //Distance from the middle of the starting outline to the edge of the starting outline
-    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 50;
+    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 12;
     //Distance from The Edge of the starting outline to the nearest blue ball
-    double DistanceFromEdgeOfStartingAreaToBlueBall = 100;
+    double DistanceFromEdgeOfStartingAreaToBlueBall = 0;
     //Addition of the distances to group them together
     double DesiredDistance = (DistanceFromEdgeOfStartingAreaToBlueBall + DistanceFromMiddleStartingAreaToEdgeOfStartingArea);
     //Sets the distance to zero
-    double DistanceInInches = 0;
-
-
-    //While our desired distance is greater than our current distance keep running the drive motors
-    while(DesiredDistance > DistanceInInches)
-  {
-
-    //sets the motors to use 30% of their power
-    LeftSide.set(.3);
-    RightSide.set(.3);
+    double DistanceInInches = encoderTicksPerInches(encoder.getPosition());
 
     
-final double MotorTicks = (42.0 * 10.75);
-//Math to calculate the number of motor pulses based on our rotations
-
-final double Pulses = (MotorTicks / 2.0 * Math.PI) * 3;
-//Math to calculate the current distance of the motor using the previous equation
-DistanceInInches = (Encoder.getPosition() / Pulses);
-SmartDashboard.putNumber("DistanceInInches", DistanceInInches);
-
-   }
+    //While our desired distance is greater than our current distance keep running the drive motors
+    if(DesiredDistance >= DistanceInInches)
+  {
+    //sets the motors to use 30% of their power
+    LeftSide.set(.1);
+    RightSide.set(.1);
   }
-  
+  else
+  {
+    LeftSide.set(0);
+    RightSide.set(0);
+  }
+}
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+
+
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -133,14 +154,21 @@ SmartDashboard.putNumber("DistanceInInches", DistanceInInches);
       spinSpeed += xbox.getRightBumper() ? -0.6 : 0;
       spinSpeed += xbox.getLeftTriggerAxis() / 5;
       spinSpeed += xbox.getRightTriggerAxis() / 5 * -1;
-      spinGroup.set(spinSpeed);
+      //spinGroup.set(spinSpeed);
 
       double wheelSpeed = 0;
       wheelSpeed += xbox.getRawAxis(1) * -1 >= 0.1 ? xbox.getRawAxis(1) * -0.9 : 0;
       wheelSpeed += xbox.getRawAxis(5) * -1 >= 0.1 ? xbox.getRawAxis(5) / -10 : 0;
-      talonLeft.set(wheelSpeed);
-      talonRight.set(wheelSpeed);
+      //talonLeft.set(wheelSpeed);
+      //talonRight.set(wheelSpeed);
     }
+
+    Right1.set(xbox.getRawAxis(1) * .1);
+    Right2.set(xbox.getRawAxis(1) * .1);
+    Left1.set(xbox.getRawAxis(1) * .1);
+    Left2.set(xbox.getRawAxis(1) * .1);
+
+
   }
 
   /** This function is called once when the robot is disabled. */
