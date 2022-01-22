@@ -4,18 +4,15 @@
 
 package frc.robot;
 
-import java.util.ResourceBundle.Control;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
+
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,24 +23,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-  TalonFX TalonRight1 = new TalonFX(0);
-  TalonFX TalonLeft = new TalonFX(5);
-  private CANSparkMax shooter2;
-  private CANSparkMax shooter;
-  private Encoder encoder;
-  XboxController controller = new XboxController(1);
+  private static final String kDefaultAuto = "Default";
+  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
+  private XboxController xbox = new XboxController(0);
+
+  CANSparkMax Right1 = new CANSparkMax(1, MotorType.kBrushless);
+  CANSparkMax Right2 = new CANSparkMax(2, MotorType.kBrushless);
+  CANSparkMax Left1 = new CANSparkMax(3, MotorType.kBrushless);
+  CANSparkMax Left2 = new CANSparkMax(4, MotorType.kBrushless);
+  CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
+  CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
+
+  private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
+  private WPI_TalonFX talonRight = new WPI_TalonFX(2);
+
+  private MotorControllerGroup LeftSide = new MotorControllerGroup(Left1, Left2);
+  private MotorControllerGroup RightSide = new MotorControllerGroup(Right1, Right2);
+  private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);
+
+  private RelativeEncoder Encoder;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    TalonLeft.set(ControlMode.PercentOutput, 0);
-    TalonRight1.set(ControlMode.PercentOutput, 0);
-
-    //shooter2 = new CANSparkMax(1, MotorType.kBrushless);
-    //shooter = new CANSparkMax(2, MotorType.kBrushless);
-    //shooter.getEncoder();
+    
+    Left1.setInverted(true);
+    Left2.setInverted(true);
+    talonRight.setInverted(true);
+    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    SmartDashboard.putData("Auto choices", m_chooser);
   }
 
   /**
@@ -68,8 +79,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-  
-
 
   }
 
@@ -77,8 +86,36 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
-  
+    //Distance from the middle of the starting outline to the edge of the starting outline
+    double DistanceFromMiddleStartingAreaToEdgeOfStartingArea = 100;
+    //Distance from The Edge of the starting outline to the nearest blue ball
+    double DistanceFromEdgeOfStartingAreaToBlueBall = 100;
+    //Addition of the distances to group them together
+    double DesiredDistance = (DistanceFromEdgeOfStartingAreaToBlueBall + DistanceFromMiddleStartingAreaToEdgeOfStartingArea);
+    //Sets the distance to zero
+    double DistanceInInches = 0;
+
+
+    //While our desired distance is greater than our current distance keep running the drive motors
+    while(DesiredDistance > DistanceInInches)
+  {
+
+    //sets the motors to use 30% of their power
+    LeftSide.set(.3);
+    RightSide.set(.3);
+
+    
+final double MotorTicks = (42.0 * 10.75);
+//Math to calculate the number of motor pulses based on our rotations
+
+final double Pulses = (MotorTicks / 2.0 * Math.PI) * 3;
+//Math to calculate the current distance of the motor using the previous equation
+DistanceInInches = (Encoder.getPosition() / Pulses);
+SmartDashboard.putNumber("DistanceInInches", DistanceInInches);
+
+   }
   }
+  
 
   /** This function is called once when teleop is enabled. */
   @Override
@@ -87,39 +124,24 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    //change this to false to run autonomous aiming code
+    boolean manualAim = true;
+    if(manualAim)
+    {
+      double spinSpeed = 0;
+      spinSpeed += xbox.getLeftBumper() ? 0.6 : 0;
+      spinSpeed += xbox.getRightBumper() ? -0.6 : 0;
+      spinSpeed += xbox.getLeftTriggerAxis() / 5;
+      spinSpeed += xbox.getRightTriggerAxis() / 5 * -1;
+      spinGroup.set(spinSpeed);
 
-    boolean shoot = controller.getAButton();
-    boolean EmergencyStop = controller.getYButton();
-
-
-  if (shoot) 
-  {
-      TalonLeft.set(ControlMode.PercentOutput, .5);
-      TalonRight1.set(ControlMode.PercentOutput, -.5);
+      double wheelSpeed = 0;
+      wheelSpeed += xbox.getRawAxis(1) * -1 >= 0.1 ? xbox.getRawAxis(1) * -0.9 : 0;
+      wheelSpeed += xbox.getRawAxis(5) * -1 >= 0.1 ? xbox.getRawAxis(5) / -10 : 0;
+      talonLeft.set(wheelSpeed);
+      talonRight.set(wheelSpeed);
+    }
   }
-  else
-  {
-  TalonLeft.set(ControlMode.PercentOutput, 0);
-  TalonRight1.set(ControlMode.PercentOutput, 0);
-  }
-
- // Talon.get
-
-  //shooter.set(controller.getRawAxis(5));
-
-
- //if (EmergencyStop)
-  //{
-  //    shooter.set(0);
- // }
- // else
- // {
-  // shooter.set(0);
- // }
- }
-
- 
-
 
   /** This function is called once when the robot is disabled. */
   @Override
