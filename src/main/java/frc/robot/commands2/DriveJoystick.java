@@ -48,18 +48,6 @@ return false;
 
 
 
-}
-
-private double encoderTicksPerInches(double ticks){
-
-    //Possibility that GearRatio is actually 10.75
-    final double GearRatio = (10.75);
-    //Math to calculate the number of motor pulses based on our rotations
-    
-    final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
-    //Math to calculate the current distance of the motor using the previous equation
-     return(ticks * PulsesPerInch);
-
     }
 }
 

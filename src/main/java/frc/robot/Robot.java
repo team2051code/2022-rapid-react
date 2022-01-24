@@ -32,8 +32,6 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  private XboxController xbox = new XboxController(0);
-
   CANSparkMax Right = new CANSparkMax(1, MotorType.kBrushless);
   CANSparkMax RightFollow = new CANSparkMax(2, MotorType.kBrushless);
   CANSparkMax Left = new CANSparkMax(3, MotorType.kBrushless);
@@ -51,6 +49,7 @@ public class Robot extends TimedRobot {
   private RelativeEncoder encoder;
   
   DifferentialDrive Drive = new DifferentialDrive(LeftSide, RightSide);
+
   XboxController controller = new XboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -127,7 +126,7 @@ private double encoderTicksPerInches(double ticks){
   @Override
   public void teleopInit() {
     SequentialCommandGroup commands2 = new SequentialCommandGroup(
-      new DriveJoystick(LeftSide, RightSide, Left.getEncoder(), controller, Drive)
+      new DriveJoystick(LeftSide, RightSide, Drive, controller)
       );
       CommandScheduler.getInstance().schedule(commands2);
 
