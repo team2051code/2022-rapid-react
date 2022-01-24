@@ -13,12 +13,14 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Drive;
+import frc.robot.commands2.DriveJoystick;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -48,6 +50,8 @@ public class Robot extends TimedRobot {
 
   private RelativeEncoder encoder;
   
+  DifferentialDrive Drive = new DifferentialDrive(LeftSide, RightSide);
+  XboxController controller = new XboxController(0);
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -122,35 +126,40 @@ private double encoderTicksPerInches(double ticks){
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-
+    SequentialCommandGroup commands2 = new SequentialCommandGroup(
+      new DriveJoystick(LeftSide, RightSide, Left.getEncoder(), controller, Drive)
+      );
+      CommandScheduler.getInstance().schedule(commands2);
 
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //change this to false to run autonomous aiming code
-    boolean manualAim = true;
-    if(manualAim)
-    {
-      double spinSpeed = 0;
-      spinSpeed += xbox.getLeftBumper() ? 0.6 : 0;
-      spinSpeed += xbox.getRightBumper() ? -0.6 : 0;
-      spinSpeed += xbox.getLeftTriggerAxis() / 5;
-      spinSpeed += xbox.getRightTriggerAxis() / 5 * -1;
-      //spinGroup.set(spinSpeed);
+    Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
-      double wheelSpeed = 0;
-      wheelSpeed += xbox.getRawAxis(1) * -1 >= 0.1 ? xbox.getRawAxis(1) * -0.9 : 0;
-      wheelSpeed += xbox.getRawAxis(5) * -1 >= 0.1 ? xbox.getRawAxis(5) / -10 : 0;
-      //talonLeft.set(wheelSpeed);
-      //talonRight.set(wheelSpeed);
-    }
+    // //change this to false to run autonomous aiming code
+    // boolean manualAim = true;
+    // if(manualAim)
+    // {
+    //   double spinSpeed = 0;
+    //   spinSpeed += xbox.getLeftBumper() ? 0.6 : 0;
+    //   spinSpeed += xbox.getRightBumper() ? -0.6 : 0;
+    //   spinSpeed += xbox.getLeftTriggerAxis() / 5;
+    //   spinSpeed += xbox.getRightTriggerAxis() / 5 * -1;
+    //   //spinGroup.set(spinSpeed);
 
-    Right.set(xbox.getRawAxis(1) * .1);
-    RightFollow.set(xbox.getRawAxis(1) * .1);
-    Left.set(xbox.getRawAxis(1) * .1);
-    LeftFollow.set(xbox.getRawAxis(1) * .1);
+    //   double wheelSpeed = 0;
+    //   wheelSpeed += xbox.getRawAxis(1) * -1 >= 0.1 ? xbox.getRawAxis(1) * -0.9 : 0;
+    //   wheelSpeed += xbox.getRawAxis(5) * -1 >= 0.1 ? xbox.getRawAxis(5) / -10 : 0;
+    //   //talonLeft.set(wheelSpeed);
+    //   //talonRight.set(wheelSpeed);
+    // }
+
+    // Right.set(xbox.getRawAxis(1) * .1);
+    // RightFollow.set(xbox.getRawAxis(1) * .1);
+    // Left.set(xbox.getRawAxis(1) * .1);
+    // LeftFollow.set(xbox.getRawAxis(1) * .1);
 
 
   }
