@@ -29,18 +29,17 @@ M_Controller = controller;
 
 
 @Override public void initialize(){
+M_Drive.tankDrive(M_Controller.getRawAxis(1), M_Controller.getRawAxis(5));
 
 
 }
 
 @Override public void execute(){
-M_Drive.tankDrive(M_Controller.getRawAxis(1), M_Controller.getRawAxis(5));
+
 
 }
 
 @Override public void end(boolean interrupt) {
-M_LeftSide.set(0);
-M_RightSide.set(0);
 
 }
 @Override public boolean isFinished() {
