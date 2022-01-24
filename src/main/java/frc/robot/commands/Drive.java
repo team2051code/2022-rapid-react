@@ -3,14 +3,16 @@ package frc.robot.commands;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class Drive extends CommandBase {
 private MotorControllerGroup M_LeftSide;
 private MotorControllerGroup M_RightSide;
 private RelativeEncoder M_encoder;
-
+Timer sleep = new Timer();
 
 public Drive(MotorControllerGroup LeftSide, MotorControllerGroup RightSide, RelativeEncoder encoder) {
 
@@ -24,16 +26,16 @@ M_RightSide = RightSide;
 
 
 @Override public void initialize(){
-
+sleep.start();
 
 
 }
 
 @Override public void execute(){
+
 M_LeftSide.set(.1);
 M_RightSide.set(.1);
-System.out.println("OnCommand");
-
+System.out.println("Moves Forward");
 
 }
 
@@ -45,7 +47,7 @@ M_RightSide.set(0);
 @Override public boolean isFinished() {
 
 //Addition of the distances to group them together
-double DesiredDistance = (12);
+double DesiredDistance = (24);
 //Sets the distance to zero
 double DistanceInInches = encoderTicksPerInches(M_encoder.getPosition());
 
