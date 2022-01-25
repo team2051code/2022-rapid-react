@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -17,10 +18,16 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
-import frc.robot.commands2.DriveJoystick;
+import frc.robot.commands.DriveJoystick;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,39 +39,32 @@ public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  CANSparkMax Right = new CANSparkMax(1, MotorType.kBrushless);
-  CANSparkMax RightFollow = new CANSparkMax(2, MotorType.kBrushless);
-  CANSparkMax Left = new CANSparkMax(3, MotorType.kBrushless);
-  CANSparkMax LeftFollow = new CANSparkMax(4, MotorType.kBrushless);
+  
   //CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
   //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
+
 
   private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
   private WPI_TalonFX talonRight = new WPI_TalonFX(2);
 
-  private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
-  private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
-  //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);
-
-  private RelativeEncoder encoder;
+  private DriveTrain m_DriveTrain = new DriveTrain();
   
-  DifferentialDrive Drive = new DifferentialDrive(LeftSide, RightSide);
+  //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
   XboxController controller = new XboxController(0);
+  UsbCamera camera1 = CameraServer.startAutomaticCapture();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    encoder = Left.getEncoder();
+    talonLeft.set(ControlMode.PercentOutput, 0);
+    talonRight.set(ControlMode.PercentOutput, 0);
+    talonLeft.follow(talonRight);
     System.out.println("Line");
-    System.out.println(encoder.getPositionConversionFactor());
 
-    encoder.getPositionConversionFactor();
-    encoder.setPosition(0);
-    Left.setInverted(true);
-    LeftFollow.setInverted(true);
+    
     talonRight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -81,21 +81,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
   
 
-  SmartDashboard.putNumber("DistanceInInches", encoderTicksPerInches(encoder.getPosition()));
-  SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+  
   }
 
-private double encoderTicksPerInches(double ticks){
 
-  //Possibility that GearRatio is actually 10.75
-  final double GearRatio = (10.75);
-  //Math to calculate the number of motor pulses based on our rotations
-  
-  final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
-  //Math to calculate the current distance of the motor using the previous equation
-   return(ticks * PulsesPerInch);
-
-}
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
    * autonomous modes using the dashboard. The sendable chooser code works with the Java
@@ -109,7 +98,7 @@ private double encoderTicksPerInches(double ticks){
   @Override
   public void autonomousInit() {
     SequentialCommandGroup commands = new SequentialCommandGroup(
-    new Drive(LeftSide, RightSide, Left.getEncoder())
+    new Drive(m_DriveTrain)
     );
     CommandScheduler.getInstance().schedule(commands);
   }
@@ -125,17 +114,22 @@ private double encoderTicksPerInches(double ticks){
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    SequentialCommandGroup commands2 = new SequentialCommandGroup(
-      new DriveJoystick(LeftSide, RightSide, Drive, controller)
-      );
-      CommandScheduler.getInstance().schedule(commands2);
+    UsbCamera camera1 = CameraServer.startAutomaticCapture();
+    UsbCamera camera2 = CameraServer.startAutomaticCapture();
+
+    CommandBase commands = 
+      new DriveJoystick(m_DriveTrain);
+    
+      
+      CommandScheduler.getInstance().schedule(commands);
+    
 
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
+    //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
     // //change this to false to run autonomous aiming code
     // boolean manualAim = true;

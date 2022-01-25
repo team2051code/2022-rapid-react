@@ -7,18 +7,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Subsystems.DriveTrain;
+
 
 public class Drive extends CommandBase {
-private MotorControllerGroup M_LeftSide;
-private MotorControllerGroup M_RightSide;
-private RelativeEncoder M_encoder;
+private DriveTrain M_DriveTrain;
 Timer sleep = new Timer();
 
-public Drive(MotorControllerGroup LeftSide, MotorControllerGroup RightSide, RelativeEncoder encoder) {
+public Drive(DriveTrain DriveTrain) {
+M_DriveTrain = DriveTrain;
 
-M_encoder = encoder;
-M_LeftSide = LeftSide;
-M_RightSide = RightSide;
 
  
     
@@ -33,15 +31,13 @@ sleep.start();
 
 @Override public void execute(){
 
-M_LeftSide.set(.1);
-M_RightSide.set(.1);
+M_DriveTrain.setMotors(.1, .1);
 System.out.println("Moves Forward");
 
 }
 
 @Override public void end(boolean interrupt) {
-M_LeftSide.set(0);
-M_RightSide.set(0);
+M_DriveTrain.setMotors(0, 0);
 
 }
 @Override public boolean isFinished() {
@@ -49,27 +45,16 @@ M_RightSide.set(0);
 //Addition of the distances to group them together
 double DesiredDistance = (24);
 //Sets the distance to zero
-double DistanceInInches = encoderTicksPerInches(M_encoder.getPosition());
+double DistanceInInches = M_DriveTrain.GetEncoderInches();
 
 //While our desired distance is greater than our current distance keep running the drive motors
 return (DesiredDistance <= DistanceInInches);
 
 
 
-}
-
-private double encoderTicksPerInches(double ticks){
-
-    //Possibility that GearRatio is actually 10.75
-    final double GearRatio = (10.75);
-    //Math to calculate the number of motor pulses based on our rotations
-    
-    final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
-    //Math to calculate the current distance of the motor using the previous equation
-     return(ticks * PulsesPerInch);
-
     }
 }
+
 
 
 
