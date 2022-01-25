@@ -44,12 +44,14 @@ public class Robot extends TimedRobot {
   //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
 
 
-  private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
-  private WPI_TalonFX talonRight = new WPI_TalonFX(2);
+  // private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
+  // private WPI_TalonFX talonRight = new WPI_TalonFX(2);
+
+  //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
   private DriveTrain m_DriveTrain = new DriveTrain();
   
-  //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
+  
 
   XboxController controller = new XboxController(0);
   UsbCamera camera1 = CameraServer.startAutomaticCapture();
@@ -59,13 +61,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    talonLeft.set(ControlMode.PercentOutput, 0);
-    talonRight.set(ControlMode.PercentOutput, 0);
-    talonLeft.follow(talonRight);
-    System.out.println("Line");
+    // talonLeft.set(ControlMode.PercentOutput, 0);
+    // talonRight.set(ControlMode.PercentOutput, 0);
+    // talonLeft.follow(talonRight);
+    // System.out.println("Line");
 
     
-    talonRight.setInverted(true);
+   // talonRight.setInverted(true);
+   
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
