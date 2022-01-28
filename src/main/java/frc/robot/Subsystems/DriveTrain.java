@@ -1,17 +1,15 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.simulation.PoseEstimator;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
@@ -32,8 +30,6 @@ public class DriveTrain extends SubsystemBase {
   // Additional state used for robot simulation
   private ADXRS450_GyroSim simulatedGyro; // might be null
   private SimpleSimulatedChassis simulatedChassis; // might be null
-  private PoseEstimator poseEstimator; // might be null
-  private Field2d fieldInfo; // might be null
   
 
 
@@ -56,9 +52,6 @@ public class DriveTrain extends SubsystemBase {
     simulatedGyro = new ADXRS450_GyroSim(gyro);
     simulatedGyro.setAngle(-30);
     simulatedChassis = new SimpleSimulatedChassis(this);
-    poseEstimator = new PoseEstimator(this);
-    fieldInfo = new Field2d();
-    SmartDashboard.putData("Field", fieldInfo);
   }
 
   public double encoderTicksToInches(double ticks) {
@@ -159,12 +152,6 @@ public class DriveTrain extends SubsystemBase {
   public void simulationPeriodic() {
     if (simulatedChassis != null) {
       simulatedChassis.periodic();
-    }
-    if (poseEstimator != null) {
-      poseEstimator.periodic();
-    }
-    if (fieldInfo != null && poseEstimator != null) {
-      fieldInfo.setRobotPose(poseEstimator.getPose());
     }
   }
 }

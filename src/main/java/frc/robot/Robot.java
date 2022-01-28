@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveJoystick;
+import frc.robot.simulation.PoseEstimator;
 
 
 
@@ -41,6 +43,10 @@ public class Robot extends TimedRobot {
   private WPI_TalonFX talonRight = new WPI_TalonFX(2);
 
   private DriveTrain m_DriveTrain = new DriveTrain();
+  
+  private PoseEstimator poseEstimator; // might be null
+  private Field2d fieldInfo; // might be null
+
   
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
@@ -78,8 +84,21 @@ public class Robot extends TimedRobot {
   @Override
   public void simulationInit() {
     m_DriveTrain.simulationInit();
+    poseEstimator = new PoseEstimator(m_DriveTrain);
+    fieldInfo = new Field2d();
+    SmartDashboard.putData("Field", fieldInfo);
+
   }
 
+  @Override
+  public void simulationPeriodic() {
+    if (poseEstimator != null) {
+      poseEstimator.periodic();
+    }
+    if (fieldInfo != null && poseEstimator != null) {
+      fieldInfo.setRobotPose(poseEstimator.getPose());
+    }
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
