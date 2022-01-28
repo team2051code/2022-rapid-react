@@ -55,8 +55,6 @@ public class Robot extends TimedRobot {
     talonLeft.set(ControlMode.PercentOutput, 0);
     talonRight.set(ControlMode.PercentOutput, 0);
     talonLeft.follow(talonRight);
-    System.out.println("Line");
-
     
     talonRight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -75,8 +73,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
   
+  }
 
-  
+  @Override
+  public void simulationInit() {
+    m_DriveTrain.simulationInit();
   }
 
 
@@ -117,6 +118,8 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+
+    
     //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
     // //change this to false to run autonomous aiming code

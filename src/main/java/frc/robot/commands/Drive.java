@@ -27,8 +27,6 @@ sleep.start();
 @Override public void execute(){
 
 M_DriveTrain.setMotors(.1, .1);
-System.out.println("Moves Forward");
-
 }
 
 @Override public void end(boolean interrupt) {

@@ -24,10 +24,7 @@ public class DriveJoystick extends CommandBase {
 
     @Override
     public void execute() {
-        System.out.println(M_Controller);
-        System.out.println(M_DriveTrain);
         M_DriveTrain.tankDrive(M_Controller.getRawAxis(1), M_Controller.getRawAxis(5));
-
     }
 
     @Override
