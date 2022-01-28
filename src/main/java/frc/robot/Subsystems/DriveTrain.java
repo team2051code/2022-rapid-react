@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,14 +21,18 @@ public class DriveTrain extends SubsystemBase {
 
   DifferentialDrive M_Drive = new DifferentialDrive(LeftSide, RightSide);
 
-  private RelativeEncoder encoder;
+  private RelativeEncoder leftEncoder;
+  private RelativeEncoder rightEncoder;
+  private Gyro gyro;
+  
 
   public DriveTrain() {
-    encoder = Left.getEncoder();
+    leftEncoder = Left.getEncoder();
+    rightEncoder = Right.getEncoder();
 
-    encoder.getPositionConversionFactor();
-    encoder.setPosition(0);
-    System.out.println(encoder.getPositionConversionFactor());
+    leftEncoder.getPositionConversionFactor();
+    leftEncoder.setPosition(0);
+    System.out.println(leftEncoder.getPositionConversionFactor());
 
     Left.setInverted(true);
     LeftFollow.setInverted(true);
@@ -64,15 +69,15 @@ M_Drive.tankDrive(LeftSpeed, RightSpeed);
     public double GetEncoderInches()
     {
         return
-        encoderTicksPerInches(encoder.getPosition());
+        encoderTicksPerInches(leftEncoder.getPosition());
         
     }
 
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("DistanceInInches", encoderTicksPerInches(encoder.getPosition()));
-    SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+    SmartDashboard.putNumber("DistanceInInches", encoderTicksPerInches(leftEncoder.getPosition()));
+    SmartDashboard.putNumber("Encoder Position", leftEncoder.getPosition());
   }
 
 
