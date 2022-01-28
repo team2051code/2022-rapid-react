@@ -6,16 +6,11 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveJoystick;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 
 
 
@@ -68,6 +61,8 @@ public class Robot extends TimedRobot {
     talonRight.setInverted(true);
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    final CommandBase joystickCommand = new DriveJoystick(m_DriveTrain, controller);
+    m_DriveTrain.setDefaultCommand(joystickCommand);
   }
 
   /**
@@ -116,19 +111,12 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
     UsbCamera camera2 = CameraServer.startAutomaticCapture();
-
-    CommandBase commands = 
-      new DriveJoystick(m_DriveTrain);
-    
-      
-      CommandScheduler.getInstance().schedule(commands);
-    
-
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    CommandScheduler.getInstance().run();
     //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
     // //change this to false to run autonomous aiming code
