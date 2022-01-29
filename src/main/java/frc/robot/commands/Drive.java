@@ -7,8 +7,6 @@ import frc.robot.Subsystems.DriveTrain;
 
 public class Drive extends CommandBase {
 private DriveTrain M_DriveTrain;
-Timer sleep = new Timer();
-
 public Drive(DriveTrain DriveTrain) {
 M_DriveTrain = DriveTrain;
 
@@ -19,7 +17,6 @@ M_DriveTrain = DriveTrain;
 
 
 @Override public void initialize(){
-sleep.start();
 
 
 }

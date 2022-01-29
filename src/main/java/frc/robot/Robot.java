@@ -4,13 +4,9 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
-import frc.robot.commands.DriveJoystick;
+import frc.robot.commands.TankDrive;
 import frc.robot.simulation.PoseEstimator;
 
 
@@ -31,17 +27,11 @@ import frc.robot.simulation.PoseEstimator;
  * project.
  */
 public class Robot extends TimedRobot {
+  public OI m_oi;
   private static final String kDefaultAuto = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   
-  //CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
-  //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
-
-
-  private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
-  private WPI_TalonFX talonRight = new WPI_TalonFX(2);
-
   private DriveTrain m_DriveTrain = new DriveTrain();
   
   private PoseEstimator poseEstimator; // might be null
@@ -50,23 +40,18 @@ public class Robot extends TimedRobot {
   
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
-  XboxController controller = new XboxController(0);
+
   UsbCamera camera1 = CameraServer.startAutomaticCapture();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
-  public void robotInit() {
-    talonLeft.set(ControlMode.PercentOutput, 0);
-    talonRight.set(ControlMode.PercentOutput, 0);
-    talonLeft.follow(talonRight);
-    
-    talonRight.setInverted(true);
+  public void robotInit() {    
+   // talonRight.setInverted(true);
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
-    final CommandBase joystickCommand = new DriveJoystick(m_DriveTrain, controller);
-    m_DriveTrain.setDefaultCommand(joystickCommand);
   }
 
   /**
@@ -112,17 +97,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    SequentialCommandGroup commands = new SequentialCommandGroup(
-    new Drive(m_DriveTrain)
-    );
-    CommandScheduler.getInstance().schedule(commands);
+     SequentialCommandGroup commands = new SequentialCommandGroup(
+     new Drive(m_DriveTrain)
+     );
+     CommandScheduler.getInstance().schedule(commands);
   }
 
   /** This function is called periodically during autonomous. */
-  @Override
   public void autonomousPeriodic() {
 
     CommandScheduler.getInstance().run();
+
 
   }
 
@@ -130,15 +115,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
-    UsbCamera camera2 = CameraServer.startAutomaticCapture();
+    camera1.setResolution(256, 144);
+    camera1.setFPS(30);
+
+   // UsbCamera camera2 = CameraServer.startAutomaticCapture();
+
+      CommandBase commands = new TankDrive(m_DriveTrain);
+      CommandScheduler.getInstance().schedule(commands);
+    
+
+
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
     CommandScheduler.getInstance().run();
 
-    
     //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
     // //change this to false to run autonomous aiming code

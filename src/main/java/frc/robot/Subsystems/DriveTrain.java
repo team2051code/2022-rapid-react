@@ -1,27 +1,32 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
+import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
-  CANSparkMax Right = new CANSparkMax(1, MotorType.kBrushless);
-  CANSparkMax RightFollow = new CANSparkMax(2, MotorType.kBrushless);
-  CANSparkMax Left = new CANSparkMax(3, MotorType.kBrushless);
-  CANSparkMax LeftFollow = new CANSparkMax(4, MotorType.kBrushless);
+  XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
+
+  private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
+  private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
+  private CANSparkMax Left = new CANSparkMax(RobotMap.Motor_Left, MotorType.kBrushless);
+  private CANSparkMax LeftFollow = new CANSparkMax(RobotMap.Motor_LeftFollow, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
-
-  DifferentialDrive M_Drive = new DifferentialDrive(LeftSide, RightSide);
+  DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
 
   private RelativeEncoder leftEncoder;
   private RelativeEncoder rightEncoder;
@@ -30,8 +35,6 @@ public class DriveTrain extends SubsystemBase {
   // Additional state used for robot simulation
   private ADXRS450_GyroSim simulatedGyro; // might be null
   private SimpleSimulatedChassis simulatedChassis; // might be null
-  
-
 
   public DriveTrain() {
     leftEncoder = Left.getEncoder();
@@ -64,6 +67,17 @@ public class DriveTrain extends SubsystemBase {
     // Math to calculate the current distance of the motor using the previous
     // equation
     return (ticks * PulsesPerInch);
+
+  }
+
+  public void LeftSide(double Speed) {
+    Left.set(Speed);
+    LeftFollow.set(Speed);
+  }
+
+  public void RightSide(double Speed) {
+    Right.set(Speed);
+    RightFollow.set(Speed);
   }
 
   public void setMotors(double LeftSide, double RightSide) {
@@ -73,11 +87,12 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void tankDrive(double LeftSpeed, double RightSpeed) {
-    M_Drive.tankDrive(LeftSpeed, RightSpeed);
+    M_DriveTrain.tankDrive(LeftSpeed, RightSpeed);
   }
 
   /**
    * Get left motor speed
+   * 
    * @return Speed value, -1 to 1
    */
   public double getLeftMotorSpeed() {
@@ -86,6 +101,7 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Get right motor speed
+   * 
    * @return Speed value, -1 to 1
    */
   public double getRightMotorSpeed() {
@@ -94,14 +110,21 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Get left raw encoder value
+   * 
    * @return raw encoder value for left side
    */
   public double getLeftEncoderValue() {
     return leftEncoder.getPosition();
   }
 
+  public void initDefaultCommand(TankDrive tankDrive) {
+    setDefaultCommand(tankDrive);
+
+  }
+
   /**
    * Get right raw encoder value
+   * 
    * @return raw encoder value for right side
    */
   public double getRightEncoderValue() {
@@ -114,6 +137,7 @@ public class DriveTrain extends SubsystemBase {
 
   /**
    * Get gyro angle in degrees
+   * 
    * @return Gyro angle in degrees
    */
   public double getGyroAngleDegrees() {
@@ -121,9 +145,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Sets left and right encoders. Generally, we don't want to call this except in simulation.
+   * Sets left and right encoders. Generally, we don't want to call this except in
+   * simulation.
    * 
-   * @param newLeftValue new left encoder value
+   * @param newLeftValue  new left encoder value
    * @param newRightValue new right encoder value
    */
   public void setEncoders(double newLeftValue, double newRightValue) {
