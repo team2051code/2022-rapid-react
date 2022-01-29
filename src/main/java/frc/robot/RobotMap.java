@@ -10,8 +10,5 @@ public class RobotMap {
 
     public static final int LeftAxis = 1;
     public static final int RightAxis = 5;
-    public static final int XboxControllerPort = 0;
-
-    
-    
+    public static final int XboxControllerPort = 0;    
 }
