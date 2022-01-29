@@ -80,10 +80,11 @@ public class DriveTrain extends SubsystemBase {
     RightFollow.set(Speed);
   }
 
+  // TODO: Not using M_DriveTrain here and in LeftSide and RightSide will
+  // make the watchdog angry and cause the motors to go chop-chop-chop
   public void setMotors(double LeftSide, double RightSide) {
     this.LeftSide.set(LeftSide);
     this.RightSide.set(RightSide);
-
   }
 
   public void tankDrive(double LeftSpeed, double RightSpeed) {

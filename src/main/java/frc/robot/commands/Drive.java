@@ -23,11 +23,11 @@ M_DriveTrain = DriveTrain;
 
 @Override public void execute(){
 
-M_DriveTrain.setMotors(.5, .5);
+M_DriveTrain.tankDrive(.5, .5);
 }
 
 @Override public void end(boolean interrupt) {
-M_DriveTrain.setMotors(0, 0);
+M_DriveTrain.tankDrive(0, 0);
 
 }
 @Override public boolean isFinished() {

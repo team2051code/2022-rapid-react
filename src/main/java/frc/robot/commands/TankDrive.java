@@ -36,18 +36,14 @@ public class TankDrive extends CommandBase {
 double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
 double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
 
-M_DriveTrain.LeftSide(LeftSide*0.5);
-M_DriveTrain.RightSide(RightSide*0.5);
+M_DriveTrain.tankDrive(LeftSide * 0.5, RightSide * 0.5);
 
 
 
 }
 
 @Override public void end(boolean interrupt) {
-    M_DriveTrain.LeftSide(0);
-    M_DriveTrain.RightSide(0);
-
-
+    M_DriveTrain.tankDrive(0, 0);
 }
 @Override public boolean isFinished() {
 return false;
