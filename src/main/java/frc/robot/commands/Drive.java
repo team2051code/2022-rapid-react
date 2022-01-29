@@ -1,11 +1,6 @@
 package frc.robot.commands;
 
-import com.revrobotics.RelativeEncoder;
-
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.DriveTrain;
 
@@ -29,8 +24,6 @@ M_DriveTrain = DriveTrain;
 @Override public void execute(){
 
 M_DriveTrain.setMotors(.1, .1);
-System.out.println("Moves Forward");
-
 }
 
 @Override public void end(boolean interrupt) {

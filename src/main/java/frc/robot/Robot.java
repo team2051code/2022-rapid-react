@@ -4,19 +4,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
+import frc.robot.simulation.PoseEstimator;
 
 
 
@@ -27,19 +27,17 @@ import edu.wpi.first.cscore.UsbCamera;
  * project.
  */
 public class Robot extends TimedRobot {
-  public DriveTrain M_DriveTrain = new DriveTrain();
   public OI m_oi;
   private static final String kDefaultAuto = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   
-  //CANSparkMax spin1 = new CANSparkMax(5, MotorType.kBrushless);
-  //CANSparkMax spin2 = new CANSparkMax(5, MotorType.kBrushless);
+  private DriveTrain m_DriveTrain = new DriveTrain();
+  
+  private PoseEstimator poseEstimator; // might be null
+  private Field2d fieldInfo; // might be null
 
-
-  // private WPI_TalonFX talonLeft = new WPI_TalonFX(1);
-  // private WPI_TalonFX talonRight = new WPI_TalonFX(2);
-
+  
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
 
@@ -49,13 +47,7 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
   @Override
-  public void robotInit() {
-    // talonLeft.set(ControlMode.PercentOutput, 0);
-    // talonRight.set(ControlMode.PercentOutput, 0);
-    // talonLeft.follow(talonRight);
-    // System.out.println("Line");
-
-    
+  public void robotInit() {    
    // talonRight.setInverted(true);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
@@ -71,11 +63,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
-
   
   }
 
+  @Override
+  public void simulationInit() {
+    m_DriveTrain.simulationInit();
+    poseEstimator = new PoseEstimator(m_DriveTrain);
+    fieldInfo = new Field2d();
+    SmartDashboard.putData("Field", fieldInfo);
+
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    if (poseEstimator != null) {
+      poseEstimator.periodic();
+    }
+    if (fieldInfo != null && poseEstimator != null) {
+      fieldInfo.setRobotPose(poseEstimator.getPose());
+    }
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -90,7 +98,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(M_DriveTrain)
+     new Drive(m_DriveTrain)
      );
      CommandScheduler.getInstance().schedule(commands);
   }
@@ -112,7 +120,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(M_DriveTrain);
+      CommandBase commands = new TankDrive(m_DriveTrain);
       CommandScheduler.getInstance().schedule(commands);
     
 
