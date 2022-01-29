@@ -4,26 +4,17 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.commands.Drive;
-import frc.robot.commands.DriveJoystick;
+import frc.robot.commands.TankDrive;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 
@@ -36,6 +27,8 @@ import edu.wpi.first.cscore.UsbCamera;
  * project.
  */
 public class Robot extends TimedRobot {
+  public DriveTrain M_DriveTrain = new DriveTrain();
+  public OI m_oi;
   private static final String kDefaultAuto = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
@@ -49,11 +42,7 @@ public class Robot extends TimedRobot {
 
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
-  private DriveTrain m_DriveTrain = new DriveTrain();
-  
-  
 
-  XboxController controller = new XboxController(0);
   UsbCamera camera1 = CameraServer.startAutomaticCapture();
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,7 +57,7 @@ public class Robot extends TimedRobot {
 
     
    // talonRight.setInverted(true);
-   
+
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
@@ -82,7 +71,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  
+
 
   
   }
@@ -100,17 +89,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    SequentialCommandGroup commands = new SequentialCommandGroup(
-    new Drive(m_DriveTrain)
-    );
-    CommandScheduler.getInstance().schedule(commands);
+     SequentialCommandGroup commands = new SequentialCommandGroup(
+     new Drive(M_DriveTrain)
+     );
+     CommandScheduler.getInstance().schedule(commands);
   }
 
   /** This function is called periodically during autonomous. */
-  @Override
   public void autonomousPeriodic() {
 
     CommandScheduler.getInstance().run();
+
 
   }
 
@@ -118,20 +107,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     UsbCamera camera1 = CameraServer.startAutomaticCapture();
-    UsbCamera camera2 = CameraServer.startAutomaticCapture();
+    camera1.setResolution(256, 144);
+    camera1.setFPS(30);
 
-    CommandBase commands = 
-      new DriveJoystick(m_DriveTrain);
-    
-      
+   // UsbCamera camera2 = CameraServer.startAutomaticCapture();
+
+      CommandBase commands = new TankDrive(M_DriveTrain);
       CommandScheduler.getInstance().schedule(commands);
     
+
 
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+
+    CommandScheduler.getInstance().run();
+
     //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
 
     // //change this to false to run autonomous aiming code

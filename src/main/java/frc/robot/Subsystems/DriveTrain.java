@@ -1,28 +1,36 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap;
+import frc.robot.commands.TankDrive;
 
 public class DriveTrain extends SubsystemBase {
-    CANSparkMax Right = new CANSparkMax(1, MotorType.kBrushless);
-    CANSparkMax RightFollow = new CANSparkMax(2, MotorType.kBrushless);
-    CANSparkMax Left = new CANSparkMax(3, MotorType.kBrushless);
-    CANSparkMax LeftFollow = new CANSparkMax(4, MotorType.kBrushless);
+  XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
+  
+    private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
+    private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
+    private CANSparkMax Left = new CANSparkMax(RobotMap.Motor_Left, MotorType.kBrushless);
+    private CANSparkMax LeftFollow = new CANSparkMax(RobotMap.Motor_LeftFollow, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
-
-  DifferentialDrive M_Drive = new DifferentialDrive(LeftSide, RightSide);
-
   private RelativeEncoder encoder;
+  DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
+
+
+  
 
   public DriveTrain() {
+    
     encoder = Left.getEncoder();
 
     encoder.getPositionConversionFactor();
@@ -45,27 +53,39 @@ public class DriveTrain extends SubsystemBase {
      return(ticks * PulsesPerInch);
 
     }
+    
+    public void LeftSide(double Speed)
+    {
+    Left.set(Speed);
+    LeftFollow.set(Speed);
+    }
+
+    public void RightSide(double Speed)
+    {
+    Right.set(Speed);
+    RightFollow.set(Speed);
+
+    }
 
     public void setMotors(double LeftSide, double RightSide) 
     {
         this.LeftSide.set(LeftSide);
         this.RightSide.set(RightSide);
 
-    }
-
-public void tankDrive(double LeftSpeed, double RightSpeed)
-{
-M_Drive.tankDrive(LeftSpeed, RightSpeed);
-
-
 }
 
-    public double GetEncoderInches()
+public double GetEncoderInches()
     {
         return
         encoderTicksPerInches(encoder.getPosition());
         
     }
+
+  public void initDefaultCommand(TankDrive tankDrive)
+  {
+    setDefaultCommand(tankDrive);
+    
+  }
 
 
   @Override
@@ -74,8 +94,7 @@ M_Drive.tankDrive(LeftSpeed, RightSpeed);
     SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
   }
 
-
-
+  
 
 
 
