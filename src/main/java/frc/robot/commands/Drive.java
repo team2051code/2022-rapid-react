@@ -23,7 +23,7 @@ M_DriveTrain = DriveTrain;
 
 @Override public void execute(){
 
-M_DriveTrain.setMotors(.1, .1);
+M_DriveTrain.setMotors(.5, .5);
 }
 
 @Override public void end(boolean interrupt) {
@@ -33,7 +33,7 @@ M_DriveTrain.setMotors(0, 0);
 @Override public boolean isFinished() {
 
 //Addition of the distances to group them together
-double DesiredDistance = (24);
+double DesiredDistance = (87.42);
 //Sets the distance to zero
 double DistanceInInches = M_DriveTrain.GetEncoderInches();
 

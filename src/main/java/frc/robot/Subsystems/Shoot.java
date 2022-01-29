@@ -25,12 +25,12 @@ private boolean m_LimelightHasValidTarget = true;
  
          double Kp = -0.1f;
          double min_command = 0.05f;
-         double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+         //double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
          double left_command = 0;
          double right_command = 0;
          
          Update_Limelight_Tracking();
-         
+
          double steering_adjust = 0.0f;
          double heading = -tx;
 
@@ -44,7 +44,7 @@ private boolean m_LimelightHasValidTarget = true;
            {
                    steering_adjust = Kp*heading + min_command;
            }           
-           turret.set(steering_adjust);
+//turret.set(steering_adjust);
          }
         
         

@@ -61,6 +61,7 @@
         },
         "height": 8.229599952697754,
         "image": "field.png",
+        "units": "meters",
         "width": 15.849599838256836,
         "window": {
           "name": "Field 2022",
@@ -85,7 +86,8 @@
           "open": true
         },
         "open": true
-      }
+      },
+      "open": true
     },
     "SmartDashboard": {
       "Auto choices": {
