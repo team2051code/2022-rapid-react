@@ -16,24 +16,10 @@ import frc.robot.Subsystems.DriveTrain;
 
 public class ShootParamaters extends SubsystemBase {
 XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
+boolean EnableShoot = false;
+private boolean m_LimelightHasValidTarget = false;
 
-private boolean m_LimelightHasValidTarget = true;
-
- WPI_TalonFX Shooter1 = new WPI_TalonFX(1);
- WPI_TalonFX Shooter2 = new WPI_TalonFX(5);
  CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
- boolean EnableShoot = false;
-
-public void M_Shoot()
-{
-Shooter2.follow(Shooter1);
-
-if(controller.getAButton())
-{
-EnableShoot = true;
-
-}
-}
 
     public void Update_Limelight_Tracking()
     {

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.DriveTrain;
-import frc.robot.Subsystems.ShootParamaters;
+//import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
 import frc.robot.simulation.PoseEstimator;
@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 
   
   private DriveTrain m_DriveTrain = new DriveTrain();
-  private ShootParamaters m_shooter = new ShootParamaters();
+  //private ShootParamaters m_shooter = new ShootParamaters();
 
   private PoseEstimator poseEstimator; // might be null
   private Field2d fieldInfo; // might be null
@@ -66,7 +66,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-  
   }
 
   @Override
@@ -125,9 +124,6 @@ public class Robot extends TimedRobot {
 
       CommandBase commands = new TankDrive(m_DriveTrain);
       CommandScheduler.getInstance().schedule(commands);
-    
-
-
   }
 
   /** This function is called periodically during operator control. */
@@ -179,4 +175,5 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {}
+
 }

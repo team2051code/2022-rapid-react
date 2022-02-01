@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
@@ -13,11 +14,19 @@ import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
+  public double M_ShootParamaters;
+
+
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
+
+  WPI_TalonFX Shooter1 = new WPI_TalonFX(1);
+  WPI_TalonFX Shooter2 = new WPI_TalonFX(5);
+  CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
 
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
   private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
@@ -80,6 +89,13 @@ public class DriveTrain extends SubsystemBase {
     RightFollow.set(Speed);
   }
 
+  public void ShootSpeed(double Speed)
+  {
+    Shooter1.set(Speed);
+    Shooter2.set(Speed);
+
+  }
+
   // TODO: Not using M_DriveTrain here and in LeftSide and RightSide will
   // make the watchdog angry and cause the motors to go chop-chop-chop
   public void setMotors(double LeftSide, double RightSide) {
@@ -90,6 +106,13 @@ public class DriveTrain extends SubsystemBase {
   public void tankDrive(double LeftSpeed, double RightSpeed) {
     M_DriveTrain.tankDrive(LeftSpeed, RightSpeed);
   }
+
+  public void setShootSpeed(double shootSpeed)
+  {
+    this.Shooter1.set(shootSpeed);
+    this.Shooter2.set(shootSpeed);
+  }
+    
 
   /**
    * Get left motor speed

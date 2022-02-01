@@ -1,14 +1,12 @@
 package frc.robot.commands;
 
-import java.lang.module.ModuleDescriptor.Requires;
-
 import com.revrobotics.RelativeEncoder;
 
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Subsystems.DriveTrain;
-import frc.robot.Subsystems.ShootParamaters;
+//import frc.robot.Subsystems.ShootParamaters;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -18,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TankDrive extends CommandBase {     
 
     public DriveTrain M_DriveTrain;
-    public ShootParamaters M_Shoot;
+   // public ShootParamaters M_Shoot;
     public OI m_oi = new OI();
     
  public TankDrive(DriveTrain Drivetrain) {

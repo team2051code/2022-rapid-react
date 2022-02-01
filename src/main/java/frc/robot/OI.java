@@ -10,4 +10,10 @@ public class OI {
     public double GetDriverRawAxis(int axis){
     return controller.getRawAxis(axis);
     }
-}
+    
+    public boolean GetAButton(){
+    return controller.getAButton();    
+    }
+    }
+    
+
