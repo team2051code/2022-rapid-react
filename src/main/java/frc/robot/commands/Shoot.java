@@ -23,6 +23,7 @@ public class Shoot extends CommandBase {
   public ShootParamaters M_Shoot;
 
   public Shoot(ShootParamaters shootParamaters, DriveTrain Drivetrain) {
+    M_DriveTrain = Drivetrain;
     addRequirements(M_Shoot, M_DriveTrain);
 
 
@@ -33,21 +34,7 @@ public class Shoot extends CommandBase {
   @Override
   public void initialize() 
   {
-    System.out.println(m_oi.GetAButton());
-    System.out.println(setShootSpeed);
-
-
-    // boolean EnableShoot = m_oi.GetAButton(RobotMap.AButton);
-        if(m_oi.GetAButton())
-    {
-        Shooter1.setShootSpeed(1);
-        Shooter2.setShootSpeed(1);
-    }
-    else
-    {
-    Shooter1.setShootSpeed(0);
-    Shooter2.setShootSpeed(0);
-    }
+   
 
   }
 
@@ -55,10 +42,21 @@ public class Shoot extends CommandBase {
   @Override
   public void execute() 
   {
-    
+    System.out.println(m_oi.GetAButton());
+    System.out.println(setShootSpeed);
 
-    
 
+    // boolean EnableShoot = m_oi.GetAButton(RobotMap.AButton);
+        if(m_oi.GetAButton())
+    {
+        Shooter1.setShootSpeed(50);
+        Shooter2.setShootSpeed(50);
+    }
+    else
+    {
+    Shooter1.setShootSpeed(0);
+    Shooter2.setShootSpeed(0);
+    }
   }
 
   // Called once the command ends or is interrupted.
