@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -21,17 +22,18 @@ import frc.robot.simulation.SimpleSimulatedChassis;
 public class DriveTrain extends SubsystemBase {
   public double M_ShootParamaters;
 
-
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 
   WPI_TalonFX Shooter1 = new WPI_TalonFX(1);
   WPI_TalonFX Shooter2 = new WPI_TalonFX(5);
-  CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
+  //CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
 
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
   private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
   private CANSparkMax Left = new CANSparkMax(RobotMap.Motor_Left, MotorType.kBrushless);
   private CANSparkMax LeftFollow = new CANSparkMax(RobotMap.Motor_LeftFollow, MotorType.kBrushless);
+
+  private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
@@ -93,7 +95,15 @@ public class DriveTrain extends SubsystemBase {
   {
     Shooter1.set(Speed);
     Shooter2.set(Speed);
+  }
 
+  public void IntakeSpeed(double Speed){
+    IntakeMethod.set(Speed);
+  }
+
+  public void SetIntakeSpeed(double IntakeSpeed)
+  {
+    this.IntakeMethod.set(IntakeSpeed);
   }
 
   // TODO: Not using M_DriveTrain here and in LeftSide and RightSide will

@@ -14,6 +14,9 @@ public class OI {
     public boolean GetAButton(){
     return controller.getAButton();    
     }
+    public boolean GetBButton(){
+    return controller.getBButton();
+    }
     }
     
 

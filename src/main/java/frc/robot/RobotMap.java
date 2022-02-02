@@ -16,6 +16,7 @@ public class RobotMap {
     public static final int ShootingMotor2 = 5;
     public static final int LeftAxis = 1;
     public static final int RightAxis = 5;
+    public static final int IntakeMotor = 6;
 
     public static final boolean AButton = controller.getAButton(); 
 }
