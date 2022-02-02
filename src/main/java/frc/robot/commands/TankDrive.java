@@ -6,6 +6,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Subsystems.DriveTrain;
+import frc.robot.Subsystems.ShootParamaters;
 //import frc.robot.Subsystems.ShootParamaters;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -14,10 +15,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
 public class TankDrive extends CommandBase {     
-
+    public DriveTrain IntakeMethod;
+    public DriveTrain SetIntakeSpeed;
     public DriveTrain M_DriveTrain;
    // public ShootParamaters M_Shoot;
     public OI m_oi = new OI();
+    public DriveTrain Shooter1;
+    public DriveTrain Shooter2;
+    public DriveTrain setShootSpeed;
+    public ShootParamaters M_Shoot;
     
  public TankDrive(DriveTrain Drivetrain) {
     M_DriveTrain = Drivetrain;
@@ -39,6 +45,29 @@ double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
 double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
 
 M_DriveTrain.tankDrive(LeftSide * 0.5, RightSide * 0.5);
+
+
+    // boolean EnableShoot = m_oi.GetAButton(RobotMap.AButton);
+    if(m_oi.GetAButton())
+    {
+        M_DriveTrain.ShootSpeedRight(.50);
+        M_DriveTrain.ShootSpeedLeft(.50);
+    }
+    else
+    {
+    M_DriveTrain.ShootSpeedLeft(0);
+    M_DriveTrain.ShootSpeedRight(0);
+    }
+
+
+    if(m_oi.GetBButton())
+    {
+    M_DriveTrain.SetIntakeSpeed(.50);
+    }
+    else
+    {
+    M_DriveTrain.SetIntakeSpeed(0);
+    }
 
 
 }

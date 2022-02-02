@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
@@ -24,8 +23,8 @@ public class DriveTrain extends SubsystemBase {
 
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 
-  WPI_TalonFX Shooter1 = new WPI_TalonFX(1);
-  WPI_TalonFX Shooter2 = new WPI_TalonFX(5);
+  WPI_TalonFX ShooterLeft = new WPI_TalonFX(0);
+  WPI_TalonFX ShooterRight = new WPI_TalonFX(5);
   //CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
 
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
@@ -54,7 +53,7 @@ public class DriveTrain extends SubsystemBase {
 
     leftEncoder.getPositionConversionFactor();
     leftEncoder.setPosition(0);
-
+  
     Left.setInverted(true);
     LeftFollow.setInverted(true);
   }
@@ -91,10 +90,18 @@ public class DriveTrain extends SubsystemBase {
     RightFollow.set(Speed);
   }
 
-  public void ShootSpeed(double Speed)
+  public void ShootSpeedLeft(double Speed)
   {
-    Shooter1.set(Speed);
-    Shooter2.set(Speed);
+    ShooterLeft.setInverted(false);
+    ShooterLeft.set(Speed);
+  }
+
+  public void ShootSpeedRight(double Speed)
+  {
+    ShooterRight.setInverted(true);
+    ShooterRight.set(Speed);
+
+
   }
 
   public void IntakeSpeed(double Speed){
@@ -119,8 +126,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void setShootSpeed(double shootSpeed)
   {
-    this.Shooter1.set(shootSpeed);
-    this.Shooter2.set(shootSpeed);
+    this.ShooterLeft.set(shootSpeed);
+    this.ShooterRight.set(shootSpeed);
   }
     
 

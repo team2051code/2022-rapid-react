@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
-import frc.robot.commands.Shoot;
 import frc.robot.commands.TankDrive;
 import frc.robot.simulation.PoseEstimator;
 
@@ -110,7 +109,6 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
     CommandScheduler.getInstance().run();
-
 
   }
 
