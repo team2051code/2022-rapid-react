@@ -19,13 +19,12 @@ import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
-  public double M_ShootParamaters;
+  public ShootParamaters M_Shoot = new ShootParamaters();    
 
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 
   WPI_TalonFX ShooterLeft = new WPI_TalonFX(0);
   WPI_TalonFX ShooterRight = new WPI_TalonFX(5);
-  //CANSparkMax TurretRotator = new CANSparkMax(1, MotorType.kBrushless);
 
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
   private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
@@ -37,7 +36,6 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
   DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
-
   private RelativeEncoder leftEncoder;
   private RelativeEncoder rightEncoder;
   private ADXRS450_Gyro gyro;
@@ -100,9 +98,8 @@ public class DriveTrain extends SubsystemBase {
   {
     ShooterRight.setInverted(true);
     ShooterRight.set(Speed);
-
-
   }
+
 
   public void IntakeSpeed(double Speed){
     IntakeMethod.set(Speed);
@@ -112,6 +109,8 @@ public class DriveTrain extends SubsystemBase {
   {
     this.IntakeMethod.set(IntakeSpeed);
   }
+  
+ 
 
   // TODO: Not using M_DriveTrain here and in LeftSide and RightSide will
   // make the watchdog angry and cause the motors to go chop-chop-chop

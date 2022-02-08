@@ -12,6 +12,7 @@ public class RobotMap {
     public static final int Motor_LeftFollow = 4;
     public static final int XboxControllerUsbPort = 0;
 
+    //Error ShootingMotor same CAN ID as right1 motor
     public static final int ShootingMotor1 = 1;
     public static final int ShootingMotor2 = 5;
     public static final int LeftAxis = 1;

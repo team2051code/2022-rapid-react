@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.DriveTrain;
+import frc.robot.Subsystems.ShootParamaters;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot {
 
   
   private DriveTrain m_DriveTrain = new DriveTrain();
+  private ShootParamaters m_ShootParamaters = new ShootParamaters();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
   private PoseEstimator poseEstimator; // might be null
@@ -121,7 +123,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_DriveTrain);
+      CommandBase commands = new TankDrive(m_DriveTrain,m_ShootParamaters);
       CommandScheduler.getInstance().schedule(commands);
     }
 

@@ -14,18 +14,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
    
 
 
-public class TankDrive extends CommandBase {     
+public class TankDrive extends CommandBase {
+    public boolean m_LimelightHasValidTarget;
+    public double steering_adjust;
+    public ShootParamaters M_shoot;
+    public ShootParamaters TurretRotator;  
     public DriveTrain IntakeMethod;
     public DriveTrain SetIntakeSpeed;
     public DriveTrain M_DriveTrain;
-   // public ShootParamaters M_Shoot;
     public OI m_oi = new OI();
     public DriveTrain Shooter1;
     public DriveTrain Shooter2;
     public DriveTrain setShootSpeed;
-    public ShootParamaters M_Shoot;
+
     
- public TankDrive(DriveTrain Drivetrain) {
+ public TankDrive(DriveTrain Drivetrain, ShootParamaters Shootparameters) {
+     M_shoot = Shootparameters;
     M_DriveTrain = Drivetrain;
      addRequirements(M_DriveTrain);
  }
@@ -36,11 +40,10 @@ public class TankDrive extends CommandBase {
 // }
 
 @Override public void initialize(){
-
-
 }
 
 @Override public void execute(){
+double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
 double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
 double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
 
@@ -68,9 +71,10 @@ M_DriveTrain.tankDrive(LeftSide * 0.5, RightSide * 0.5);
     {
     M_DriveTrain.SetIntakeSpeed(0);
     }
-
-
+    
+    M_shoot.SetTurretRotatorSpeed(SetTurretRotator);
 }
+
 
 @Override public void end(boolean interrupt) {
     M_DriveTrain.tankDrive(0, 0);
