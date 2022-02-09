@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
 
 
-  UsbCamera camera1 = CameraServer.startAutomaticCapture();
+  //UsbCamera camera1 = CameraServer.startAutomaticCapture();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -117,9 +117,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    UsbCamera camera1 = CameraServer.startAutomaticCapture();
-    camera1.setResolution(256, 144);
-    camera1.setFPS(30);
+    //UsbCamera camera1 = CameraServer.startAutomaticCapture();
+    //camera1.setResolution(256, 144);
+    //camera1.setFPS(30);
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 

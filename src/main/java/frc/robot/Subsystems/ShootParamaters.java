@@ -16,10 +16,9 @@ import frc.robot.Subsystems.DriveTrain;
 
 public class ShootParamaters extends SubsystemBase {
 XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
-boolean EnableShoot = false;
 boolean m_LimelightHasValidTarget = false;
 
- CANSparkMax TurretRotator = new CANSparkMax(9 , MotorType.kBrushless);
+CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
 
 
          public double Update_Limelight_Tracking()
@@ -33,8 +32,6 @@ boolean m_LimelightHasValidTarget = false;
          double min_command = 0.05f;
          //double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
          
-         Update_Limelight_Tracking();
-
          double steering_adjust = 0.0f;
          double heading = -tx;
 
@@ -52,10 +49,10 @@ boolean m_LimelightHasValidTarget = false;
         return steering_adjust;
     }
         
-    public void TurretRotatorSpeed(double steering_adjust)
-    {
-    TurretRotator.set(steering_adjust);
-    }
+  public void TurretRotatorSpeed(double steering_adjust)
+  {
+  TurretRotator.set(steering_adjust);
+  }
 
 
 public void SetTurretRotatorSpeed(double steering_adjust) {

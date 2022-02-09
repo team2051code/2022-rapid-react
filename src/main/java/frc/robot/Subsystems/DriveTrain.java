@@ -19,12 +19,10 @@ import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
-  public ShootParamaters M_Shoot = new ShootParamaters();    
-
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 
-  WPI_TalonFX ShooterLeft = new WPI_TalonFX(0);
-  WPI_TalonFX ShooterRight = new WPI_TalonFX(5);
+  WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
+  WPI_TalonFX ShooterRight = new WPI_TalonFX(RobotMap.ShootingMotor2);
 
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
   private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
@@ -75,7 +73,6 @@ public class DriveTrain extends SubsystemBase {
     // Math to calculate the current distance of the motor using the previous
     // equation
     return (ticks * PulsesPerInch);
-
   }
 
   public void LeftSide(double Speed) {

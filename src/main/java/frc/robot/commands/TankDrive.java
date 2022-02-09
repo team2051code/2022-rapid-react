@@ -18,7 +18,6 @@ public class TankDrive extends CommandBase {
     public boolean m_LimelightHasValidTarget;
     public double steering_adjust;
     public ShootParamaters M_shoot;
-    public ShootParamaters TurretRotator;  
     public DriveTrain IntakeMethod;
     public DriveTrain SetIntakeSpeed;
     public DriveTrain M_DriveTrain;
@@ -72,7 +71,7 @@ M_DriveTrain.tankDrive(LeftSide * 0.5, RightSide * 0.5);
     M_DriveTrain.SetIntakeSpeed(0);
     }
     
-    M_shoot.SetTurretRotatorSpeed(SetTurretRotator);
+    M_shoot.SetTurretRotatorSpeed(steering_adjust);
 }
 
 
