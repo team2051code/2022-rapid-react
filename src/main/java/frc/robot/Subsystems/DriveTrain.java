@@ -24,12 +24,13 @@ public class DriveTrain extends SubsystemBase {
   WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
   WPI_TalonFX ShooterRight = new WPI_TalonFX(RobotMap.ShootingMotor2);
 
+
   private CANSparkMax Right = new CANSparkMax(RobotMap.Motor_Right, MotorType.kBrushless);
   private CANSparkMax RightFollow = new CANSparkMax(RobotMap.Motor_RightFollow, MotorType.kBrushless);
   private CANSparkMax Left = new CANSparkMax(RobotMap.Motor_Left, MotorType.kBrushless);
   private CANSparkMax LeftFollow = new CANSparkMax(RobotMap.Motor_LeftFollow, MotorType.kBrushless);
 
-  private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
+  //private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
@@ -44,6 +45,7 @@ public class DriveTrain extends SubsystemBase {
 
 
   public DriveTrain() {
+    
     leftEncoder = Left.getEncoder();
     rightEncoder = Right.getEncoder();
     gyro = new ADXRS450_Gyro();
@@ -99,14 +101,18 @@ public class DriveTrain extends SubsystemBase {
   }
 
 
-  public void IntakeSpeed(double Speed){
-    IntakeMethod.set(Speed);
-  }
+  // public void IntakeSpeed(double Speed)
+  // {
+  //   IntakeMethod.set(Speed);
 
-  public void SetIntakeSpeed(double IntakeSpeed)
-  {
-    this.IntakeMethod.set(IntakeSpeed);
-  }
+  // }
+
+  // public void SetIntakeSpeed(double IntakeSpeed)
+  // {
+  //   this.IntakeMethod.set(IntakeSpeed);
+  // }
+
+  
   
  
 
@@ -126,6 +132,7 @@ public class DriveTrain extends SubsystemBase {
     this.ShooterLeft.set(shootSpeed);
     this.ShooterRight.set(shootSpeed);
   }
+  
     
 
   /**
@@ -145,6 +152,8 @@ public class DriveTrain extends SubsystemBase {
   public double getRightMotorSpeed() {
     return RightSide.get();
   }
+
+
 
   /**
    * Get left raw encoder value
