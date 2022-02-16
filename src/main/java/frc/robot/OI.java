@@ -20,6 +20,12 @@ public class OI {
     public boolean GetXButton(){
     return controller.getXButton();
     }
+    public boolean GetYButton(){
+    return controller.getYButton();    
+    }
+    public boolean GetLeftTrigger(){
+    return controller.getLeftBumper();    
+    }
 }
     
 

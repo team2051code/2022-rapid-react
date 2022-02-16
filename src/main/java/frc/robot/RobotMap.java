@@ -18,7 +18,7 @@ public class RobotMap {
     public static final int RightAxis = 5;
     
     
-    //public static final int IntakeMotor = 6;
+    public static final int IntakeMotor = 6;
     public static final int TurretRotator = 9; 
 
 }
