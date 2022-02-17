@@ -18,9 +18,9 @@ import frc.robot.Subsystems.DriveTrain;
 import frc.robot.Subsystems.Pneumatics;
 import frc.robot.Subsystems.ShootParamaters;
 //import frc.robot.Subsystems.ShootParamaters;
-//import frc.robot.commands.Drive;
+import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
-//import frc.robot.simulation.PoseEstimator;
+import frc.robot.simulation.PoseEstimator;
 
 
 
@@ -41,8 +41,8 @@ public class Robot extends TimedRobot {
   private Pneumatics m_Pneumatics = new Pneumatics();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
-  // private PoseEstimator poseEstimator; // might be null
-  // private Field2d fieldInfo; // might be null
+   private PoseEstimator poseEstimator; // might be null
+   private Field2d fieldInfo; // might be null
 
   
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {    
-   // talonRight.setInverted(true);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
@@ -72,24 +71,24 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
   }
 
-  // @Override
-  // public void simulationInit() {
-  //   m_DriveTrain.simulationInit();
-  //   poseEstimator = new PoseEstimator(m_DriveTrain);
-  //   fieldInfo = new Field2d();
-  //   SmartDashboard.putData("Field", fieldInfo);
+  @Override
+  public void simulationInit() {
+    m_DriveTrain.simulationInit();
+    poseEstimator = new PoseEstimator(m_DriveTrain);
+    fieldInfo = new Field2d();
+    SmartDashboard.putData("Field", fieldInfo);
 
-  // }
+  }
 
-  // @Override
-  // public void simulationPeriodic() {
-  //   if (poseEstimator != null) {
-  //     poseEstimator.periodic();
-  //   }
-  //   if (fieldInfo != null && poseEstimator != null) {
-  //     fieldInfo.setRobotPose(poseEstimator.getPose());
-  //   }
- // }
+  @Override
+  public void simulationPeriodic() {
+    if (poseEstimator != null) {
+      poseEstimator.periodic();
+    }
+    if (fieldInfo != null && poseEstimator != null) {
+      fieldInfo.setRobotPose(poseEstimator.getPose());
+    }
+ }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -103,10 +102,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    //  SequentialCommandGroup commands = new SequentialCommandGroup(
-    //  new Drive(m_DriveTrain)
-    //  );
-    //  CommandScheduler.getInstance().schedule(commands);
+     SequentialCommandGroup commands = new SequentialCommandGroup(
+     new Drive(m_DriveTrain)
+     );
+     CommandScheduler.getInstance().schedule(commands);
   }
 
   /** This function is called periodically during autonomous. */
@@ -125,7 +124,8 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_DriveTrain,m_ShootParamaters, m_Pneumatics);
+      CommandBase commands = new TankDrive(m_DriveTrain,m_Pneumatics, m_ShootParamaters);
+      
       CommandScheduler.getInstance().schedule(commands);
      }
 

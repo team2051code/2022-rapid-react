@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,67 +17,64 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
-//import frc.robot.simulation.SimpleSimulatedChassis;
+import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 
-  // WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
-  // WPI_TalonFX ShooterRight = new WPI_TalonFX(RobotMap.ShootingMotor2);
 
 
   private WPI_TalonFX Right = new WPI_TalonFX(RobotMap.Motor_Right);
   private WPI_TalonFX RightFollow = new WPI_TalonFX(RobotMap.Motor_RightFollow);
   private WPI_TalonFX Left = new WPI_TalonFX(RobotMap.Motor_Left);
   private WPI_TalonFX LeftFollow = new WPI_TalonFX(RobotMap.Motor_LeftFollow);
-
+             
   private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
   DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
-  //private RelativeEncoder leftEncoder;
-  //private RelativeEncoder rightEncoder;
-  //private ADXRS450_Gyro gyro;
+ 
+  private ADXRS450_Gyro gyro;
 
   // Additional state used for robot simulation
-  //private ADXRS450_GyroSim simulatedGyro; // might be null
-  //private SimpleSimulatedChassis simulatedChassis; // might be null
+  private ADXRS450_GyroSim simulatedGyro; // might be null
+  private SimpleSimulatedChassis simulatedChassis; // might be null
 
 
   public DriveTrain() {
-    
-    //leftEncoder = Left.getEncoder();
-    //rightEncoder = Right.getEncoder();
-    //gyro = new ADXRS450_Gyro();
+    Left.setSelectedSensorPosition(0);
+  //leftEncoder.setPosition(0);
+  //rightEncoder.setPosition(0);
+    gyro = new ADXRS450_Gyro();
 
     //leftEncoder.getPositionConversionFactor();
-    //leftEncoder.setPosition(0);
   
     Left.setInverted(true);
     LeftFollow.setInverted(true);
+
   }
 
   /**
    * Call only if the robot is running in simulation. Prepares simulated parts.
    */
-  // public void simulationInit() {
-  //   simulatedGyro = new ADXRS450_GyroSim(gyro);
-  //   simulatedGyro.setAngle(-30);
-  //   simulatedChassis = new SimpleSimulatedChassis(this);
-  // }
+  public void simulationInit() {
+     simulatedGyro = new ADXRS450_GyroSim(gyro);
+     simulatedGyro.setAngle(-30);
+     simulatedChassis = new SimpleSimulatedChassis(this);
+   }
 
-  // public double encoderTicksToInches(double ticks) {
+  public double encoderTicksToInches(double ticks) {
 
   //   // Possibility that GearRatio is actually 10.75
-  //   final double GearRatio = (10.75);
+    final double GearRatio = (18);
   //   // Math to calculate the number of motor pulses based on our rotations
 
-  //   final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
+    final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
   //   // Math to calculate the current distance of the motor using the previous
   //   // equation
-  //   return (ticks * PulsesPerInch);
-  // }
+     return ((Left.getSelectedSensorPosition() / 2048) * PulsesPerInch);
+   }
 
   public void LeftSide(double Speed) {
     Left.set(Speed);
@@ -87,18 +85,6 @@ public class DriveTrain extends SubsystemBase {
     Right.set(Speed);
     RightFollow.set(Speed);
   }
-
-  // public void ShootSpeedLeft(double Speed)
-  // {
-  //   ShooterLeft.setInverted(false);
-  //   ShooterLeft.set(Speed);
-  // }
-
-  // public void ShootSpeedRight(double Speed)
-  // {
-  //   ShooterRight.setInverted(true);
-  //   ShooterRight.set(Speed);
-  // }
 
 
   public void IntakeSpeed(double Speed)
@@ -127,11 +113,6 @@ public class DriveTrain extends SubsystemBase {
     M_DriveTrain.tankDrive(LeftSpeed, RightSpeed);
   }
 
-  // public void setShootSpeed(double shootSpeed)
-  // {
-  //   this.ShooterLeft.set(shootSpeed);
-  //   this.ShooterRight.set(shootSpeed);
-  // }
   
     
 
@@ -155,14 +136,14 @@ public class DriveTrain extends SubsystemBase {
 
 
 
-  // /**
-  //  * Get left raw encoder value
-  //  * 
-  //  * @return raw encoder value for left side
-  //  */
-  // public double getLeftEncoderValue() {
-  //   return leftEncoder.getPosition();
-  // }
+  /**
+   * Get left raw encoder value
+   * 
+   * @return raw encoder value for left side
+   */
+  public double getLeftEncoderValue() {
+    return Left.getSelectedSensorPosition();
+  }
 
   public void initDefaultCommand(TankDrive tankDrive) {
     setDefaultCommand(tankDrive);
@@ -174,22 +155,22 @@ public class DriveTrain extends SubsystemBase {
    * 
    * @return raw encoder value for right side
    */
-  // public double getRightEncoderValue() {
-  //   return rightEncoder.getPosition();
-  // }
+  public double getRightEncoderValue() {
+    return Right.getSelectedSensorPosition();
+  }
 
-  // public double GetEncoderInches() {
-  //   return encoderTicksToInches(leftEncoder.getPosition());
-  // }
+  public double GetEncoderInches() {
+    return encoderTicksToInches(Left.getSelectedSensorPosition());
+  }
 
   /**
    * Get gyro angle in degrees
    * 
    * @return Gyro angle in degrees
    */
-  // public double getGyroAngleDegrees() {
-  //   return gyro.getAngle();
-  // }
+   public double getGyroAngleDegrees() {
+     return gyro.getAngle();
+   }
 
   /**
    * Sets left and right encoders. Generally, we don't want to call this except in
@@ -198,21 +179,24 @@ public class DriveTrain extends SubsystemBase {
    * @param newLeftValue  new left encoder value
    * @param newRightValue new right encoder value
    */
-  // public void setEncoders(double newLeftValue, double newRightValue) {
-  //   leftEncoder.setPosition(newLeftValue);
-  //   rightEncoder.setPosition(newRightValue);
-  // }
+  public void setEncoders(double newLeftValue, double newRightValue) {
+    Left.setSelectedSensorPosition(newLeftValue);
+    Right.setSelectedSensorPosition(newRightValue);
+  }
+
+  
+  
 
   /**
    * Set a simulated gyro value. Does nothing if not simulating.
    * 
    * @param angleDegrees new angle in degrees
    */
-  // public void setSimulatedGyro(double angleDegrees) {
-  //   if (simulatedGyro != null) {
-  //     simulatedGyro.setAngle(angleDegrees);
-  //   }
-  //}
+   public void setSimulatedGyro(double angleDegrees) {
+     if (simulatedGyro != null) {
+       simulatedGyro.setAngle(angleDegrees);
+     }
+  }
 
   @Override
   public void periodic() {
@@ -220,10 +204,11 @@ public class DriveTrain extends SubsystemBase {
     //SmartDashboard.putNumber("Encoder Position", leftEncoder.getPosition());
   }
 
-  // @Override
-  // public void simulationPeriodic() {
-  //   if (simulatedChassis != null) {
-  //     simulatedChassis.periodic();
-  //   }
-  // }
+   @Override
+   public void simulationPeriodic() {
+     if (simulatedChassis != null) {
+       simulatedChassis.periodic();
+     }
+     
+   }
 }
