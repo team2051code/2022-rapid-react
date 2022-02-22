@@ -20,5 +20,7 @@ public class RobotMap {
     
     public static final int IntakeMotor = 6;
     public static final int TurretRotator = 9; 
+    public static final int SingulatorMotor = 7;
+    public static final int SingulatorMotor2 = 10;
 
 }

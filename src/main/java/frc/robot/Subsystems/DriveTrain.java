@@ -40,7 +40,7 @@ public class DriveTrain extends SubsystemBase {
   // Additional state used for robot simulation
   private ADXRS450_GyroSim simulatedGyro; // might be null
   private SimpleSimulatedChassis simulatedChassis; // might be null
-
+  
 
   public DriveTrain() {
     Left.setSelectedSensorPosition(0);
@@ -184,7 +184,13 @@ public class DriveTrain extends SubsystemBase {
     Right.setSelectedSensorPosition(newRightValue);
   }
 
-  
+  public void TestingMotors()
+  {
+    //System.out.println(RightFollow.get());
+    //\System.out.println(Left.get());
+
+
+  }
   
 
   /**

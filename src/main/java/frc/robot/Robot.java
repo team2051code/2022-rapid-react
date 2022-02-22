@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.DriveTrain;
+//import frc.robot.Subsystems.LimeLight;
 import frc.robot.Subsystems.Pneumatics;
 import frc.robot.Subsystems.ShootParamaters;
+import frc.robot.Subsystems.SingulatorInformation;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
@@ -39,6 +41,8 @@ public class Robot extends TimedRobot {
   private DriveTrain m_DriveTrain = new DriveTrain();
   private ShootParamaters m_ShootParamaters = new ShootParamaters();
   private Pneumatics m_Pneumatics = new Pneumatics();
+  private SingulatorInformation m_Singulator = new SingulatorInformation();
+  //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
    private PoseEstimator poseEstimator; // might be null
@@ -124,7 +128,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_DriveTrain,m_Pneumatics, m_ShootParamaters);
+      CommandBase commands = new TankDrive(m_DriveTrain,m_Pneumatics, m_ShootParamaters, m_Singulator);
       
       CommandScheduler.getInstance().schedule(commands);
      }

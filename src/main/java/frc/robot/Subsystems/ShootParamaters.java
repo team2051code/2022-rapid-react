@@ -1,7 +1,9 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -20,12 +22,12 @@ public ShootParamaters M_shoot;
 XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 boolean m_LimelightHasValidTarget = false;
 public OI m_oi = new OI();
-
 WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
 WPI_TalonFX ShooterRight = new WPI_TalonFX(RobotMap.ShootingMotor2);
-//public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
+CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
+RelativeEncoder TurretRotatorEncoder; 
 
-public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
+//public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
 
 
          public double Update_Limelight_Tracking()
@@ -60,7 +62,7 @@ public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, Motor
          }  
        }
     }
-         return steering_adjust;             
+         return -steering_adjust;             
 
          }
         
@@ -79,27 +81,31 @@ public double ShootParamaters()
   final double G = 9.8;
   //ratio between linerar and angular velocity
   final double wheelToBall = 2;
+  // Height for testing
+  final double TestHeight = 1.5494;
   //distance from the ground to the Target
   final double TargetHeight = 1.6002;
-  //distance from the limelight to the shooter
-  final double limeToShooter = 0.6096;
+  // distance from ground to limelight
+  final double LimeToGround = .679;
+//distance from the limelight to the shooter
+  final double limeToShooter = 0;
   //angle of the ball shooter in degrees
-  double shootangleD = 43; 
+  double shootangleD = 60; 
   //angle between middle of limelight and target in degrees
-  double limeangleD = ty + 30;   
+  double limeangleD = ty + 35;   
   //distance between ballshooter and target
-  double distance = ((TargetHeight / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
+  double distance = (((TestHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
 
   //speed of the ball needed to reach the target
   double ballspeed = Math.sqrt((distance * G) / Math.sin(2 * (Math.toRadians(shootangleD))));
   //final velocity of the ball
   double vf = wheelToBall * ballspeed;
   //speed of the wheel needed to accelerate the ball
-  double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .8) + (113.398 / 141.74)); 
+  double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .8) + (671.31 / 270.00)); 
   //rpm of the wheel
-  double rpm = (wheelspeed * 60) / (.0619125 * 2 * Math.PI);
+  double rpm = (wheelspeed * 60) / (.0508 * 2 * Math.PI);
   //percentage out of the max rpm
-  double percent = (rpm / 5750);
+  double percent = (rpm / 6380);
 
   SmartDashboard.putNumber("Limelight angle", limeangleD);
   SmartDashboard.putNumber("RPM", rpm);
@@ -134,6 +140,30 @@ public void ShootSpeedRight(double Speed)
   ShooterRight.set(Speed);
 }
 
+public void TurretRotatorLimits()
+{
+if (TurretRotatorEncoder.getPosition() >= 25)
+{
+  TurretRotator.set(0);
+}
+
+if(TurretRotatorEncoder.getPosition() <= -25)
+{
+  TurretRotator.set(0);
+}
+
+}
+
+public void EncoderLimitTesting()
+ {
+TurretRotatorEncoder = TurretRotator.getEncoder();
+System.out.println(TurretRotatorEncoder.getPosition());
+
+ }
+
+
+
+
 public void CalculatedShoot()
 {
     if(m_oi.GetAButton())
@@ -146,6 +176,8 @@ public void CalculatedShoot()
     M_shoot.ShootSpeedLeft(0);
     M_shoot.ShootSpeedRight(0);
     }
+
+
 
 }
 

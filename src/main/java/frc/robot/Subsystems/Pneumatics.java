@@ -26,7 +26,7 @@ public class Pneumatics extends SubsystemBase {
   Compressor pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
   public void GearShift(){
-  if(m_debouncer.calculate(m_oi.GetLeftTrigger()))
+  if(m_debouncer.calculate(m_oi.GetLeftBumper()))
   {
   DoubleSolenoid.set(Value.kReverse);
   DoubleSolenoid.toggle();
