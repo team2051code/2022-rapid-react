@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class RobotMap {
     public static final int XboxControllerPort = 0; 
+    public static final int XboxControllerPort2 = 1;
     public static final int Motor_Right = 1;
     public static final int Motor_RightFollow = 2;
     public static final int Motor_Left = 3;

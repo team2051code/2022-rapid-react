@@ -6,8 +6,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -76,6 +78,7 @@ public void TurretRotatorSpeed(double steering_adjust)
 }
 public double ShootParamaters()
   {
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double ty =  NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
   //acceration due to gravity
   final double G = 9.8;
@@ -84,17 +87,17 @@ public double ShootParamaters()
   // Height for testing
   final double TestHeight = 1.5494;
   //distance from the ground to the Target
-  final double TargetHeight = 1.6002;
+  final double TargetHeight = 2.64;
   // distance from ground to limelight
   final double LimeToGround = .679;
 //distance from the limelight to the shooter
   final double limeToShooter = 0;
   //angle of the ball shooter in degrees
-  double shootangleD = 60; 
+  double shootangleD = 55; 
   //angle between middle of limelight and target in degrees
   double limeangleD = ty + 35;   
   //distance between ballshooter and target
-  double distance = (((TestHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
+  double distance = (((TargetHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
 
   //speed of the ball needed to reach the target
   double ballspeed = Math.sqrt((distance * G) / Math.sin(2 * (Math.toRadians(shootangleD))));
@@ -106,18 +109,18 @@ public double ShootParamaters()
   double rpm = (wheelspeed * 60) / (.0508 * 2 * Math.PI);
   //percentage out of the max rpm
   double percent = (rpm / 6380);
+  double finalspeed = percent * 1.15;
 
-  SmartDashboard.putNumber("Limelight angle", limeangleD);
-  SmartDashboard.putNumber("RPM", rpm);
-  SmartDashboard.putNumber("rpm percent", percent * 100);
-  SmartDashboard.putNumber("wheel speed", wheelspeed);
-  SmartDashboard.putNumber("ball speed", ballspeed);
-  SmartDashboard.putNumber("TY", Math.abs(ty));
-  SmartDashboard.putNumber("distance to target", distance);
+  //SmartDashboard.putNumber("Limelight angle", limeangleD);
+  //SmartDashboard.putNumber("RPM", rpm);
+  //SmartDashboard.putNumber("rpm percent", percent * 100);
+  //SmartDashboard.putNumber("wheel speed", wheelspeed);
+  //SmartDashboard.putNumber("ball speed", ballspeed);
+  //SmartDashboard.putNumber("TY", Math.abs(ty));
+  //SmartDashboard.putNumber("distance to target", distance);
 
-  return percent;
-  }
-
+  return finalspeed;
+}
 
 
 
@@ -140,50 +143,34 @@ public void ShootSpeedRight(double Speed)
   ShooterRight.set(Speed);
 }
 
-public void TurretRotatorLimits()
-{
-if (TurretRotatorEncoder.getPosition() >= 25)
-{
-  TurretRotator.set(0);
-}
+// public void TurretRotatorLimits()
+// {
+// if (TurretRotatorEncoder.getPosition() >= 150)
+// {
+//   TurretRotator.set(0);
+// }
 
-if(TurretRotatorEncoder.getPosition() <= -25)
-{
-  TurretRotator.set(0);
-}
+// if(TurretRotatorEncoder.getPosition() <= -150)
+// {
+//   TurretRotator.set(0);
+// }
 
-}
+// }
 
-public void EncoderLimitTesting()
- {
-TurretRotatorEncoder = TurretRotator.getEncoder();
-System.out.println(TurretRotatorEncoder.getPosition());
+// public void EncoderLimitTesting()
+//  {
+// TurretRotatorEncoder = TurretRotator.getEncoder();
+// System.out.println(TurretRotatorEncoder.getPosition());
 
- }
-
-
-
-
-public void CalculatedShoot()
-{
-    if(m_oi.GetAButton())
-    {
-        M_shoot.ShootSpeedRight(ShootParamaters());
-        M_shoot.ShootSpeedLeft(ShootParamaters());
-    }
-    else
-    {
-    M_shoot.ShootSpeedLeft(0);
-    M_shoot.ShootSpeedRight(0);
-    }
+//  }
 
 
 
-}
+
 
 
     }
-    
+  
 
 
 

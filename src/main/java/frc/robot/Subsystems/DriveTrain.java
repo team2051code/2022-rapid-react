@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
@@ -28,11 +29,13 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX RightFollow = new WPI_TalonFX(RobotMap.Motor_RightFollow);
   private WPI_TalonFX Left = new WPI_TalonFX(RobotMap.Motor_Left);
   private WPI_TalonFX LeftFollow = new WPI_TalonFX(RobotMap.Motor_LeftFollow);
-             
+  public OI m_oi = new OI();
+
   private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
 
   private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
   private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
+  CANSparkMax SingulatorMotor = new CANSparkMax(RobotMap.SingulatorMotor, MotorType.kBrushless);
   DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
  
   private ADXRS450_Gyro gyro;
@@ -90,13 +93,21 @@ public class DriveTrain extends SubsystemBase {
   public void IntakeSpeed(double Speed)
   {
     IntakeMethod.set(Speed);
-
+    SingulatorMotor.set(Speed);
   }
 
-  public void SetIntakeSpeed(double IntakeSpeed)
+  public void SetIntakeSpeed()
   {
-    this.IntakeMethod.set(IntakeSpeed);
+    if(m_oi.GetRightBumper()){
+    this.IntakeMethod.set(.90);
+    this.SingulatorMotor.set(.90);
+    }
+    else{
+    this.IntakeMethod.set(0);
+    this.SingulatorMotor.set(0);
   }
+}
+
 
   
   

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.MotorSafety;
 import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
    
@@ -54,64 +55,83 @@ public class TankDrive extends CommandBase {
 }
 
 @Override public void execute(){
-m_Singulator.SetSingulatorSpeed(.30);
+m_Pneumatics.SolenoidState();
+M_DriveTrain.SetIntakeSpeed();
 m_oi.UpdateToggle();
-M_shoot.EncoderLimitTesting();
+//M_shoot.EncoderLimitTesting();
 //M_DriveTrain.TestingMotors();
 m_Pneumatics.forwards();
 m_Pneumatics.GearShift();
+double CalculatedShootSpeed = M_shoot.ShootParamaters();
 double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
-
 
 
 double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
 double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
 
+
 M_DriveTrain.tankDrive(LeftSide , RightSide);
 
+    if(m_oi.GetLeftBumper2())
+    {
+        m_Singulator.SetSingulatorSpeed(.80);
+    }
+    else{
+        m_Singulator.SetSingulatorSpeed(0);
+
+    }
+
+
+
+
+
+    if(m_oi.GetRightBumper2())
+{
+    M_shoot.ShootSpeedRight(CalculatedShootSpeed);
+    M_shoot.ShootSpeedLeft(CalculatedShootSpeed);
+}
+    else{
+    M_shoot.ShootSpeedRight(0);
+     M_shoot.ShootSpeedLeft(0);
+     
+
+    }
+
     
+    
+
+     if(m_oi.GetAButton2())
+     {
+      M_shoot.SetTurretRotatorSpeed(SetTurretRotator / 60);
+     }
+     else{
+     M_shoot.SetTurretRotatorSpeed(0);
+     }
+
+
+
+    // if(m_oi.GetBButton())
+    // {
+    // M_DriveTrain.SetIntakeSpeed(-.70);
+    // }
+    
+
 
     // if(m_oi.GetXButton())
     // {
-        M_shoot.SetTurretRotatorSpeed(SetTurretRotator / 100);
-    // }
-    // else{
-    //     M_shoot.SetTurretRotatorSpeed(0);
-
-
-    // }
-
-
-
-    if(m_oi.GetYButton())
-    {
-    M_DriveTrain.SetIntakeSpeed(-.70);
-    }
-    else if ( m_oi.GetBButton())
-    {
-        M_DriveTrain.SetIntakeSpeed(1);
-    }
-    else 
-    {
-        M_DriveTrain.SetIntakeSpeed(0);
-    }
-
-    // if(m_oi.GetXButton())
-    // {
     // }
     
-    //M_shoot.CalculatedShoot();
     //System.out.println(M_DriveTrain.getLeftEncoderValue());
     
    //System.out.println(SetTurretRotator);
     //System.out.println(M_shoot.Update_Limelight_Tracking());
     //System.out.println(M_DriveTrain.getLeftEncoderValue());
 
-        if(m_oi.toggleOn)
-        {
+       // if(m_oi.toggleOn)
+       // {
             
 
-        }
+       // }
 
 }   
 
