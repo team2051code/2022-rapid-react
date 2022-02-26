@@ -54,6 +54,9 @@ public class OI {
     public boolean GetXButton2(){
       return controller2.getXButton();
     }
+    public boolean GetBackButton2(){
+      return controller2.getBackButton();
+    }
 
     
 

@@ -42,7 +42,7 @@ public class Pneumatics extends SubsystemBase {
 
 
   public void forwards(){
-    if(m_oi.GetLeftBumper()){
+    if(m_oi.GetBackButton2()){
     SingleSolenoid2.set(true);
   }
     else{

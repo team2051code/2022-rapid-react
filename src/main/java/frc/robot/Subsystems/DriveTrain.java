@@ -76,7 +76,7 @@ public class DriveTrain extends SubsystemBase {
     final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
   //   // Math to calculate the current distance of the motor using the previous
   //   // equation
-     return ((Left.getSelectedSensorPosition() / 2048) * PulsesPerInch);
+     return ((Left.getSelectedSensorPosition() / 2061) * PulsesPerInch);
    }
 
   public void LeftSide(double Speed) {
@@ -98,7 +98,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void SetIntakeSpeed()
   {
-    if(m_oi.GetRightBumper()){
+    if(m_oi.GetXButton2()){
     this.IntakeMethod.set(.90);
     this.SingulatorMotor.set(.90);
     }
@@ -199,11 +199,16 @@ public class DriveTrain extends SubsystemBase {
   {
     //System.out.println(RightFollow.get());
     //\System.out.println(Left.get());
-
+    Right.setSelectedSensorPosition(0);
+    Left.setSelectedSensorPosition(0);
 
   }
   
+public void ReadEncoder(){
 
+System.out.println(Right.getSelectedSensorPosition());
+
+}
   /**
    * Set a simulated gyro value. Does nothing if not simulating.
    * 
