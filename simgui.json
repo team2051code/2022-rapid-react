@@ -20,6 +20,21 @@
         "header": {
           "open": true
         }
+      },
+      "SPARK MAX [9]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[3]": {
+        "header": {
+          "open": true
+        }
       }
     },
     "RoboRIO": {
@@ -119,5 +134,12 @@
   },
   "NetworkTables View": {
     "visible": false
+  },
+  "Plot": {
+    "Plot <0>": {
+      "window": {
+        "visible": false
+      }
+    }
   }
 }

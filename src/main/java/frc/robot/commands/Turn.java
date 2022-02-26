@@ -34,7 +34,15 @@ public class Turn extends CommandBase {
   @Override
   public void execute() {
 
-    M_DriveTrain.tankDrive(-.5, .5);
+    if(M_TurnDegrees > 0)
+    {
+      M_DriveTrain.tankDrive(-.5, .5);
+    }
+    else{
+      M_DriveTrain.tankDrive(.5, -.5);
+    }
+
+
 
 
   }
@@ -51,6 +59,13 @@ public class Turn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+  System.out.println(M_DriveTrain.getGyroAngleDegrees());
+
+    if(M_TurnDegrees < 0){
+        
+      return (M_DriveTrain.getGyroAngleDegrees() <= M_TurnDegrees);
+      
+      }
 
   return (M_DriveTrain.getGyroAngleDegrees() >= M_TurnDegrees);
   

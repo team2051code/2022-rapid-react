@@ -117,8 +117,13 @@ public void ShootSpeedRight(double Speed)
 
 public void CalculatedShootSpeed()
 {
+
+
 if(m_oi.GetRightBumper2())
 {
+  System.out.print("Speed: ");
+  System.out.println(ShooterLeft.getSelectedSensorVelocity());
+
     ShootSpeedRight(ShootParamaters());
     ShootSpeedLeft(ShootParamaters());
 }
@@ -132,8 +137,10 @@ if(m_oi.GetRightBumper2())
 
   public double ShootParamaters()
   {
+   
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double ty =  NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+    System.out.println(ty);
   //acceration due to gravity
   final double G = 9.8;
   //ratio between linerar and angular velocity

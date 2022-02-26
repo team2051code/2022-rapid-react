@@ -9,12 +9,12 @@ public class Drive extends CommandBase {
 
     private DriveTrain M_DriveTrain;
     // Addition of the distances to group them together
-    private double DesiredDistance;
+    private double m_DesiredDistance;
 
     public Drive(DriveTrain DriveTrain, double DistanceInches) {
 
         M_DriveTrain = DriveTrain;
-        DesiredDistance = DistanceInches;
+        m_DesiredDistance = DistanceInches;
     }
 
     @Override
@@ -28,14 +28,12 @@ public class Drive extends CommandBase {
     @Override
     public void execute() {
 
-        if(DesiredDistance < 0)
-        {
-
-            M_DriveTrain.tankDrive(-.5, -.5);
-        }
-        else{
+        if (m_DesiredDistance > 0) {
 
             M_DriveTrain.tankDrive(.5, .5);
+        } else {
+
+            M_DriveTrain.tankDrive(-.5, -.5);
         }
 
         SmartDashboard.putNumber("DistanceTraveled", M_DriveTrain.GetEncoderInches());
@@ -54,19 +52,17 @@ public class Drive extends CommandBase {
     @Override
     public boolean isFinished() {
 
-
         // Sets the distance to zerox
         double DistanceInInches = M_DriveTrain.GetEncoderInches();
 
         // While our desired distance is greater than our current distance keep running
         // the drive motors
-        if(DesiredDistance < 0){
-        
-        return (DesiredDistance >= DistanceInInches);
+        if (m_DesiredDistance < 0) {
+
+            return (DistanceInInches <= m_DesiredDistance);
         }
 
-
-        return (DesiredDistance <= DistanceInInches);
+        return (DistanceInInches >= m_DesiredDistance);
 
     }
 }

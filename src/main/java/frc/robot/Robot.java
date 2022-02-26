@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(m_DriveTrain, 12), new Turn(m_DriveTrain, 30), new Drive(m_DriveTrain, -6)
+     new Drive(m_DriveTrain, 12), new Turn(m_DriveTrain, -30), new Drive(m_DriveTrain, -6)
      );
      CommandScheduler.getInstance().schedule(commands);
   }
