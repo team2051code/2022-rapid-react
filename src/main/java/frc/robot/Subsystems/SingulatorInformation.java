@@ -33,10 +33,16 @@ public class SingulatorInformation extends SubsystemBase {
 
   }
 
-  public void SetSingulatorSpeed(double Speed)
+  public void SetSingulatorSpeed()
   {
-      SingulatorMotor2.setInverted(true);
-      
-      SingulatorMotor2.set(Speed);
+    SingulatorMotor2.setInverted(true);
+
+    if(m_oi.GetLeftBumper2())
+    {
+        SingulatorMotor2.set(.80);
+    }
+    else{
+        SingulatorMotor2.set(0);
+    }
   }
 }

@@ -47,6 +47,7 @@
       "/LiveWindow/Pneumatics": "Subsystem",
       "/LiveWindow/ShootParamaters": "Subsystem",
       "/LiveWindow/SimpleSimulatedChassis": "Subsystem",
+      "/LiveWindow/SingulatorInformation": "Subsystem",
       "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
       "/LiveWindow/Ungrouped/DigitalInput[8]": "Digital Input",
@@ -58,6 +59,16 @@
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/LiveWindow/DriveTrain": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Robot": {
           "length": 0.9905999898910522,

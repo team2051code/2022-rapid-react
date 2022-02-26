@@ -20,7 +20,6 @@ import frc.robot.Subsystems.DriveTrain;
 
 
 public class ShootParamaters extends SubsystemBase {
-public ShootParamaters M_shoot;
 XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
 boolean m_LimelightHasValidTarget = false;
 public OI m_oi = new OI();
@@ -68,15 +67,70 @@ RelativeEncoder TurretRotatorEncoder;
 
          }
         
-public void TurretRotatorSpeed(double steering_adjust)
+public void TurretRotatorSpeed(double Speed)
    {
-   TurretRotator.set(steering_adjust);
+   TurretRotator.set(Speed);
    }
 
- public void SetTurretRotatorSpeed(double steering_adjust) {
-  this.TurretRotator.set(steering_adjust);
+ public void SetTurretRotatorSpeed(double Speed) {
+  TurretRotator.set(Speed);
 }
-public double ShootParamaters()
+
+
+public void CombinedShootSpeed(){
+
+if(m_oi.GetAButton2())
+     {
+      SetTurretRotatorSpeed(Update_Limelight_Tracking() / 60);
+     }
+     else{
+     SetTurretRotatorSpeed(0);
+     }
+     
+  }
+
+
+
+
+
+
+
+
+
+
+public void ShootSpeedLeft(double Speed)
+{
+  ShooterLeft.setInverted(false);
+  ShooterLeft.set(Speed);
+}
+
+
+public void ShootSpeedRight(double Speed)
+{
+  ShooterRight.setInverted(true);
+  ShooterRight.set(Speed);
+}
+
+
+
+
+
+public void CalculatedShootSpeed()
+{
+if(m_oi.GetRightBumper2())
+{
+    ShootSpeedRight(ShootParamaters());
+    ShootSpeedLeft(ShootParamaters());
+}
+    else{
+    ShootSpeedRight(0);
+    ShootSpeedLeft(0);
+    
+    }
+  }
+  
+
+  public double ShootParamaters()
   {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double ty =  NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -126,22 +180,6 @@ public double ShootParamaters()
 
 
 
-
-
-
-
-
-public void ShootSpeedLeft(double Speed)
-{
-  ShooterLeft.setInverted(false);
-  ShooterLeft.set(Speed);
-}
-
-public void ShootSpeedRight(double Speed)
-{
-  ShooterRight.setInverted(true);
-  ShooterRight.set(Speed);
-}
 
 // public void TurretRotatorLimits()
 // {

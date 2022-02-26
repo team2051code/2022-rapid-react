@@ -22,6 +22,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.Turn;
 import frc.robot.simulation.PoseEstimator;
 
 
@@ -107,7 +108,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(m_DriveTrain)
+     new Drive(m_DriveTrain, 12), new Turn(m_DriveTrain, 30), new Drive(m_DriveTrain, -6)
      );
      CommandScheduler.getInstance().schedule(commands);
   }

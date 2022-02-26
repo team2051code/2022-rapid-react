@@ -108,18 +108,6 @@ public class DriveTrain extends SubsystemBase {
   }
 }
 
-
-  
-  
- 
-
-  // TODO: Not using M_DriveTrain here and in LeftSide and RightSide will
-  // make the watchdog angry and cause the motors to go chop-chop-chop
-  public void setMotors(double LeftSide, double RightSide) {
-    this.LeftSide.set(LeftSide);
-    this.RightSide.set(RightSide);
-  }
-
   public void tankDrive(double LeftSpeed, double RightSpeed) {
     M_DriveTrain.tankDrive(LeftSpeed, RightSpeed);
   }
@@ -182,6 +170,11 @@ public class DriveTrain extends SubsystemBase {
    public double getGyroAngleDegrees() {
      return gyro.getAngle();
    }
+
+   public void ResetGyro(){
+    gyro.reset();
+   }
+
 
   /**
    * Sets left and right encoders. Generally, we don't want to call this except in

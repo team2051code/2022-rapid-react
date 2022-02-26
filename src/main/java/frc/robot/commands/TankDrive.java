@@ -42,7 +42,8 @@ public class TankDrive extends CommandBase {
     M_shoot = Shootparameters;
     M_DriveTrain = Drivetrain;
     m_Pneumatics = Pneumatics;
-     addRequirements(M_DriveTrain, m_Pneumatics, m_Pneumatics, m_Singulator);
+    //This forces the Command to require these 4 subsystems to fuction
+     addRequirements(M_DriveTrain, m_Pneumatics, m_Singulator, M_shoot);
      //M_shoot );
  }
 
@@ -52,65 +53,46 @@ public class TankDrive extends CommandBase {
 // }
 
 @Override public void initialize(){
+//Sets the left and Right encoder sensors to 0 every time the robot starts up 
 M_DriveTrain.TestingMotors();
 }
 
 @Override public void execute(){
+//Reads the Right Side Encoder Values
 //M_DriveTrain.ReadEncoder();
+m_Singulator.SetSingulatorSpeed();
+//Reads the current SolenoidState
 m_Pneumatics.SolenoidState();
+//CombinedShootSpeed
+M_shoot.CombinedShootSpeed();
+//Sets the speed of the shooter
+M_shoot.CalculatedShootSpeed();
+//Sets the Intake Speed To a Certain Value
 M_DriveTrain.SetIntakeSpeed();
-m_oi.UpdateToggle();
-//M_shoot.EncoderLimitTesting();
+
+//m_oi.UpdateToggle();
+
+//Commands to GearShift and Raise/Lower the intake
 m_Pneumatics.forwards();
 m_Pneumatics.GearShift();
+
+//Command to set the Speed of the Singulator
+m_Singulator.SetSingulatorSpeed();
+
+//Subsytem for the Caluated Shoot Speed
 double CalculatedShootSpeed = M_shoot.ShootParamaters();
+//Subsytem for auto targeting
 double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
 
-
+//Sets the axis in which the robot drives on
 double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
 double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
 
-
+//Drivetrain command to allow TankDrive
 M_DriveTrain.tankDrive(LeftSide , RightSide);
 
-    if(m_oi.GetLeftBumper2())
-    {
-        m_Singulator.SetSingulatorSpeed(.80);
-    }
-    else{
-        m_Singulator.SetSingulatorSpeed(0);
 
-    }
-
-
-
-
-
-    if(m_oi.GetRightBumper2())
-{
-    M_shoot.ShootSpeedRight(CalculatedShootSpeed);
-    M_shoot.ShootSpeedLeft(CalculatedShootSpeed);
-}
-    else{
-    M_shoot.ShootSpeedRight(0);
-     M_shoot.ShootSpeedLeft(0);
      
-
-    }
-
-    
-    
-
-     if(m_oi.GetAButton2())
-     {
-      M_shoot.SetTurretRotatorSpeed(SetTurretRotator / 60);
-     }
-     else{
-     M_shoot.SetTurretRotatorSpeed(0);
-     }
-
-
-
     // if(m_oi.GetBButton())
     // {
     // M_DriveTrain.SetIntakeSpeed(-.70);
