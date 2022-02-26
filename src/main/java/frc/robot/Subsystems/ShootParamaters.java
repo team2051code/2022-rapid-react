@@ -116,9 +116,9 @@ public class ShootParamaters extends SubsystemBase {
   }
 
   /**
-   * Get the target RPM for the shooter
+   * Get the target velocity for the shooter
    * 
-   * @return Target rotations per 100ms
+   * @return Target encoder ticks per 100ms
    */
   public double computeShooterVelocity() {
 
