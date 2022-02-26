@@ -80,7 +80,7 @@ m_Pneumatics.GearShift();
 m_Singulator.SetSingulatorSpeed();
 
 //Subsytem for the Caluated Shoot Speed
-double CalculatedShootSpeed = M_shoot.ShootParamaters();
+double CalculatedShootSpeed = M_shoot.computeShooterVelocity();
 //Subsytem for auto targeting
 double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
 
