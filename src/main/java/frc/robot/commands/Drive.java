@@ -28,7 +28,15 @@ public class Drive extends CommandBase {
     @Override
     public void execute() {
 
-        M_DriveTrain.tankDrive(.5, .5);
+        if(DesiredDistance < 0)
+        {
+
+            M_DriveTrain.tankDrive(-.5, -.5);
+        }
+        else{
+
+            M_DriveTrain.tankDrive(.5, .5);
+        }
 
         SmartDashboard.putNumber("DistanceTraveled", M_DriveTrain.GetEncoderInches());
 
@@ -52,6 +60,12 @@ public class Drive extends CommandBase {
 
         // While our desired distance is greater than our current distance keep running
         // the drive motors
+        if(DesiredDistance < 0){
+        
+        return (DesiredDistance >= DistanceInInches);
+        }
+
+
         return (DesiredDistance <= DistanceInInches);
 
     }
