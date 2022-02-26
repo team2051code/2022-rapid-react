@@ -36,12 +36,13 @@ public class TankDrive extends CommandBase {
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
- public TankDrive(DriveTrain Drivetrain, Pneumatics Pneumatics, ShootParamaters Shootparameters, SingulatorInformation Singulatorinformation){
+    public TankDrive(DriveTrain Drivetrain, Pneumatics Pneumatics, ShootParamaters Shootparameters, SingulatorInformation Singulatorinformation){
+    //These next four lines define our subsystems so our Commands can access them
     m_Singulator = Singulatorinformation;
     M_shoot = Shootparameters;
     M_DriveTrain = Drivetrain;
     m_Pneumatics = Pneumatics;
-     addRequirements(M_DriveTrain, m_Pneumatics);
+     addRequirements(M_DriveTrain, m_Pneumatics, m_Pneumatics, m_Singulator);
      //M_shoot );
  }
 
@@ -51,15 +52,15 @@ public class TankDrive extends CommandBase {
 // }
 
 @Override public void initialize(){
-
+M_DriveTrain.TestingMotors();
 }
 
 @Override public void execute(){
+//M_DriveTrain.ReadEncoder();
 m_Pneumatics.SolenoidState();
 M_DriveTrain.SetIntakeSpeed();
 m_oi.UpdateToggle();
 //M_shoot.EncoderLimitTesting();
-//M_DriveTrain.TestingMotors();
 m_Pneumatics.forwards();
 m_Pneumatics.GearShift();
 double CalculatedShootSpeed = M_shoot.ShootParamaters();
