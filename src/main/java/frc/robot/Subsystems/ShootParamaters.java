@@ -1,5 +1,7 @@
 package frc.robot.Subsystems;
 
+import java.lang.annotation.Target;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -9,6 +11,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
@@ -17,7 +20,7 @@ public class ShootParamaters extends SubsystemBase {
   XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
   boolean m_LimelightHasValidTarget = false;
   public OI m_oi = new OI();
-  WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
+  public WPI_TalonFX ShooterLeft = new WPI_TalonFX(RobotMap.ShootingMotor1);
   WPI_TalonFX ShooterRight = new WPI_TalonFX(RobotMap.ShootingMotor2);
   CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
   RelativeEncoder TurretRotatorEncoder;
@@ -70,7 +73,7 @@ public class ShootParamaters extends SubsystemBase {
     TurretRotator.set(Speed);
   }
 
-  public void CombinedShootSpeed() {
+  public void TurretRotatorSpeed() {
 
     if (m_oi.GetAButton2()) {
       SetTurretRotatorSpeed(Update_Limelight_Tracking() / 60);
@@ -91,6 +94,7 @@ public class ShootParamaters extends SubsystemBase {
   }
 
   public void CalculatedShootSpeed() {
+
     double targetRpm = computeShooterVelocity();
     m_shooterController.setSetpoint(targetRpm);
     double measuredRpm = ShooterLeft.getSelectedSensorVelocity();
@@ -112,6 +116,16 @@ public class ShootParamaters extends SubsystemBase {
       ShootSpeedRight(0);
       ShootSpeedLeft(0);
       m_shooterController.reset();
+    }
+
+
+    if(measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50){
+
+      SmartDashboard.putBoolean("ShootReady", true);
+    }
+    else
+    {
+      SmartDashboard.putBoolean("ShootReady", false);
     }
   }
 
@@ -141,7 +155,7 @@ public class ShootParamaters extends SubsystemBase {
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 35;
     // distance between ballshooter and target
-    double distance = (((TestHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
+    double distance = (((TargetHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
 
     // speed of the ball needed to reach the target
     double ballspeed = Math.sqrt((distance * G) / Math.sin(2 * (Math.toRadians(shootangleD))));
@@ -164,7 +178,7 @@ public class ShootParamaters extends SubsystemBase {
     final double ENCODER_TICKS_PER_REVOLUTION = 2048;
     final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
-    return rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE);
+    return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
   }
 
   // public void TurretRotatorLimits()

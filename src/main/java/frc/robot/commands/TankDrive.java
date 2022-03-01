@@ -13,6 +13,7 @@ import frc.robot.Subsystems.Pneumatics;
 //import frc.robot.Subsystems.ShootParamaters;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.MotorSafety;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,7 +26,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TankDrive extends CommandBase {
     public Pneumatics m_Pneumatics;
     public boolean m_LimelightHasValidTarget;
-    public ShootParamaters M_shoot;
+    //public ShootParamaters M_shoot;
     public DriveTrain IntakeMethod;
     public DriveTrain SetIntakeSpeed;
     public DriveTrain M_DriveTrain;
@@ -36,14 +37,14 @@ public class TankDrive extends CommandBase {
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(DriveTrain Drivetrain, Pneumatics Pneumatics, ShootParamaters Shootparameters, SingulatorInformation Singulatorinformation){
+    public TankDrive(DriveTrain Drivetrain, Pneumatics Pneumatics, /*ShootParamaters Shootparameters,*/ SingulatorInformation Singulatorinformation){
     //These next four lines define our subsystems so our Commands can access them
     m_Singulator = Singulatorinformation;
-    M_shoot = Shootparameters;
+    //M_shoot = Shootparameters;
     M_DriveTrain = Drivetrain;
     m_Pneumatics = Pneumatics;
     //This forces the Command to require these 4 subsystems to fuction
-     addRequirements(M_DriveTrain, m_Pneumatics, m_Singulator, M_shoot);
+     addRequirements(M_DriveTrain, m_Pneumatics, m_Singulator /*M_shoot*/);
      //M_shoot );
  }
 
@@ -58,15 +59,17 @@ M_DriveTrain.TestingMotors();
 }
 
 @Override public void execute(){
+Timer.getFPGATimestamp();
+SmartDashboard.putNumber("Time Value", Timer.getFPGATimestamp());
 //Reads the Right Side Encoder Values
 //M_DriveTrain.ReadEncoder();
 m_Singulator.SetSingulatorSpeed();
 //Reads the current SolenoidState
 m_Pneumatics.SolenoidState();
 //CombinedShootSpeed
-M_shoot.CombinedShootSpeed();
+//M_shoot.TurretRotatorSpeed();
 //Sets the speed of the shooter
-M_shoot.CalculatedShootSpeed();
+//M_shoot.CalculatedShootSpeed();
 //Sets the Intake Speed To a Certain Value
 M_DriveTrain.SetIntakeSpeed();
 
@@ -80,9 +83,9 @@ m_Pneumatics.GearShift();
 m_Singulator.SetSingulatorSpeed();
 
 //Subsytem for the Caluated Shoot Speed
-double CalculatedShootSpeed = M_shoot.computeShooterVelocity();
+//double CalculatedShootSpeed = M_shoot.computeShooterVelocity();
 //Subsytem for auto targeting
-double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
+//double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
 
 //Sets the axis in which the robot drives on
 double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
