@@ -8,15 +8,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.DriveTrain;
 
 public class Turn extends CommandBase {
-  private DriveTrain M_DriveTrain;
-  private double M_TurnDegrees;
+  private DriveTrain m_driveTrain;
+  private double m_turnDegrees;
   /** Creates a new Turn. 
-   * @param M_Drivetrain */
-  public Turn(DriveTrain driveTrain, double TurnDegrees) {
+   * @param drivetrain */
+  public Turn(DriveTrain driveTrain, double turnDegrees) {
 
-  M_DriveTrain = driveTrain;
+  m_driveTrain = driveTrain;
 
-  M_TurnDegrees = TurnDegrees;
+  m_turnDegrees = turnDegrees;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,7 +25,7 @@ public class Turn extends CommandBase {
   @Override
   public void initialize() {
 
-  M_DriveTrain.ResetGyro();    
+  m_driveTrain.resetGyro();    
 
 
   }
@@ -34,12 +34,12 @@ public class Turn extends CommandBase {
   @Override
   public void execute() {
 
-    if(M_TurnDegrees > 0)
+    if(m_turnDegrees > 0)
     {
-      M_DriveTrain.tankDrive(-.5, .5);
+      m_driveTrain.tankDrive(-.5, .5);
     }
     else{
-      M_DriveTrain.tankDrive(.5, -.5);
+      m_driveTrain.tankDrive(.5, -.5);
     }
 
 
@@ -51,7 +51,7 @@ public class Turn extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    M_DriveTrain.tankDrive(0, 0);
+    m_driveTrain.tankDrive(0, 0);
 
 
   }
@@ -59,15 +59,15 @@ public class Turn extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  System.out.println(M_DriveTrain.getGyroAngleDegrees());
+  System.out.println(m_driveTrain.getGyroAngleDegrees());
 
-    if(M_TurnDegrees < 0){
+    if(m_turnDegrees < 0){
         
-      return (M_DriveTrain.getGyroAngleDegrees() <= M_TurnDegrees);
+      return (m_driveTrain.getGyroAngleDegrees() <= m_turnDegrees);
       
       }
 
-  return (M_DriveTrain.getGyroAngleDegrees() >= M_TurnDegrees);
+  return (m_driveTrain.getGyroAngleDegrees() >= m_turnDegrees);
   
   }
 }

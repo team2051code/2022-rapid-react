@@ -8,24 +8,24 @@ import frc.robot.Subsystems.ShootParamaters;
 
 public class Drive extends CommandBase {
 
-    private DriveTrain M_DriveTrain;
+    private DriveTrain m_driveTrain;
    // public ShootParamaters M_Shoot;
 
     // Addition of the distances to group them together
-    private double m_DesiredDistance;
+    private double m_desiredDistance;
 
    
 
-    public Drive(DriveTrain DriveTrain, /*ShootParamaters Shootparamaters*/ double DistanceInches) {
+    public Drive(DriveTrain driveTrain, /*ShootParamaters Shootparamaters*/ double distanceInches) {
         //M_Shoot = Shootparamaters;
-        M_DriveTrain = DriveTrain;
-        m_DesiredDistance = DistanceInches;
+        m_driveTrain = driveTrain;
+        m_desiredDistance = distanceInches;
 
     }
 
     @Override
     public void initialize() {
-        M_DriveTrain.TestingMotors();
+        m_driveTrain.testingMotors();
 
         System.out.println("Running");
 
@@ -35,12 +35,12 @@ public class Drive extends CommandBase {
     public void execute() {
 
 
-            if (m_DesiredDistance > 0) {
+            if (m_desiredDistance > 0) {
 
-                M_DriveTrain.tankDrive(.5, .5);
+                m_driveTrain.tankDrive(.5, .5);
             } else {
     
-                M_DriveTrain.tankDrive(-.5, -.5);
+                m_driveTrain.tankDrive(-.5, -.5);
             }
 
 
@@ -48,7 +48,7 @@ public class Drive extends CommandBase {
 
        
 
-        SmartDashboard.putNumber("DistanceTraveled", M_DriveTrain.GetEncoderInches());
+        SmartDashboard.putNumber("DistanceTraveled", m_driveTrain.getEncoderInches());
 
         // System.out.println(M_DriveTrain.getLeftEncoderValue());
 
@@ -58,7 +58,7 @@ public class Drive extends CommandBase {
     public void end(boolean interrupt) {
 
 
-        M_DriveTrain.tankDrive(0, 0);
+        m_driveTrain.tankDrive(0, 0);
 
     }
 
@@ -67,16 +67,16 @@ public class Drive extends CommandBase {
 
 
         // Sets the distance to zerox
-        double DistanceInInches = M_DriveTrain.GetEncoderInches();
+        double distanceInches = m_driveTrain.getEncoderInches();
 
         // While our desired distance is greater than our current distance keep running
         // the drive motors
-        if (m_DesiredDistance < 0) {
+        if (m_desiredDistance < 0) {
 
-            return (DistanceInInches <= m_DesiredDistance);
+            return (distanceInches <= m_desiredDistance);
         }
 
-        return (DistanceInInches >= m_DesiredDistance);
+        return (distanceInches >= m_desiredDistance);
 
     }
 }

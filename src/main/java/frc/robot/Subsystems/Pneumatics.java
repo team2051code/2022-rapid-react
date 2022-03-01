@@ -22,49 +22,34 @@ public class Pneumatics extends SubsystemBase {
   /** Creates a new Pneumatics. */
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
   public OI m_oi = new OI();
-  DoubleSolenoid DoubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-  Solenoid SingleSolenoid2 = new Solenoid(PneumaticsModuleType.REVPH, 0);
-  Compressor pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+  Solenoid m_singleSolenoid2 = new Solenoid(PneumaticsModuleType.REVPH, 0);
+  Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
-  public void GearShift(){
-  if(m_debouncer.calculate(m_oi.StickClick()))
-  {
-  DoubleSolenoid.set(Value.kReverse);
-  DoubleSolenoid.toggle();
-  }
-}
-
-  
-  
-
-  
-
-
-
-  public void forwards(){
-    if(m_oi.GetBackButton2()){
-    SingleSolenoid2.set(true);
-  }
-    else{
-    SingleSolenoid2.set(false);  
+  public void gearShift() {
+    if (m_debouncer.calculate(m_oi.stickClick())) {
+      m_doubleSolenoid.set(Value.kReverse);
+      m_doubleSolenoid.toggle();
     }
-    
   }
-  public void SolenoidState(){
-  Value state = DoubleSolenoid.get();
 
-  if (state == Value.kForward)
-  {
-  SmartDashboard.putBoolean("InLowGear", true);
-  }
-  else{
-  SmartDashboard.putBoolean("InLowGear", false);
-
+  public void forwards() {
+    if (m_oi.getBackButton2()) {
+      m_singleSolenoid2.set(true);
+    } else {
+      m_singleSolenoid2.set(false);
+    }
 
   }
-  
-  
-}
- 
- 
+
+  public void solenoidState() {
+    Value state = m_doubleSolenoid.get();
+
+    if (state == Value.kForward) {
+      SmartDashboard.putBoolean("InLowGear", true);
+    } else {
+      SmartDashboard.putBoolean("InLowGear", false);
+
+    }
+  }
 }

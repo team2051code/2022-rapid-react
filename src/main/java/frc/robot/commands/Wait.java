@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class Wait extends CommandBase {
 
-  private double M_Wait;
+  private double m_wait;
   Timer m_timer = new Timer();
 
   // Timer m_timer = new Timer();
@@ -20,7 +20,7 @@ public class Wait extends CommandBase {
 
   /** Creates a new Wait. */
   public Wait(double wait) {
-    M_Wait = wait;
+    m_wait = wait;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -57,7 +57,7 @@ public class Wait extends CommandBase {
     double currentTime = m_timer.get();
 
     
-    return currentTime >= M_Wait;
+    return currentTime >= m_wait;
 
   }
 }

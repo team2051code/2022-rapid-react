@@ -14,58 +14,43 @@ import frc.robot.Subsystems.DriveTrain;
 import frc.robot.Subsystems.ShootParamaters;
 
 public class Shoot extends CommandBase {
-  
 
-private double expiretime;
-private double timeout;
-public ShootParamaters M_shoot;
-public PIDController m_shooterController;
-
-
-
+  private double m_expireTime;
+  private double m_timeout;
+  public ShootParamaters m_shoot;
+  public PIDController m_shooterController;
 
   /** Creates a new Shoot. */
-  public Shoot(ShootParamaters Shootparamaters, DriveTrain Drivetrain, PIDController m_Shootercontroller) {
-  M_shoot = Shootparamaters;
-  m_shooterController = m_Shootercontroller;
+  public Shoot(ShootParamaters shootParameters, DriveTrain drivetrain, PIDController shooterController) {
+    m_shoot = shootParameters;
+    m_shooterController = shooterController;
 
-  timeout = 5;
+    m_timeout = 5;
 
-  addRequirements(M_shoot);
+    addRequirements(m_shoot);
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  public void calculatedShootSpeed(ShootParamaters shootParameters) {
 
-
-
-
-  public void CalculatedShootSpeed(ShootParamaters M_Shoot) {
-
-    double targetRpm = M_Shoot.computeShooterVelocity();
+    double targetRpm = shootParameters.computeShooterVelocity();
     m_shooterController.setSetpoint(targetRpm);
-    double measuredRpm = M_Shoot.ShooterLeft.getSelectedSensorVelocity();
-    double outputValue =
-     m_shooterController.calculate(measuredRpm);
+    double measuredRpm = shootParameters.m_shooterLeft.getSelectedSensorVelocity();
+    double outputValue = m_shooterController.calculate(measuredRpm);
 
-     outputValue = Math.max(-1, Math.min(1, outputValue));
+    outputValue = Math.max(-1, Math.min(1, outputValue));
 
-    if(measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50){
+    if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
 
       SmartDashboard.putBoolean("ShootReady", true);
-      
-    }
-    else
-    {
+
+    } else {
       SmartDashboard.putBoolean("ShootReady", false);
     }
 
-
-
-
-
   }
- 
+
   public double computeShooterVelocity() {
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -75,11 +60,11 @@ public PIDController m_shooterController;
     // ratio between linerar and angular velocity
     final double wheelToBall = 2;
     // Height for testing
-    final double TestHeight = 1.5494;
+    final double testHeight = 1.5494;
     // distance from the ground to the Target
-    final double TargetHeight = 2.64;
+    final double targetHeight = 2.64;
     // distance from ground to limelight
-    final double LimeToGround = .679;
+    final double limeToGround = .679;
     // distance from the limelight to the shooter
     final double limeToShooter = 0;
     // angle of the ball shooter in degrees
@@ -87,7 +72,7 @@ public PIDController m_shooterController;
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 35;
     // distance between ballshooter and target
-    double distance = (((TestHeight - LimeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
+    double distance = (((testHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2;
 
     // speed of the ball needed to reach the target
     double ballspeed = Math.sqrt((distance * G) / Math.sin(2 * (Math.toRadians(shootangleD))));
@@ -113,49 +98,32 @@ public PIDController m_shooterController;
     return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
   }
 
+  protected void startTime() {
 
+    // expiretime = timeSinceInitialized() + timeout;
+  }
 
+  public void timeSinceInitialized() {
 
-
-protected void startTime()
-{
-
-
-
-
-//expiretime = timeSinceInitialized() + timeout;
-}
-
-public void timeSinceInitialized()
-{
-
-
-}
-  
+  }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-  
-    
+    // return (timeSinceInitialized() >= expiretime);
 
-
-
-
-  //  return (timeSinceInitialized() >= expiretime);
-
-
-  
-}
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
@@ -163,10 +131,4 @@ public void timeSinceInitialized()
     return false;
   }
 
-
-
-
-
-
-  
 }

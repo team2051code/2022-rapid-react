@@ -14,7 +14,7 @@ import frc.robot.RobotMap;
 public class SingulatorInformation extends SubsystemBase {
 
   
-  CANSparkMax SingulatorMotor2 = new CANSparkMax(RobotMap.SingulatorMotor2, MotorType.kBrushless);
+  CANSparkMax m_singulatorMotor2 = new CANSparkMax(RobotMap.SINGULATOR_MOTOR_2, MotorType.kBrushless);
   public OI m_oi = new OI();
 
   /** Creates a new SingulatorInformation. */
@@ -26,23 +26,23 @@ public class SingulatorInformation extends SubsystemBase {
   }
 
 
-  public void SingulatorSpeed(double Speed)
+  public void singulatorSpeed(double speed)
   {
     
-    SingulatorMotor2.set(Speed);
+    m_singulatorMotor2.set(speed);
 
   }
 
-  public void SetSingulatorSpeed()
+  public void setSingulatorSpeed()
   {
-    SingulatorMotor2.setInverted(true);
+    m_singulatorMotor2.setInverted(true);
 
-    if(m_oi.GetLeftBumper2())
+    if(m_oi.getLeftBumper2())
     {
-        SingulatorMotor2.set(.80);
+        m_singulatorMotor2.set(.80);
     }
     else{
-        SingulatorMotor2.set(0);
+        m_singulatorMotor2.set(0);
     }
   }
 }

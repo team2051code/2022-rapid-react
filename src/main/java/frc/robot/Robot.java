@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -13,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.LimeLight;
 import frc.robot.Subsystems.Pneumatics;
@@ -36,19 +33,19 @@ import frc.robot.simulation.PoseEstimator;
  */
 public class Robot extends TimedRobot {
   public OI m_oi;
-  private static final String kDefaultAuto = "Default";
+  private static final String DEFAULT_AUTO = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   
-  private DriveTrain m_DriveTrain = new DriveTrain();
+  private DriveTrain m_driveTrain = new DriveTrain();
   private ShootParamaters m_ShootParamaters = new ShootParamaters();
-  private Pneumatics m_Pneumatics = new Pneumatics();
-  private SingulatorInformation m_Singulator = new SingulatorInformation();
+  private Pneumatics m_pneumatics = new Pneumatics();
+  private SingulatorInformation m_singulator = new SingulatorInformation();
   //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
-   private PoseEstimator poseEstimator; // might be null
-   private Field2d fieldInfo; // might be null
+   private PoseEstimator m_poseEstimator; // might be null
+   private Field2d m_fieldInfo; // might be null
 
   
   //private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1, spin2);  
@@ -62,7 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {    
 
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
+    m_chooser.setDefaultOption("Default Auto", DEFAULT_AUTO);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -79,20 +76,20 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationInit() {
-    m_DriveTrain.simulationInit();
-    poseEstimator = new PoseEstimator(m_DriveTrain);
-    fieldInfo = new Field2d();
-    SmartDashboard.putData("Field", fieldInfo);
+    m_driveTrain.simulationInit();
+    m_poseEstimator = new PoseEstimator(m_driveTrain);
+    m_fieldInfo = new Field2d();
+    SmartDashboard.putData("Field", m_fieldInfo);
 
   }
 
   @Override
   public void simulationPeriodic() {
-    if (poseEstimator != null) {
-      poseEstimator.periodic();
+    if (m_poseEstimator != null) {
+      m_poseEstimator.periodic();
     }
-    if (fieldInfo != null && poseEstimator != null) {
-      fieldInfo.setRobotPose(poseEstimator.getPose());
+    if (m_fieldInfo != null && m_poseEstimator != null) {
+      m_fieldInfo.setRobotPose(m_poseEstimator.getPose());
     }
  }
 
@@ -112,7 +109,7 @@ public class Robot extends TimedRobot {
 
 
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(m_DriveTrain, /*m_ShootParamaters*/ 12), new Wait(5), new Turn(m_DriveTrain, -30), new Wait(5), new Drive(m_DriveTrain, /*m_ShootParamaters*/ -6)
+     new Drive(m_driveTrain, /*m_ShootParamaters*/ 12), new Wait(5), new Turn(m_driveTrain, -30), new Wait(5), new Drive(m_driveTrain, /*m_ShootParamaters*/ -6)
      );
      CommandScheduler.getInstance().schedule(commands);
   }
@@ -133,7 +130,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_DriveTrain,m_Pneumatics, /*m_ShootParamaters*/ m_Singulator);
+      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, /*m_ShootParamaters*/ m_singulator);
       
       CommandScheduler.getInstance().schedule(commands);
      }

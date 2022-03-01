@@ -1,50 +1,40 @@
 package frc.robot.commands;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.Pneumatics;
-//import frc.robot.Subsystems.ShootParamaters;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.MotorSafety;
-import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
    
 
 
 public class TankDrive extends CommandBase {
-    public Pneumatics m_Pneumatics;
+    public Pneumatics m_pneumatics;
     public boolean m_LimelightHasValidTarget;
     //public ShootParamaters M_shoot;
-    public DriveTrain IntakeMethod;
-    public DriveTrain SetIntakeSpeed;
-    public DriveTrain M_DriveTrain;
+    public DriveTrain m_intakeMethod;
+    public DriveTrain m_setIntakeSpeed;
+    public DriveTrain m_driveTrain;
     public OI m_oi = new OI();
-    public SingulatorInformation m_Singulator;
+    public SingulatorInformation m_singulator;
     //public DriveTrain Shooter1;
     //public DriveTrain Shooter2;
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(DriveTrain Drivetrain, Pneumatics Pneumatics, /*ShootParamaters Shootparameters,*/ SingulatorInformation Singulatorinformation){
+    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, /*ShootParamaters Shootparameters,*/ SingulatorInformation singulatorInformation){
     //These next four lines define our subsystems so our Commands can access them
-    m_Singulator = Singulatorinformation;
+    m_singulator = singulatorInformation;
     //M_shoot = Shootparameters;
-    M_DriveTrain = Drivetrain;
-    m_Pneumatics = Pneumatics;
+    m_driveTrain = drivetrain;
+    m_pneumatics = pneumatics;
     //This forces the Command to require these 4 subsystems to fuction
-     addRequirements(M_DriveTrain, m_Pneumatics, m_Singulator /*M_shoot*/);
+     addRequirements(m_driveTrain, m_pneumatics, m_singulator /*M_shoot*/);
      //M_shoot );
  }
 
@@ -55,7 +45,7 @@ public class TankDrive extends CommandBase {
 
 @Override public void initialize(){
 //Sets the left and Right encoder sensors to 0 every time the robot starts up 
-M_DriveTrain.TestingMotors();
+m_driveTrain.testingMotors();
 }
 
 @Override public void execute(){
@@ -63,24 +53,24 @@ Timer.getFPGATimestamp();
 SmartDashboard.putNumber("Time Value", Timer.getFPGATimestamp());
 //Reads the Right Side Encoder Values
 //M_DriveTrain.ReadEncoder();
-m_Singulator.SetSingulatorSpeed();
+m_singulator.setSingulatorSpeed();
 //Reads the current SolenoidState
-m_Pneumatics.SolenoidState();
+m_pneumatics.solenoidState();
 //CombinedShootSpeed
 //M_shoot.TurretRotatorSpeed();
 //Sets the speed of the shooter
 //M_shoot.CalculatedShootSpeed();
 //Sets the Intake Speed To a Certain Value
-M_DriveTrain.SetIntakeSpeed();
+m_driveTrain.setIntakeSpeed();
 
 //m_oi.UpdateToggle();
 
 //Commands to GearShift and Raise/Lower the intake
-m_Pneumatics.forwards();
-m_Pneumatics.GearShift();
+m_pneumatics.forwards();
+m_pneumatics.gearShift();
 
 //Command to set the Speed of the Singulator
-m_Singulator.SetSingulatorSpeed();
+m_singulator.setSingulatorSpeed();
 
 //Subsytem for the Caluated Shoot Speed
 //double CalculatedShootSpeed = M_shoot.computeShooterVelocity();
@@ -88,11 +78,11 @@ m_Singulator.SetSingulatorSpeed();
 //double SetTurretRotator = M_shoot.Update_Limelight_Tracking();
 
 //Sets the axis in which the robot drives on
-double LeftSide = m_oi.GetDriverRawAxis(RobotMap.LeftAxis);
-double RightSide = m_oi.GetDriverRawAxis(RobotMap.RightAxis);
+double LeftSide = m_oi.getDriverRawAxis(RobotMap.LEFT_AXIS);
+double RightSide = m_oi.getDriverRawAxis(RobotMap.RIGHT_AXIS);
 
 //Drivetrain command to allow TankDrive
-M_DriveTrain.tankDrive(LeftSide , RightSide);
+m_driveTrain.tankDrive(LeftSide , RightSide);
 
 
      
@@ -123,7 +113,7 @@ M_DriveTrain.tankDrive(LeftSide , RightSide);
 
 
 @Override public void end(boolean interrupt) {
-    M_DriveTrain.tankDrive(0, 0);
+    m_driveTrain.tankDrive(0, 0);
 }
 @Override public boolean isFinished() {
 return false;

@@ -1,93 +1,80 @@
 package frc.robot;
-import javax.swing.plaf.basic.BasicBorders.ToggleButtonBorder;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 
-
-
 public class OI {
-    public boolean toggleOn = false;
-    boolean togglePressed = false;
+  public boolean m_toggleOn = false;
+  boolean m_togglePressed = false;
 
-    private XboxController controller = new XboxController(RobotMap.XboxControllerPort);
-    private XboxController controller2 = new XboxController(RobotMap.XboxControllerPort2);
-    boolean ToggleReady = controller.getYButton();
-    
+  private XboxController m_controller = new XboxController(RobotMap.XBOX_CONTROLLER_PORT);
+  private XboxController m_controller2 = new XboxController(RobotMap.XBOX_CONTROLLER_PORT_2);
+  boolean m_toggleReady = m_controller.getYButton();
 
-    public double GetDriverRawAxis(int axis){
-    return controller.getRawAxis(axis);
-    }
-    
-    public boolean GetAButton2(){
-    return controller2.getAButton();    
-    }
-    public boolean GetBButton(){
-    return controller.getBButton();
-    }
-    public boolean GetXButton(){
-    return controller2.getXButton();
-    }
-    public boolean GetYButton(){
-    return controller.getYButton();    
-    }
-    public boolean GetLeftBumper(){
-    return controller.getLeftBumper();    
-    }
-    
-    public boolean GetLeftBumper2(){
-      return controller2.getLeftBumper(); 
-    }
-    public boolean GetRightBumper(){
-    return controller.getRightBumper();
-    }
-    
-    public boolean GetRightBumper2(){
-      return controller2.getRightBumper();
-    }
-    public double GetRightTrigger2(){
-    return controller2.getRightTriggerAxis();
-    }
-    public boolean StickClick(){
-    return controller.getRightStickButton();
-    }
-    public boolean GetXButton2(){
-      return controller2.getXButton();
-    }
-    public boolean GetBackButton2(){
-      return controller2.getBackButton();
-    }
+  public double getDriverRawAxis(int axis) {
+    return m_controller.getRawAxis(axis);
+  }
 
-    
+  public boolean getAButton2() {
+    return m_controller2.getAButton();
+  }
 
+  public boolean getBButton() {
+    return m_controller.getBButton();
+  }
 
-    public void UpdateToggle()
-    {
-      
+  public boolean getXButton() {
+    return m_controller2.getXButton();
+  }
 
+  public boolean getYButton() {
+    return m_controller.getYButton();
+  }
 
-      if(controller.getYButton()){
-        if(!togglePressed){
-            toggleOn = !toggleOn;
-            togglePressed = true;
-        }
-         }else{
+  public boolean getLeftBumper() {
+    return m_controller.getLeftBumper();
+  }
 
-        togglePressed = false;
+  public boolean getLeftBumper2() {
+    return m_controller2.getLeftBumper();
+  }
 
-         }
+  public boolean getRightBumper() {
+    return m_controller.getRightBumper();
+  }
 
-        }
+  public boolean getRightBumper2() {
+    return m_controller2.getRightBumper();
+  }
 
+  public double getRightTrigger2() {
+    return m_controller2.getRightTriggerAxis();
+  }
+
+  public boolean stickClick() {
+    return m_controller.getRightStickButton();
+  }
+
+  public boolean getXButton2() {
+    return m_controller2.getXButton();
+  }
+
+  public boolean getBackButton2() {
+    return m_controller2.getBackButton();
+  }
+
+  public void updateToggle() {
+
+    if (m_controller.getYButton()) {
+      if (!m_togglePressed) {
+        m_toggleOn = !m_toggleOn;
+        m_togglePressed = true;
       }
+    } else {
 
+      m_togglePressed = false;
 
+    }
 
+  }
 
-
-    
-
-    
-
-    
-
+}

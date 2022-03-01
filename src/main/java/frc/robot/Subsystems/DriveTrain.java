@@ -21,40 +21,40 @@ import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
-  XboxController controller = new XboxController(RobotMap.XboxControllerUsbPort);
+  XboxController controller = new XboxController(RobotMap.XBOX_CONTROLLER_USB_PORT);
 
 
 
-  private WPI_TalonFX Right = new WPI_TalonFX(RobotMap.Motor_Right);
-  private WPI_TalonFX RightFollow = new WPI_TalonFX(RobotMap.Motor_RightFollow);
-  private WPI_TalonFX Left = new WPI_TalonFX(RobotMap.Motor_Left);
-  private WPI_TalonFX LeftFollow = new WPI_TalonFX(RobotMap.Motor_LeftFollow);
+  private WPI_TalonFX m_right = new WPI_TalonFX(RobotMap.MOTOR_RIGHT);
+  private WPI_TalonFX m_rightFollow = new WPI_TalonFX(RobotMap.MOTOR_RIGHT_FOLLOW);
+  private WPI_TalonFX m_left = new WPI_TalonFX(RobotMap.MOTOR_LEFT);
+  private WPI_TalonFX m_leftFollow = new WPI_TalonFX(RobotMap.MOTOR_LEFT_FOLLOW);
   public OI m_oi = new OI();
 
-  private CANSparkMax IntakeMethod = new CANSparkMax(RobotMap.IntakeMotor, MotorType.kBrushless);
+  private CANSparkMax m_intakMethod = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
 
-  private MotorControllerGroup LeftSide = new MotorControllerGroup(Left, LeftFollow);
-  private MotorControllerGroup RightSide = new MotorControllerGroup(Right, RightFollow);
-  CANSparkMax SingulatorMotor = new CANSparkMax(RobotMap.SingulatorMotor, MotorType.kBrushless);
-  DifferentialDrive M_DriveTrain = new DifferentialDrive(LeftSide, RightSide);
+  private MotorControllerGroup m_leftSide = new MotorControllerGroup(m_left, m_leftFollow);
+  private MotorControllerGroup m_rightSide = new MotorControllerGroup(m_right, m_rightFollow);
+  CANSparkMax m_singulatorMotor = new CANSparkMax(RobotMap.SINGULATOR_MOTOR, MotorType.kBrushless);
+  DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftSide, m_rightSide);
  
-  private ADXRS450_Gyro gyro;
+  private ADXRS450_Gyro m_gyro;
 
   // Additional state used for robot simulation
-  private ADXRS450_GyroSim simulatedGyro; // might be null
-  private SimpleSimulatedChassis simulatedChassis; // might be null
+  private ADXRS450_GyroSim m_simulatedGyro; // might be null
+  private SimpleSimulatedChassis m_simulatedChassis; // might be null
   
 
   public DriveTrain() {
-    Left.setSelectedSensorPosition(0);
+    m_left.setSelectedSensorPosition(0);
   //leftEncoder.setPosition(0);
   //rightEncoder.setPosition(0);
-    gyro = new ADXRS450_Gyro();
+    m_gyro = new ADXRS450_Gyro();
 
     //leftEncoder.getPositionConversionFactor();
   
-    Left.setInverted(true);
-    LeftFollow.setInverted(true);
+    m_left.setInverted(true);
+    m_leftFollow.setInverted(true);
 
   }
 
@@ -62,54 +62,54 @@ public class DriveTrain extends SubsystemBase {
    * Call only if the robot is running in simulation. Prepares simulated parts.
    */
   public void simulationInit() {
-     simulatedGyro = new ADXRS450_GyroSim(gyro);
-     simulatedGyro.setAngle(-30);
-     simulatedChassis = new SimpleSimulatedChassis(this);
+     m_simulatedGyro = new ADXRS450_GyroSim(m_gyro);
+     m_simulatedGyro.setAngle(-30);
+     m_simulatedChassis = new SimpleSimulatedChassis(this);
    }
 
   public double encoderTicksToInches(double ticks) {
 
   //   // Possibility that GearRatio is actually 10.75
-    final double GearRatio = (18);
+    final double gearRatio = (18);
   //   // Math to calculate the number of motor pulses based on our rotations
 
-    final double PulsesPerInch = (2.0 * Math.PI) * 3 / GearRatio;
+    final double pulsesPerInch = (2.0 * Math.PI) * 3 / gearRatio;
   //   // Math to calculate the current distance of the motor using the previous
   //   // equation
-     return ((Left.getSelectedSensorPosition() / 2061) * PulsesPerInch);
+     return ((m_left.getSelectedSensorPosition() / 2061) * pulsesPerInch);
    }
 
-  public void LeftSide(double Speed) {
-    Left.set(Speed);
-    LeftFollow.set(Speed);
+  public void leftSide(double Speed) {
+    m_left.set(Speed);
+    m_leftFollow.set(Speed);
   }
 
-  public void RightSide(double Speed) {
-    Right.set(Speed);
-    RightFollow.set(Speed);
+  public void rightSide(double Speed) {
+    m_right.set(Speed);
+    m_rightFollow.set(Speed);
   }
 
 
-  public void IntakeSpeed(double Speed)
+  public void intakeSpeed(double Speed)
   {
-    IntakeMethod.set(Speed);
-    SingulatorMotor.set(Speed);
+    m_intakMethod.set(Speed);
+    m_singulatorMotor.set(Speed);
   }
 
-  public void SetIntakeSpeed()
+  public void setIntakeSpeed()
   {
-    if(m_oi.GetXButton2()){
-    this.IntakeMethod.set(.90);
-    this.SingulatorMotor.set(.90);
+    if(m_oi.getXButton2()){
+    this.m_intakMethod.set(.90);
+    this.m_singulatorMotor.set(.90);
     }
     else{
-    this.IntakeMethod.set(0);
-    this.SingulatorMotor.set(0);
+    this.m_intakMethod.set(0);
+    this.m_singulatorMotor.set(0);
   }
 }
 
-  public void tankDrive(double LeftSpeed, double RightSpeed) {
-    M_DriveTrain.tankDrive(LeftSpeed, RightSpeed);
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    m_driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
 
   
@@ -121,7 +121,7 @@ public class DriveTrain extends SubsystemBase {
    * @return Speed value, -1 to 1
    */
   public double getLeftMotorSpeed() {
-    return LeftSide.get();
+    return m_leftSide.get();
   }
 
   /**
@@ -130,7 +130,7 @@ public class DriveTrain extends SubsystemBase {
    * @return Speed value, -1 to 1
    */
   public double getRightMotorSpeed() {
-    return RightSide.get();
+    return m_rightSide.get();
   }
 
 
@@ -141,7 +141,7 @@ public class DriveTrain extends SubsystemBase {
    * @return raw encoder value for left side
    */
   public double getLeftEncoderValue() {
-    return Left.getSelectedSensorPosition();
+    return m_left.getSelectedSensorPosition();
   }
 
   public void initDefaultCommand(TankDrive tankDrive) {
@@ -155,11 +155,11 @@ public class DriveTrain extends SubsystemBase {
    * @return raw encoder value for right side
    */
   public double getRightEncoderValue() {
-    return Right.getSelectedSensorPosition();
+    return m_right.getSelectedSensorPosition();
   }
 
-  public double GetEncoderInches() {
-    return encoderTicksToInches(Left.getSelectedSensorPosition());
+  public double getEncoderInches() {
+    return encoderTicksToInches(m_left.getSelectedSensorPosition());
   }
 
   /**
@@ -168,11 +168,11 @@ public class DriveTrain extends SubsystemBase {
    * @return Gyro angle in degrees
    */
    public double getGyroAngleDegrees() {
-     return gyro.getAngle();
+     return m_gyro.getAngle();
    }
 
-   public void ResetGyro(){
-    gyro.reset();
+   public void resetGyro(){
+    m_gyro.reset();
    }
 
 
@@ -184,22 +184,22 @@ public class DriveTrain extends SubsystemBase {
    * @param newRightValue new right encoder value
    */
   public void setEncoders(double newLeftValue, double newRightValue) {
-    Left.setSelectedSensorPosition(newLeftValue);
-    Right.setSelectedSensorPosition(newRightValue);
+    m_left.setSelectedSensorPosition(newLeftValue);
+    m_right.setSelectedSensorPosition(newRightValue);
   }
 
-  public void TestingMotors()
+  public void testingMotors()
   {
     //System.out.println(RightFollow.get());
     //\System.out.println(Left.get());
-    Right.setSelectedSensorPosition(0);
-    Left.setSelectedSensorPosition(0);
+    m_right.setSelectedSensorPosition(0);
+    m_left.setSelectedSensorPosition(0);
 
   }
   
-public void ReadEncoder(){
+public void readEncoder(){
 
-System.out.println(Right.getSelectedSensorPosition());
+System.out.println(m_right.getSelectedSensorPosition());
 
 }
   /**
@@ -208,8 +208,8 @@ System.out.println(Right.getSelectedSensorPosition());
    * @param angleDegrees new angle in degrees
    */
    public void setSimulatedGyro(double angleDegrees) {
-     if (simulatedGyro != null) {
-       simulatedGyro.setAngle(angleDegrees);
+     if (m_simulatedGyro != null) {
+       m_simulatedGyro.setAngle(angleDegrees);
      }
   }
 
@@ -221,8 +221,8 @@ System.out.println(Right.getSelectedSensorPosition());
 
    @Override
    public void simulationPeriodic() {
-     if (simulatedChassis != null) {
-       simulatedChassis.periodic();
+     if (m_simulatedChassis != null) {
+       m_simulatedChassis.periodic();
      }
      
    }
