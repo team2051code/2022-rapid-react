@@ -26,6 +26,14 @@ public class SingulatorInformation extends SubsystemBase {
   }
 
 
+  public void StopSingulator()
+  {
+    m_singulatorMotor2.set(0);
+    
+  }
+
+
+
   public void singulatorSpeed(double speed)
   {
     
@@ -44,5 +52,11 @@ public class SingulatorInformation extends SubsystemBase {
     else{
         m_singulatorMotor2.set(0);
     }
+
+    
+
+
+
+
   }
 }

@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
-import frc.robot.commands.TankDrive;
 import frc.robot.simulation.SimpleSimulatedChassis;
 
 public class DriveTrain extends SubsystemBase {
@@ -108,6 +107,22 @@ public class DriveTrain extends SubsystemBase {
   }
 }
 
+  public void SetAutonomousIntake()
+  {
+    this.m_intakMethod.set(.90);
+    this.m_singulatorMotor.set(.90);
+  }
+
+
+
+  public void StopIntake(){
+  
+    m_intakMethod.set(0);
+
+  }
+
+
+
   public void tankDrive(double leftSpeed, double rightSpeed) {
     m_driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
@@ -142,11 +157,6 @@ public class DriveTrain extends SubsystemBase {
    */
   public double getLeftEncoderValue() {
     return m_left.getSelectedSensorPosition();
-  }
-
-  public void initDefaultCommand(TankDrive tankDrive) {
-    setDefaultCommand(tankDrive);
-
   }
 
   /**

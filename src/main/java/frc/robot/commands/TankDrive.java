@@ -8,6 +8,7 @@ import frc.robot.RobotMap;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.Pneumatics;
+import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
 
    
@@ -16,7 +17,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 public class TankDrive extends CommandBase {
     public Pneumatics m_pneumatics;
     public boolean m_LimelightHasValidTarget;
-    //public ShootParamaters M_shoot;
+    public ShootParamaters M_shoot;
     public DriveTrain m_intakeMethod;
     public DriveTrain m_setIntakeSpeed;
     public DriveTrain m_driveTrain;
@@ -27,15 +28,14 @@ public class TankDrive extends CommandBase {
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, /*ShootParamaters Shootparameters,*/ SingulatorInformation singulatorInformation){
+    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation){
     //These next four lines define our subsystems so our Commands can access them
     m_singulator = singulatorInformation;
-    //M_shoot = Shootparameters;
+    M_shoot = Shootparameters;
     m_driveTrain = drivetrain;
     m_pneumatics = pneumatics;
     //This forces the Command to require these 4 subsystems to fuction
-     addRequirements(m_driveTrain, m_pneumatics, m_singulator /*M_shoot*/);
-     //M_shoot );
+     addRequirements(m_driveTrain, m_pneumatics, m_singulator, M_shoot);
  }
 
 // public ActuallyShoot(Shoot shoot)   {
@@ -56,10 +56,9 @@ SmartDashboard.putNumber("Time Value", Timer.getFPGATimestamp());
 m_singulator.setSingulatorSpeed();
 //Reads the current SolenoidState
 m_pneumatics.solenoidState();
-//CombinedShootSpeed
-//M_shoot.TurretRotatorSpeed();
+M_shoot.turretRotatorSpeed();
 //Sets the speed of the shooter
-//M_shoot.CalculatedShootSpeed();
+M_shoot.calculatedShootSpeed();
 //Sets the Intake Speed To a Certain Value
 m_driveTrain.setIntakeSpeed();
 
@@ -83,31 +82,6 @@ double RightSide = m_oi.getDriverRawAxis(RobotMap.RIGHT_AXIS);
 
 //Drivetrain command to allow TankDrive
 m_driveTrain.tankDrive(LeftSide , RightSide);
-
-
-     
-    // if(m_oi.GetBButton())
-    // {
-    // M_DriveTrain.SetIntakeSpeed(-.70);
-    // }
-    
-
-
-    // if(m_oi.GetXButton())
-    // {
-    // }
-    
-    //System.out.println(M_DriveTrain.getLeftEncoderValue());
-    
-   //System.out.println(SetTurretRotator);
-    //System.out.println(M_shoot.Update_Limelight_Tracking());
-    //System.out.println(M_DriveTrain.getLeftEncoderValue());
-
-       // if(m_oi.toggleOn)
-       // {
-            
-
-       // }
 
 }   
 

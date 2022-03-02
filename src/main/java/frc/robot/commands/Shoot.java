@@ -12,38 +12,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.DriveTrain;
 import frc.robot.Subsystems.ShootParamaters;
+import frc.robot.Subsystems.SingulatorInformation;
 
 public class Shoot extends CommandBase {
 
+  PIDController m_shooterController = new PIDController(0.00012, 0.0002, 0);
+
   private double m_expireTime;
   private double m_timeout;
+  public DriveTrain m_driveTrain;
   public ShootParamaters m_shoot;
-  public PIDController m_shooterController;
+  public SingulatorInformation m_singulator;
 
   /** Creates a new Shoot. */
-  public Shoot(ShootParamaters shootParameters, DriveTrain drivetrain, PIDController shooterController) {
+  public Shoot(ShootParamaters shootParameters, DriveTrain drivetrain, PIDController shooterController, SingulatorInformation singulatorInformation) {
     m_shoot = shootParameters;
     m_shooterController = shooterController;
-
-    m_timeout = 5;
-
+    m_driveTrain = drivetrain;
+    m_singulator = singulatorInformation;
     addRequirements(m_shoot);
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public void calculatedShootSpeed(ShootParamaters shootParameters) {
+  public void calculatedShootSpeed() {
 
-    double targetRpm = shootParameters.computeShooterVelocity();
+    double targetRpm = computeShooterVelocity();
     m_shooterController.setSetpoint(targetRpm);
-    double measuredRpm = shootParameters.m_shooterLeft.getSelectedSensorVelocity();
+    double measuredRpm = m_shoot.m_shooterLeft.getSelectedSensorVelocity();
     double outputValue = m_shooterController.calculate(measuredRpm);
 
     outputValue = Math.max(-1, Math.min(1, outputValue));
 
     if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
-
       SmartDashboard.putBoolean("ShootReady", true);
+      m_driveTrain.setIntakeSpeed();
+      m_singulator.setSingulatorSpeed();
+      m_shoot.shootSpeedRight(outputValue);
+      m_shoot.shootSpeedLeft(outputValue);
 
     } else {
       SmartDashboard.putBoolean("ShootReady", false);
@@ -98,14 +104,6 @@ public class Shoot extends CommandBase {
     return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
   }
 
-  protected void startTime() {
-
-    // expiretime = timeSinceInitialized() + timeout;
-  }
-
-  public void timeSinceInitialized() {
-
-  }
 
   // Called when the command is initially scheduled.
   @Override
@@ -115,8 +113,9 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(computeShooterVelocity());
 
-    // return (timeSinceInitialized() >= expiretime);
+    calculatedShootSpeed();
 
   }
 
@@ -128,7 +127,10 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double targetRpm = m_shoot.computeShooterVelocity();
+    double measuredRpm = m_shoot.m_shooterLeft.getSelectedSensorVelocity();
+
+    return measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50;
   }
 
 }

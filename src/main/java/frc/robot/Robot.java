@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,6 +19,8 @@ import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
+import frc.robot.commands.Shoot;
+import frc.robot.commands.StopAll;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.Turn;
 import frc.robot.commands.Wait;
@@ -41,6 +44,8 @@ public class Robot extends TimedRobot {
   private ShootParamaters m_ShootParamaters = new ShootParamaters();
   private Pneumatics m_pneumatics = new Pneumatics();
   private SingulatorInformation m_singulator = new SingulatorInformation();
+  public PIDController m_shooterController;
+
   //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
@@ -109,7 +114,15 @@ public class Robot extends TimedRobot {
 
 
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(m_driveTrain, /*m_ShootParamaters*/ 12), new Wait(5), new Turn(m_driveTrain, -30), new Wait(5), new Drive(m_driveTrain, /*m_ShootParamaters*/ -6)
+     new Drive(m_driveTrain, m_ShootParamaters, 24), 
+      new Wait(1),
+       //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator), 
+        new Wait(1),
+         new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+          new Wait(1),
+           new Turn(m_driveTrain, -30),
+            new Wait(5), 
+             new Drive(m_driveTrain, m_ShootParamaters, -6)
      );
      CommandScheduler.getInstance().schedule(commands);
   }
@@ -130,7 +143,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, /*m_ShootParamaters*/ m_singulator);
+      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator);
       
       CommandScheduler.getInstance().schedule(commands);
      }
@@ -140,32 +153,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     CommandScheduler.getInstance().run();
-
-    //Drive.tankDrive(controller.getRawAxis(1), controller.getRawAxis(5));
-
-    // //change this to false to run autonomous aiming code
-    // boolean manualAim = true;
-    // if(manualAim)
-    // {
-    //   double spinSpeed = 0;
-    //   spinSpeed += xbox.getLeftBumper() ? 0.6 : 0;
-    //   spinSpeed += xbox.getRightBumper() ? -0.6 : 0;
-    //   spinSpeed += xbox.getLeftTriggerAxis() / 5;
-    //   spinSpeed += xbox.getRightTriggerAxis() / 5 * -1;
-    //   //spinGroup.set(spinSpeed);
-
-    //   double wheelSpeed = 0;
-    //   wheelSpeed += xbox.getRawAxis(1) * -1 >= 0.1 ? xbox.getRawAxis(1) * -0.9 : 0;
-    //   wheelSpeed += xbox.getRawAxis(5) * -1 >= 0.1 ? xbox.getRawAxis(5) / -10 : 0;
-    //   //talonLeft.set(wheelSpeed);
-    //   //talonRight.set(wheelSpeed);
-    // }
-
-    // Right.set(xbox.getRawAxis(1) * .1);
-    // RightFollow.set(xbox.getRawAxis(1) * .1);
-    // Left.set(xbox.getRawAxis(1) * .1);
-    // LeftFollow.set(xbox.getRawAxis(1) * .1);
-
 
   }
 

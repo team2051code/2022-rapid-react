@@ -36,6 +36,7 @@ public class Turn extends CommandBase {
 
     if(m_turnDegrees > 0)
     {
+      System.out.println("RobotTurning");
       m_driveTrain.tankDrive(-.5, .5);
     }
     else{

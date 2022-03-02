@@ -98,8 +98,7 @@ public class ShootParamaters extends SubsystemBase {
     double targetRpm = computeShooterVelocity();
     m_shooterController.setSetpoint(targetRpm);
     double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
-    double outputValue =
-     m_shooterController.calculate(measuredRpm);
+    double outputValue = m_shooterController.calculate(measuredRpm);
 
      outputValue = Math.max(-1, Math.min(1, outputValue));
 

@@ -9,15 +9,15 @@ import frc.robot.Subsystems.ShootParamaters;
 public class Drive extends CommandBase {
 
     private DriveTrain m_driveTrain;
-   // public ShootParamaters M_Shoot;
+    public ShootParamaters M_Shoot;
 
     // Addition of the distances to group them together
     private double m_desiredDistance;
 
    
 
-    public Drive(DriveTrain driveTrain, /*ShootParamaters Shootparamaters*/ double distanceInches) {
-        //M_Shoot = Shootparamaters;
+    public Drive(DriveTrain driveTrain, ShootParamaters Shootparamaters, double distanceInches) {
+        M_Shoot = Shootparamaters;
         m_driveTrain = driveTrain;
         m_desiredDistance = distanceInches;
 
@@ -34,9 +34,10 @@ public class Drive extends CommandBase {
     @Override
     public void execute() {
 
+        System.out.println("Driving Forwards");
 
             if (m_desiredDistance > 0) {
-
+                m_driveTrain.SetAutonomousIntake();
                 m_driveTrain.tankDrive(.5, .5);
             } else {
     
