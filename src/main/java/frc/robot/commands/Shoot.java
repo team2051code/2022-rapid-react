@@ -16,7 +16,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 
 public class Shoot extends CommandBase {
 
-  PIDController m_shooterController = new PIDController(0.00012, 0.0002, 0);
+  PIDController m_shooterController = new PIDController(0.00012, 0.0000  b , 0);
 
   private double m_expireTime;
   private double m_timeout;
@@ -25,9 +25,8 @@ public class Shoot extends CommandBase {
   public SingulatorInformation m_singulator;
 
   /** Creates a new Shoot. */
-  public Shoot(ShootParamaters shootParameters, DriveTrain drivetrain, PIDController shooterController, SingulatorInformation singulatorInformation) {
+  public Shoot(ShootParamaters shootParameters, DriveTrain drivetrain, SingulatorInformation singulatorInformation) {
     m_shoot = shootParameters;
-    m_shooterController = shooterController;
     m_driveTrain = drivetrain;
     m_singulator = singulatorInformation;
     addRequirements(m_shoot);
@@ -41,16 +40,18 @@ public class Shoot extends CommandBase {
     m_shooterController.setSetpoint(targetRpm);
     double measuredRpm = m_shoot.m_shooterLeft.getSelectedSensorVelocity();
     double outputValue = m_shooterController.calculate(measuredRpm);
-
+    
     outputValue = Math.max(-1, Math.min(1, outputValue));
+
+    m_shoot.shootSpeedRight(outputValue);
+    m_shoot.shootSpeedLeft(outputValue);
+
 
     if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
       SmartDashboard.putBoolean("ShootReady", true);
       m_driveTrain.setIntakeSpeed();
       m_singulator.setSingulatorSpeed();
-      m_shoot.shootSpeedRight(outputValue);
-      m_shoot.shootSpeedLeft(outputValue);
-
+      
     } else {
       SmartDashboard.putBoolean("ShootReady", false);
     }
@@ -74,7 +75,7 @@ public class Shoot extends CommandBase {
     // distance from the limelight to the shooter
     final double limeToShooter = 0;
     // angle of the ball shooter in degrees
-    double shootangleD = 55;
+    double shootangleD = 60;
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 35;
     // distance between ballshooter and target
@@ -85,7 +86,7 @@ public class Shoot extends CommandBase {
     // final velocity of the ball
     double vf = wheelToBall * ballspeed;
     // speed of the wheel needed to accelerate the ball
-    double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .8) + (671.31 / 270.00));
+    double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .5) + (671.31 / 270.00));
     // rpm of the wheel
     double rpm = (wheelspeed * 60) / (.0508 * 2 * Math.PI);
 
