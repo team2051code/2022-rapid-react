@@ -179,7 +179,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getEncoderInches() {
-    return encoderTicksToInches(m_left.getSelectedSensorPosition());
+    return encoderTicksToInches(getLeftEncoderValue());
   }
 
   /**
@@ -208,13 +208,15 @@ public class DriveTrain extends SubsystemBase {
     m_simulatedRightEncoder = newRightValue;
   }
 
-  public void testingMotors()
+  /**
+   * Resets encoders to 0 value
+   */
+  public void resetEncoders()
   {
-    //System.out.println(RightFollow.get());
-    //\System.out.println(Left.get());
     m_right.setSelectedSensorPosition(0);
     m_left.setSelectedSensorPosition(0);
-
+    m_simulatedLeftEncoder = 0;
+    m_simulatedRightEncoder = 0;
   }
   
   /**
