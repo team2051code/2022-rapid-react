@@ -22,7 +22,7 @@ public class PoseEstimator {
      */
     public PoseEstimator(DriveTrain driveTrain) {
         m_driveTrain = driveTrain;
-        //m_lastLeftEncoderValue = m_driveTrain.getLeftEncoderValue();
+        m_lastLeftEncoderValue = m_driveTrain.getLeftEncoderValue();
         m_lastRightEncoderValue = m_driveTrain.getRightEncoderValue();
     }
 

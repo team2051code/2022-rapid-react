@@ -44,6 +44,7 @@ public class SimpleSimulatedChassis extends SubsystemBase {
         double rightPower = m_driveTrain.getRightMotorSpeed();
 
 
+
         /* Compute a delta and update m_lastUpdateTime. The delta makes the simulation
          * realtime-independent (i.e. if the robot runs slower or faster, we should
          * get close to the same answers).
@@ -78,7 +79,7 @@ public class SimpleSimulatedChassis extends SubsystemBase {
          var rightEncoderValue = m_driveTrain.getRightEncoderValue();
          rightEncoderValue += rightPower * FORWARD_SPEED_INCHES_PER_SEC / m_driveTrain.encoderTicksToInches(1) * delta;
 
-         m_driveTrain.setEncoders(leftEncoderValue, rightEncoderValue);
+         m_driveTrain.setSimulatedEncoders(leftEncoderValue, rightEncoderValue);
 
         /* Rotation is just scaling the max speed (as rotations per second * 2 * PI) by 
          * how fast we're turning (divided by 2, since at full turn we have one motor at 100% and one at -100%), 
