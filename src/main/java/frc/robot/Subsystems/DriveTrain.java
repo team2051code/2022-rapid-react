@@ -64,7 +64,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void simulationInit() {
      m_simulatedGyro = new ADXRS450_GyroSim(m_gyro);
-     m_simulatedGyro.setAngle(-30);
+     m_simulatedGyro.setAngle(30);
      m_simulatedChassis = new SimpleSimulatedChassis(this);
    }
 

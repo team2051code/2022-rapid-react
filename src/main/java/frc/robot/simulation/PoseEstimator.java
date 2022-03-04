@@ -41,7 +41,7 @@ public class PoseEstimator {
         
         double linear = ((double)(leftCount + rightCount)) / 2.0;
         // note flip in angle: gyro follows left-hand rule
-        double rotationRadians = -Math.toRadians(m_driveTrain.getGyroAngleDegrees());
+        double rotationRadians = Math.toRadians(m_driveTrain.getGyroAngleDegrees());
 
         /* Now figure out how far the robot went this blip of time.
          * Linear is the distance, but the x- and y-axis distance is figured out by
@@ -63,7 +63,7 @@ public class PoseEstimator {
         
          m_pose = new Pose2d(
              new Translation2d(newX, newY), 
-             Rotation2d.fromDegrees(-m_driveTrain.getGyroAngleDegrees()));        
+             Rotation2d.fromDegrees(m_driveTrain.getGyroAngleDegrees()));        
     }
 
     /**

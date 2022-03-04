@@ -62,7 +62,7 @@ public class SimpleSimulatedChassis extends SubsystemBase {
          * skid) that we don't model here, but this is a good start.
          */ 
         // calculate so that right-motor-forward translates to counterclockwise (positive radians) motion
-        double turn = -(rightPower - leftPower) / 2;
+        double turn = (rightPower - leftPower) / 2;
 
 
         /* Now figure out how far the robot went this blip of time.
