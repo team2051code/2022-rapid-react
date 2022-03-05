@@ -43,6 +43,8 @@ public class DriveTrain extends SubsystemBase {
   // Additional state used for robot simulation
   private ADXRS450_GyroSim m_simulatedGyro; // might be null
   private SimpleSimulatedChassis m_simulatedChassis; // might be null
+  private double m_simulatedLeftEncoder = 0;
+  private double m_simulatedRightEncoder = 0;
   
 
   public DriveTrain() {
@@ -63,7 +65,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void simulationInit() {
      m_simulatedGyro = new ADXRS450_GyroSim(m_gyro);
-     m_simulatedGyro.setAngle(-30);
+     m_simulatedGyro.setAngle(30);
      m_simulatedChassis = new SimpleSimulatedChassis(this);
    }
 
@@ -76,7 +78,7 @@ public class DriveTrain extends SubsystemBase {
     final double pulsesPerInch = (2.0 * Math.PI) * 3 / gearRatio;
   //   // Math to calculate the current distance of the motor using the previous
   //   // equation
-     return ((m_left.getSelectedSensorPosition() / 2061) * pulsesPerInch);
+     return (ticks / 2061 * pulsesPerInch);
    }
 
   public void leftSide(double Speed) {
@@ -159,7 +161,11 @@ public class DriveTrain extends SubsystemBase {
    * @return raw encoder value for left side
    */
   public double getLeftEncoderValue() {
-    return m_left.getSelectedSensorPosition();
+    if (m_simulatedChassis != null) {
+      return m_simulatedLeftEncoder;
+    } else {
+      return m_left.getSelectedSensorPosition();
+    }
   }
 
   /**
@@ -168,11 +174,15 @@ public class DriveTrain extends SubsystemBase {
    * @return raw encoder value for right side
    */
   public double getRightEncoderValue() {
-    return m_right.getSelectedSensorPosition();
+    if (m_simulatedChassis != null) {
+      return m_simulatedRightEncoder;
+    } else {
+      return m_right.getSelectedSensorPosition();
+    }
   }
 
   public double getEncoderInches() {
-    return encoderTicksToInches(m_left.getSelectedSensorPosition());
+    return encoderTicksToInches(getLeftEncoderValue());
   }
 
   /**
@@ -196,25 +206,22 @@ public class DriveTrain extends SubsystemBase {
    * @param newLeftValue  new left encoder value
    * @param newRightValue new right encoder value
    */
-  public void setEncoders(double newLeftValue, double newRightValue) {
-    m_left.setSelectedSensorPosition(newLeftValue);
-    m_right.setSelectedSensorPosition(newRightValue);
+  public void setSimulatedEncoders(double newLeftValue, double newRightValue) {
+    m_simulatedLeftEncoder = newLeftValue;
+    m_simulatedRightEncoder = newRightValue;
   }
 
-  public void testingMotors()
+  /**
+   * Resets encoders to 0 value
+   */
+  public void resetEncoders()
   {
-    //System.out.println(RightFollow.get());
-    //\System.out.println(Left.get());
     m_right.setSelectedSensorPosition(0);
     m_left.setSelectedSensorPosition(0);
-
+    m_simulatedLeftEncoder = 0;
+    m_simulatedRightEncoder = 0;
   }
   
-public void readEncoder(){
-
-System.out.println(m_right.getSelectedSensorPosition());
-
-}
   /**
    * Set a simulated gyro value. Does nothing if not simulating.
    * 

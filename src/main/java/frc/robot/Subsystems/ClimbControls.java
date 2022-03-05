@@ -4,6 +4,7 @@
 
 package frc.robot.Subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
@@ -35,5 +36,6 @@ public class ClimbControls extends SubsystemBase {
       ClimbMotor2.set(0);
       }
     }
+
   }
 }
