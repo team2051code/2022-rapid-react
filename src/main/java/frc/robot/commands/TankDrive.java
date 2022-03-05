@@ -45,7 +45,7 @@ public class TankDrive extends CommandBase {
 
 @Override public void initialize(){
 //Sets the left and Right encoder sensors to 0 every time the robot starts up 
-m_driveTrain.testingMotors();
+m_driveTrain.resetEncoders();
 }
 
 @Override public void execute(){

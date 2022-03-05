@@ -25,7 +25,7 @@ public class Drive extends CommandBase {
 
     @Override
     public void initialize() {
-        m_driveTrain.testingMotors();
+        m_driveTrain.resetEncoders();
 
         System.out.println("Running");
 
