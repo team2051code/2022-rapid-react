@@ -13,7 +13,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 public class StopAll extends CommandBase {
 
     public Pneumatics m_pneumatics;
-    public ShootParamaters M_shoot;
+    public ShootParamaters m_shoot;
     public DriveTrain m_intakeMethod;
     public DriveTrain m_setIntakeSpeed;
     public DriveTrain m_driveTrain;
@@ -26,12 +26,12 @@ public class StopAll extends CommandBase {
     
 
     m_singulator = singulatorInformation;
-    M_shoot = Shootparameters;
+    m_shoot = Shootparameters;
     m_driveTrain = drivetrain;
     m_pneumatics = pneumatics; 
 
 
-    addRequirements(m_driveTrain, m_pneumatics, m_singulator, M_shoot);
+    addRequirements(m_driveTrain, m_pneumatics, m_singulator, m_shoot);
 
 
   }
@@ -53,8 +53,8 @@ public class StopAll extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    M_shoot.shootSpeedLeft(0);
-    M_shoot.shootSpeedRight(0);
+    m_shoot.shootSpeedLeft(0);
+    m_shoot.shootSpeedRight(0);
     m_driveTrain.tankDrive(0, 0);
     m_singulator.StopSingulator();
     m_driveTrain.StopIntake();

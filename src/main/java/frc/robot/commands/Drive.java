@@ -37,7 +37,6 @@ public class Drive extends CommandBase {
         System.out.println("Driving Forwards");
 
             if (m_desiredDistance > 0) {
-                m_driveTrain.SetAutonomousIntake();
                 m_driveTrain.tankDrive(.5, .5);
             } else {
     
