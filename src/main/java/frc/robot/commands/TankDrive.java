@@ -75,7 +75,7 @@ m_pneumatics.backwards();
 //Command to set the Speed of the Singulator
 m_singulator.setSingulatorSpeed();
 //Sets the Paramaters and Controls For The Climb Mechanism
-m_climb.SetClimbSpeed();
+m_climb.ForwardClimbSpeed();
 
 //Subsytem for the Caluated Shoot Speed
 //double CalculatedShootSpeed = M_shoot.computeShooterVelocity();
