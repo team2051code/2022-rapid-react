@@ -53,10 +53,9 @@ public class StopAll extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    m_shoot.shootSpeedLeft(0);
-    m_shoot.shootSpeedRight(0);
+    m_shoot.setShooterTargetSpeed(0);
     m_driveTrain.tankDrive(0, 0);
-    m_singulator.StopSingulator();
+    m_singulator.stopSingulator();
     m_driveTrain.StopIntake();
 
 

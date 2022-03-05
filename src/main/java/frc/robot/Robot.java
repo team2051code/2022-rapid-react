@@ -18,6 +18,7 @@ import frc.robot.Subsystems.DriveTrain;
 import frc.robot.Subsystems.Pneumatics;
 import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
+import frc.robot.commands.AutonomousShooting;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
@@ -119,8 +120,8 @@ public class Robot extends TimedRobot {
 
      //Start of Autonomous Code for Blue Tarmac At Bottom of Field
     new Drive(m_driveTrain, m_ShootParamaters, 36),
-     new Shoot(m_ShootParamaters, m_driveTrain, m_singulator),
-      new Wait(1),
+    new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    new Wait(1),
         new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
           new Wait(1),
             new Turn(m_driveTrain, -82.5),

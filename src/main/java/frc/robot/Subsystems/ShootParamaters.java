@@ -17,6 +17,10 @@ import frc.robot.OI;
 import frc.robot.RobotMap;
 
 public class ShootParamaters extends SubsystemBase {
+  /**
+   *
+   */
+  private static final double TURRET_CENTER_X = 1.0;
   XboxController m_controller = new XboxController(RobotMap.XBOX_CONTROLLER_USB_PORT);
   boolean m_LimelightHasValidTarget = false;
   public OI m_oi = new OI();
@@ -50,12 +54,12 @@ public class ShootParamaters extends SubsystemBase {
 
     if (m_LimelightHasValidTarget) {
 
-      if (tx >= 1.0) {
+      if (tx >= TURRET_CENTER_X) {
         steeringAdjust = kP * heading - minCommand;
       }
       if (m_LimelightHasValidTarget) {
 
-        if (tx < 1.0) {
+        if (tx < TURRET_CENTER_X) {
           steeringAdjust = kP * heading + minCommand;
           System.out.println(steeringAdjust);
         }
@@ -76,11 +80,22 @@ public class ShootParamaters extends SubsystemBase {
   public void turretRotatorSpeed() {
 
     if (m_oi.getAButton2()) {
-      setTurretRotatorSpeed(updateLimelightTracking() / 60);
+      updateTurretRotation();
     } else {
       setTurretRotatorSpeed(0);
     }
+  
+  }
 
+  public void updateTurretRotation(){
+    setTurretRotatorSpeed(updateLimelightTracking() / 60);
+  }
+
+  public boolean isTurretCentered(){
+    double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    double buffer = .5;
+    return (tx < 0 + buffer && tx > 0 - buffer);
+    
   }
 
   public void shootSpeedLeft(double speed) {
@@ -95,37 +110,14 @@ public class ShootParamaters extends SubsystemBase {
 
   public void calculatedShootSpeed() {
 
-    double targetRpm = computeShooterVelocity();
-    m_shooterController.setSetpoint(targetRpm);
-    double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
-    double outputValue = m_shooterController.calculate(measuredRpm);
-
-     outputValue = Math.max(-1, Math.min(1, outputValue));
-
     if (m_oi.getRightBumper2()) {
-      System.out.print(" t: ");
-      System.out.print(targetRpm);
-      System.out.print(" m: ");
-      System.out.print(measuredRpm);
-      System.out.print(" o: ");
-      System.out.println(outputValue);
-      shootSpeedRight(outputValue);
-      shootSpeedLeft(outputValue);
+     setTargetSpeedToCalculatedSpeed();
+     
     } else {
-      shootSpeedRight(0);
-      shootSpeedLeft(0);
-      m_shooterController.reset();
+      
+      setShooterTargetSpeed(0);
     }
 
-
-    if(measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50){
-
-      SmartDashboard.putBoolean("ShootReady", true);
-    }
-    else
-    {
-      SmartDashboard.putBoolean("ShootReady", false);
-    }
   }
 
   /**
@@ -180,6 +172,45 @@ public class ShootParamaters extends SubsystemBase {
     return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
   }
 
+  @Override
+  public void periodic() {
+    // TODO Auto-generated method stub
+  
+   double targetRpm = m_shooterController.getSetpoint();
+   if (m_shooterController.getSetpoint() == 0){
+    shootSpeedRight(0);
+    shootSpeedLeft(0);
+    m_shooterController.reset();
+   }
+   else{
+    double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
+    double outputValue = m_shooterController.calculate(measuredRpm);
+    System.out.print(" t: ");
+      System.out.print(targetRpm);
+      System.out.print(" m: ");
+      System.out.print(measuredRpm);
+      System.out.print(" o: ");
+      System.out.println(outputValue);
+    outputValue = Math.max(-1, Math.min(1, outputValue));
+    shootSpeedRight(outputValue);
+    shootSpeedLeft(outputValue);
+    if(measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50){
+
+      SmartDashboard.putBoolean("ShootReady", true);
+    }
+    else
+    {
+      SmartDashboard.putBoolean("ShootReady", false);
+    }
+   }
+  }
+public void setShooterTargetSpeed(double speed){
+    m_shooterController.setSetpoint(speed);
+}
+public void setTargetSpeedToCalculatedSpeed(){
+  double targetRpm = computeShooterVelocity();
+  setShooterTargetSpeed(targetRpm);
+}
   // public void TurretRotatorLimits()
   // {
   // if (TurretRotatorEncoder.getPosition() >= 150)

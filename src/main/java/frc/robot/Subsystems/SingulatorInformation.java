@@ -13,50 +13,39 @@ import frc.robot.RobotMap;
 
 public class SingulatorInformation extends SubsystemBase {
 
-  
   CANSparkMax m_singulatorMotor2 = new CANSparkMax(RobotMap.SINGULATOR_MOTOR_2, MotorType.kBrushless);
   public OI m_oi = new OI();
 
   /** Creates a new SingulatorInformation. */
-  public SingulatorInformation() {}
+  public SingulatorInformation() {
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-
-  public void StopSingulator()
-  {
-    m_singulatorMotor2.set(0);
-    
+  public void stopSingulator() {
+    singulatorSpeed(0);
   }
 
+  public void singulatorSpeed(double speed) {
 
-
-  public void singulatorSpeed(double speed)
-  {
-    
     m_singulatorMotor2.set(speed);
 
   }
 
-  public void setSingulatorSpeed()
-  {
+  public void turnSingulatorOn() {
+    singulatorSpeed(.80);
+  }
+
+  public void setSingulatorSpeed() {
     m_singulatorMotor2.setInverted(true);
 
-    if(m_oi.getLeftBumper2())
-    {
-        m_singulatorMotor2.set(.80);
+    if (m_oi.getLeftBumper2()) {
+      turnSingulatorOn();
+    } else {
+      stopSingulator();
     }
-    else{
-        m_singulatorMotor2.set(0);
-    }
-
-    
-
-
-
-
   }
 }
