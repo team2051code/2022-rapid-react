@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.Subsystems.ClimbControls;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.Pneumatics;
@@ -23,17 +24,19 @@ public class TankDrive extends CommandBase {
     public DriveTrain m_driveTrain;
     public OI m_oi = new OI();
     public SingulatorInformation m_singulator;
+    public ClimbControls m_climb;
     //public DriveTrain Shooter1;
     //public DriveTrain Shooter2;
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation){
+    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation, ClimbControls climbControls){
     //These next four lines define our subsystems so our Commands can access them
     m_singulator = singulatorInformation;
     M_shoot = Shootparameters;
     m_driveTrain = drivetrain;
     m_pneumatics = pneumatics;
+    m_climb = climbControls;
     //This forces the Command to require these 4 subsystems to fuction
      addRequirements(m_driveTrain, m_pneumatics, m_singulator, M_shoot);
  }
@@ -49,8 +52,6 @@ m_driveTrain.testingMotors();
 }
 
 @Override public void execute(){
-Timer.getFPGATimestamp();
-SmartDashboard.putNumber("Time Value", Timer.getFPGATimestamp());
 //Reads the Right Side Encoder Values
 //M_DriveTrain.ReadEncoder();
 m_singulator.setSingulatorSpeed();
@@ -61,15 +62,20 @@ M_shoot.turretRotatorSpeed();
 M_shoot.calculatedShootSpeed();
 //Sets the Intake Speed To a Certain Value
 m_driveTrain.setIntakeSpeed();
+//Sets the Speed That The Climb Raises
+
 
 //m_oi.UpdateToggle();
 
 //Commands to GearShift and Raise/Lower the intake
 m_pneumatics.forwards();
 m_pneumatics.gearShift();
+m_pneumatics.backwards();
 
 //Command to set the Speed of the Singulator
 m_singulator.setSingulatorSpeed();
+//Sets the Paramaters and Controls For The Climb Mechanism
+m_climb.SetClimbSpeed();
 
 //Subsytem for the Caluated Shoot Speed
 //double CalculatedShootSpeed = M_shoot.computeShooterVelocity();

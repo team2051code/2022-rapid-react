@@ -62,6 +62,11 @@ public class OI {
     return m_controller2.getBackButton();
   }
 
+  public boolean GetStartButton2(){
+    return m_controller2.getStartButton();
+  }
+
+
   public void updateToggle() {
 
     if (m_controller.getYButton()) {

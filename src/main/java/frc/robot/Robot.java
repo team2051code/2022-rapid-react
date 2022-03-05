@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Subsystems.ClimbControls;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.LimeLight;
 import frc.robot.Subsystems.Pneumatics;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   private Pneumatics m_pneumatics = new Pneumatics();
   private SingulatorInformation m_singulator = new SingulatorInformation();
   public PIDController m_shooterController;
+  public ClimbControls m_climb = new ClimbControls();
 
   //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
@@ -114,15 +116,61 @@ public class Robot extends TimedRobot {
 
 
      SequentialCommandGroup commands = new SequentialCommandGroup(
-     new Drive(m_driveTrain, m_ShootParamaters, 24), 
+
+     //Start of Autonomous Code for Blue Tarmac At Bottom of Field
+    new Drive(m_driveTrain, m_ShootParamaters, 36),
+     new Shoot(m_ShootParamaters, m_driveTrain, m_singulator),
       new Wait(1),
-       //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator), 
-        new Wait(1),
-         new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
           new Wait(1),
-           new Turn(m_driveTrain, -30),
-            new Wait(5), 
-             new Drive(m_driveTrain, m_ShootParamaters, -6)
+            new Turn(m_driveTrain, -82.5),
+              new Wait(1), 
+               new Drive(m_driveTrain, m_ShootParamaters, -129.2)
+    // End of Autonomous Code For Blue Tarmac at Bottom Of Field
+
+    //Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
+      //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
+    //     new Wait(1),
+    //      new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //        new Wait(1),
+    //          new Turn(m_driveTrain, 106),
+    //           new Wait(1),
+    //             new Drive(m_driveTrain, m_ShootParamaters, -88),
+    // //End of Autonomous Code for Blue Tarmac on The Top Left Of The Field
+
+    // //Start of Autonomous Code for Red Tarmac On the Bottom Right Of The Field
+    //    //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
+    //    new Wait(1),
+    //      new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //        new Wait(1),
+    //          new Turn(m_driveTrain, 74),
+    //            new Wait(1),
+    //             new Drive(m_driveTrain, m_ShootParamaters, -88),
+    // //End of Autonomous Code For Red Tarmac On The Bottom Right Of The Field
+
+    // //Start of Autonomous Code For Red Tarmac On The Top Right Of The Field
+    //     //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
+    //     new Wait(1),
+    //       new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //        new Wait(1),
+    //         new Turn(m_driveTrain, 106),
+    //           new Wait(1),
+    //           new Drive(m_driveTrain, m_ShootParamaters, -88)
+    //End Of Autonomous Code For Red Tarmac On The Top Right Of The Field
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      );
      CommandScheduler.getInstance().schedule(commands);
   }
@@ -143,7 +191,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator);
+      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, m_climb);
       
       CommandScheduler.getInstance().schedule(commands);
      }

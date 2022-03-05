@@ -16,7 +16,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 
 public class Shoot extends CommandBase {
 
-  PIDController m_shooterController = new PIDController(0.00012, 0.0000  b , 0);
+  PIDController m_shooterController = new PIDController(0.00012, 0.0000, 0);
 
   private double m_expireTime;
   private double m_timeout;

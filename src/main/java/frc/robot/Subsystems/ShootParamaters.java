@@ -24,7 +24,7 @@ public class ShootParamaters extends SubsystemBase {
   WPI_TalonFX m_shooterRight = new WPI_TalonFX(RobotMap.SHOOTING_MOTOR_2);
   CANSparkMax m_turretRotator = new CANSparkMax(RobotMap.TURRET_ROTATOR, MotorType.kBrushless);
   RelativeEncoder m_turretRotatorEncoder;
-  PIDController m_shooterController = new PIDController(0.00012, 0.0002, 0);
+  PIDController m_shooterController = new PIDController(0.00012, 0.0000, 0);
 
   // public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator,
   // MotorType.kBrushless);
@@ -84,12 +84,12 @@ public class ShootParamaters extends SubsystemBase {
   }
 
   public void shootSpeedLeft(double speed) {
-    m_shooterLeft.setInverted(false);
+    m_shooterLeft.setInverted(true);
     m_shooterLeft.set(speed);
   }
 
   public void shootSpeedRight(double speed) {
-    m_shooterRight.setInverted(true);
+    m_shooterRight.setInverted(false);
     m_shooterRight.set(speed);
   }
 
@@ -150,7 +150,7 @@ public class ShootParamaters extends SubsystemBase {
     // distance from the limelight to the shooter
     final double limeToShooter = 0;
     // angle of the ball shooter in degrees
-    double shootangleD = 55;
+    double shootangleD = 60;
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 35;
     // distance between ballshooter and target
@@ -161,7 +161,7 @@ public class ShootParamaters extends SubsystemBase {
     // final velocity of the ball
     double vf = wheelToBall * ballspeed;
     // speed of the wheel needed to accelerate the ball
-    double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .8) + (671.31 / 270.00));
+    double wheelspeed = (vf) + 1 + (1 + .4) / ((2 * .5) + (671.31 / 270.00));
     // rpm of the wheel
     double rpm = (wheelspeed * 60) / (.0508 * 2 * Math.PI);
 

@@ -23,7 +23,7 @@ public class Pneumatics extends SubsystemBase {
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
   public OI m_oi = new OI();
   DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-  Solenoid m_singleSolenoid2 = new Solenoid(PneumaticsModuleType.REVPH, 0);
+  DoubleSolenoid m_doubleSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
   public void gearShift() {
@@ -35,12 +35,29 @@ public class Pneumatics extends SubsystemBase {
 
   public void forwards() {
     if (m_oi.getBackButton2()) {
-      m_singleSolenoid2.set(true);
+      m_doubleSolenoid2.set(Value.kForward);
     } else {
-      m_singleSolenoid2.set(false);
+      m_doubleSolenoid2.set(Value.kOff);
     }
 
   }
+
+  public void backwards(){
+    if(m_oi.GetStartButton2()){
+      m_doubleSolenoid2.set(Value.kReverse);
+    }else{
+        m_doubleSolenoid2.set(Value.kOff);
+
+      }
+
+
+
+    }
+
+
+  
+
+
 
   public void solenoidState() {
     Value state = m_doubleSolenoid.get();

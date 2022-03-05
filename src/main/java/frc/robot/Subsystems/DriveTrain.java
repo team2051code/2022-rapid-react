@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,7 +24,7 @@ public class DriveTrain extends SubsystemBase {
   XboxController controller = new XboxController(RobotMap.XBOX_CONTROLLER_USB_PORT);
 
 
-
+  
   private WPI_TalonFX m_right = new WPI_TalonFX(RobotMap.MOTOR_RIGHT);
   private WPI_TalonFX m_rightFollow = new WPI_TalonFX(RobotMap.MOTOR_RIGHT_FOLLOW);
   private WPI_TalonFX m_left = new WPI_TalonFX(RobotMap.MOTOR_LEFT);
@@ -120,6 +121,8 @@ public class DriveTrain extends SubsystemBase {
     m_intakMethod.set(0);
 
   }
+
+  
 
 
 
