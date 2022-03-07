@@ -14,8 +14,6 @@ public class Drive extends CommandBase {
     // Addition of the distances to group them together
     private double m_desiredDistance;
 
-   
-
     public Drive(DriveTrain driveTrain, ShootParamaters Shootparamaters, double distanceInches) {
         M_Shoot = Shootparamaters;
         m_driveTrain = driveTrain;
@@ -36,17 +34,12 @@ public class Drive extends CommandBase {
 
         System.out.println("Driving Forwards");
 
-            if (m_desiredDistance > 0) {
-                m_driveTrain.tankDrive(.5, .5);
-            } else {
-    
-                m_driveTrain.tankDrive(-.5, -.5);
-            }
+        if (m_desiredDistance > 0) {
+            m_driveTrain.tankDrive(.5, .5);
+        } else {
 
-
-        
-
-       
+            m_driveTrain.tankDrive(-.5, -.5);
+        }
 
         SmartDashboard.putNumber("DistanceTraveled", m_driveTrain.getEncoderInches());
 
@@ -57,14 +50,12 @@ public class Drive extends CommandBase {
     @Override
     public void end(boolean interrupt) {
 
-
         m_driveTrain.tankDrive(0, 0);
 
     }
 
     @Override
     public boolean isFinished() {
-
 
         // Sets the distance to zerox
         double distanceInches = m_driveTrain.getEncoderInches();

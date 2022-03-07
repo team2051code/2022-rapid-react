@@ -23,8 +23,6 @@ import frc.robot.simulation.SimpleSimulatedChassis;
 public class DriveTrain extends SubsystemBase {
   XboxController controller = new XboxController(RobotMap.XBOX_CONTROLLER_USB_PORT);
 
-
-  
   private WPI_TalonFX m_right = new WPI_TalonFX(RobotMap.MOTOR_RIGHT);
   private WPI_TalonFX m_rightFollow = new WPI_TalonFX(RobotMap.MOTOR_RIGHT_FOLLOW);
   private WPI_TalonFX m_left = new WPI_TalonFX(RobotMap.MOTOR_LEFT);
@@ -37,7 +35,7 @@ public class DriveTrain extends SubsystemBase {
   private MotorControllerGroup m_rightSide = new MotorControllerGroup(m_right, m_rightFollow);
   CANSparkMax m_singulatorMotor = new CANSparkMax(RobotMap.SINGULATOR_MOTOR, MotorType.kBrushless);
   DifferentialDrive m_driveTrain = new DifferentialDrive(m_leftSide, m_rightSide);
- 
+
   private ADXRS450_Gyro m_gyro;
 
   // Additional state used for robot simulation
@@ -45,16 +43,15 @@ public class DriveTrain extends SubsystemBase {
   private SimpleSimulatedChassis m_simulatedChassis; // might be null
   private double m_simulatedLeftEncoder = 0;
   private double m_simulatedRightEncoder = 0;
-  
 
   public DriveTrain() {
     m_left.setSelectedSensorPosition(0);
-  //leftEncoder.setPosition(0);
-  //rightEncoder.setPosition(0);
+    // leftEncoder.setPosition(0);
+    // rightEncoder.setPosition(0);
     m_gyro = new ADXRS450_Gyro();
 
-    //leftEncoder.getPositionConversionFactor();
-  
+    // leftEncoder.getPositionConversionFactor();
+
     m_left.setInverted(true);
     m_leftFollow.setInverted(true);
 
@@ -64,22 +61,22 @@ public class DriveTrain extends SubsystemBase {
    * Call only if the robot is running in simulation. Prepares simulated parts.
    */
   public void simulationInit() {
-     m_simulatedGyro = new ADXRS450_GyroSim(m_gyro);
-     m_simulatedGyro.setAngle(30);
-     m_simulatedChassis = new SimpleSimulatedChassis(this);
-   }
+    m_simulatedGyro = new ADXRS450_GyroSim(m_gyro);
+    m_simulatedGyro.setAngle(30);
+    m_simulatedChassis = new SimpleSimulatedChassis(this);
+  }
 
   public double encoderTicksToInches(double ticks) {
 
-  //   // Possibility that GearRatio is actually 10.75
+    // // Possibility that GearRatio is actually 10.75
     final double gearRatio = (18);
-  //   // Math to calculate the number of motor pulses based on our rotations
+    // // Math to calculate the number of motor pulses based on our rotations
 
     final double pulsesPerInch = (2.0 * Math.PI) * 3 / gearRatio;
-  //   // Math to calculate the current distance of the motor using the previous
-  //   // equation
-     return (ticks / 2061 * pulsesPerInch);
-   }
+    // // Math to calculate the current distance of the motor using the previous
+    // // equation
+    return (ticks / 2061 * pulsesPerInch);
+  }
 
   public void leftSide(double Speed) {
     m_left.set(Speed);
@@ -91,49 +88,35 @@ public class DriveTrain extends SubsystemBase {
     m_rightFollow.set(Speed);
   }
 
-
-  public void intakeSpeed(double Speed)
-  {
+  public void intakeSpeed(double Speed) {
     m_intakMethod.set(Speed);
     m_singulatorMotor.set(Speed);
   }
 
-  public void setIntakeSpeed()
-  {
-    if(m_oi.getXButton2()){
-    this.m_intakMethod.set(.90);
-    this.m_singulatorMotor.set(.90);
+  public void setIntakeSpeed() {
+    if (m_oi.getXButton2()) {
+      this.m_intakMethod.set(.90);
+      this.m_singulatorMotor.set(.90);
+    } else {
+      this.m_intakMethod.set(0);
+      this.m_singulatorMotor.set(0);
     }
-    else{
-    this.m_intakMethod.set(0);
-    this.m_singulatorMotor.set(0);
   }
-}
 
-  public void SetAutonomousIntake()
-  {
+  public void SetAutonomousIntake() {
     this.m_intakMethod.set(.90);
     this.m_singulatorMotor.set(.90);
   }
 
+  public void StopIntake() {
 
-
-  public void StopIntake(){
-  
     m_intakMethod.set(0);
 
   }
 
-  
-
-
-
   public void tankDrive(double leftSpeed, double rightSpeed) {
     m_driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
-
-  
-    
 
   /**
    * Get left motor speed
@@ -153,7 +136,43 @@ public class DriveTrain extends SubsystemBase {
     return m_rightSide.get();
   }
 
+  public void SlowerControls(){
 
+    if(m_oi.getXButton())
+      {
+      m_driveTrain.tankDrive(-.5, .5);
+      }
+      else{
+      m_driveTrain.tankDrive(0, 0);
+      }
+
+
+      if(m_oi.GetAButton())
+      {
+        m_driveTrain.tankDrive(-.5, -.5);
+      }
+      else{
+        m_driveTrain.tankDrive(0, 0);
+      }
+
+      if(m_oi.getYButton()){
+      m_driveTrain.tankDrive(.5, .5);
+      }
+      else{
+      m_driveTrain.tankDrive(0, 0);  
+      }
+
+      if(m_oi.getBButton()){
+      m_driveTrain.tankDrive(.5, -.5);
+      }
+      else{
+      m_driveTrain.tankDrive(0, 0);
+      }
+      }
+
+    
+
+  
 
   /**
    * Get left raw encoder value
@@ -190,14 +209,13 @@ public class DriveTrain extends SubsystemBase {
    * 
    * @return Gyro angle in degrees
    */
-   public double getGyroAngleDegrees() {
-     return m_gyro.getAngle();
-   }
+  public double getGyroAngleDegrees() {
+    return m_gyro.getAngle();
+  }
 
-   public void resetGyro(){
+  public void resetGyro() {
     m_gyro.reset();
-   }
-
+  }
 
   /**
    * Sets left and right encoders. Generally, we don't want to call this except in
@@ -214,36 +232,36 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Resets encoders to 0 value
    */
-  public void resetEncoders()
-  {
+  public void resetEncoders() {
     m_right.setSelectedSensorPosition(0);
     m_left.setSelectedSensorPosition(0);
     m_simulatedLeftEncoder = 0;
     m_simulatedRightEncoder = 0;
   }
-  
+
   /**
    * Set a simulated gyro value. Does nothing if not simulating.
    * 
    * @param angleDegrees new angle in degrees
    */
-   public void setSimulatedGyro(double angleDegrees) {
-     if (m_simulatedGyro != null) {
-       m_simulatedGyro.setAngle(angleDegrees);
-     }
+  public void setSimulatedGyro(double angleDegrees) {
+    if (m_simulatedGyro != null) {
+      m_simulatedGyro.setAngle(angleDegrees);
+    }
   }
 
   @Override
   public void periodic() {
-    //SmartDashboard.putNumber("DistanceInInches", encoderTicksToInches(leftEncoder.getPosition()));
-    //SmartDashboard.putNumber("Encoder Position", leftEncoder.getPosition());
+    // SmartDashboard.putNumber("DistanceInInches",
+    // encoderTicksToInches(leftEncoder.getPosition()));
+    // SmartDashboard.putNumber("Encoder Position", leftEncoder.getPosition());
   }
 
-   @Override
-   public void simulationPeriodic() {
-     if (m_simulatedChassis != null) {
-       m_simulatedChassis.periodic();
-     }
-     
-   }
+  @Override
+  public void simulationPeriodic() {
+    if (m_simulatedChassis != null) {
+      m_simulatedChassis.periodic();
+    }
+
+  }
 }

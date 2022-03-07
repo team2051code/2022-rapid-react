@@ -5,6 +5,7 @@ import frc.robot.Subsystems.SingulatorInformation;
 
 public class StartSingulator extends CommandBase {
     private SingulatorInformation m_singulatorInformation;
+
     public StartSingulator(SingulatorInformation singulatorInformation) {
         m_singulatorInformation = singulatorInformation;
     }

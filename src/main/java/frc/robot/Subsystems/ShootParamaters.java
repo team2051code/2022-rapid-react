@@ -84,18 +84,18 @@ public class ShootParamaters extends SubsystemBase {
     } else {
       setTurretRotatorSpeed(0);
     }
-  
+
   }
 
-  public void updateTurretRotation(){
+  public void updateTurretRotation() {
     setTurretRotatorSpeed(updateLimelightTracking() / 60);
   }
 
-  public boolean isTurretCentered(){
+  public boolean isTurretCentered() {
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double buffer = .5;
     return (tx < 0 + buffer && tx > 0 - buffer);
-    
+
   }
 
   public void shootSpeedLeft(double speed) {
@@ -111,10 +111,10 @@ public class ShootParamaters extends SubsystemBase {
   public void calculatedShootSpeed() {
 
     if (m_oi.getRightBumper2()) {
-     setTargetSpeedToCalculatedSpeed();
-     
+      setTargetSpeedToCalculatedSpeed();
+
     } else {
-      
+
       setShooterTargetSpeed(0);
     }
 
@@ -175,42 +175,41 @@ public class ShootParamaters extends SubsystemBase {
   @Override
   public void periodic() {
     // TODO Auto-generated method stub
-  
-   double targetRpm = m_shooterController.getSetpoint();
-   if (m_shooterController.getSetpoint() == 0){
-    shootSpeedRight(0);
-    shootSpeedLeft(0);
-    m_shooterController.reset();
-   }
-   else{
-    double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
-    double outputValue = m_shooterController.calculate(measuredRpm);
-    System.out.print(" t: ");
+
+    double targetRpm = m_shooterController.getSetpoint();
+    if (m_shooterController.getSetpoint() == 0) {
+      shootSpeedRight(0);
+      shootSpeedLeft(0);
+      m_shooterController.reset();
+    } else {
+      double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
+      double outputValue = m_shooterController.calculate(measuredRpm);
+      System.out.print(" t: ");
       System.out.print(targetRpm);
       System.out.print(" m: ");
       System.out.print(measuredRpm);
       System.out.print(" o: ");
       System.out.println(outputValue);
-    outputValue = Math.max(-1, Math.min(1, outputValue));
-    shootSpeedRight(outputValue);
-    shootSpeedLeft(outputValue);
-    if(measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50){
+      outputValue = Math.max(-1, Math.min(1, outputValue));
+      shootSpeedRight(outputValue);
+      shootSpeedLeft(outputValue);
+      if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
 
-      SmartDashboard.putBoolean("ShootReady", true);
+        SmartDashboard.putBoolean("ShootReady", true);
+      } else {
+        SmartDashboard.putBoolean("ShootReady", false);
+      }
     }
-    else
-    {
-      SmartDashboard.putBoolean("ShootReady", false);
-    }
-   }
   }
-public void setShooterTargetSpeed(double speed){
+
+  public void setShooterTargetSpeed(double speed) {
     m_shooterController.setSetpoint(speed);
-}
-public void setTargetSpeedToCalculatedSpeed(){
-  double targetRpm = computeShooterVelocity();
-  setShooterTargetSpeed(targetRpm);
-}
+  }
+
+  public void setTargetSpeedToCalculatedSpeed() {
+    double targetRpm = computeShooterVelocity();
+    setShooterTargetSpeed(targetRpm);
+  }
   // public void TurretRotatorLimits()
   // {
   // if (TurretRotatorEncoder.getPosition() >= 150)

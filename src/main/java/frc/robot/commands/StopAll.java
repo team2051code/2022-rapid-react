@@ -12,40 +12,37 @@ import frc.robot.Subsystems.SingulatorInformation;
 
 public class StopAll extends CommandBase {
 
-    public Pneumatics m_pneumatics;
-    public ShootParamaters m_shoot;
-    public DriveTrain m_intakeMethod;
-    public DriveTrain m_setIntakeSpeed;
-    public DriveTrain m_driveTrain;
-    public SingulatorInformation m_singulator;
+  public Pneumatics m_pneumatics;
+  public ShootParamaters m_shoot;
+  public DriveTrain m_intakeMethod;
+  public DriveTrain m_setIntakeSpeed;
+  public DriveTrain m_driveTrain;
+  public SingulatorInformation m_singulator;
 
   /** Creates a new StopAll. */
-  public StopAll(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation) {
+  public StopAll(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters,
+      SingulatorInformation singulatorInformation) {
     // Use addRequirements() here to declare subsystem dependencies.
-
-    
 
     m_singulator = singulatorInformation;
     m_shoot = Shootparameters;
     m_driveTrain = drivetrain;
-    m_pneumatics = pneumatics; 
-
+    m_pneumatics = pneumatics;
 
     addRequirements(m_driveTrain, m_pneumatics, m_singulator, m_shoot);
-
 
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-  System.out.println("AllMotorsStopping");
-
+    System.out.println("AllMotorsStopping");
 
   }
 
@@ -58,10 +55,7 @@ public class StopAll extends CommandBase {
     m_singulator.stopSingulator();
     m_driveTrain.StopIntake();
 
-
   }
-
-
 
   // Returns true when the command should end.
   @Override

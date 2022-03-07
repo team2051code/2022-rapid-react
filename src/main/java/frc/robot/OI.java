@@ -23,7 +23,7 @@ public class OI {
   }
 
   public boolean getXButton() {
-    return m_controller2.getXButton();
+    return m_controller.getXButton();
   }
 
   public boolean getYButton() {
@@ -64,6 +64,12 @@ public class OI {
 
   public boolean GetStartButton2(){
     return m_controller2.getStartButton();
+  }
+  public boolean GetAButton(){
+    return m_controller.getAButton();
+  }
+  public boolean GetBButton2(){
+    return m_controller2.getBButton();
   }
 
 
