@@ -28,7 +28,7 @@ public class ShootParamaters extends SubsystemBase {
   WPI_TalonFX m_shooterRight = new WPI_TalonFX(RobotMap.SHOOTING_MOTOR_2);
   CANSparkMax m_turretRotator = new CANSparkMax(RobotMap.TURRET_ROTATOR, MotorType.kBrushless);
   RelativeEncoder m_turretRotatorEncoder;
-  PIDController m_shooterController = new PIDController(0.00012, 0.0000, 0);
+  PIDController m_shooterController = new PIDController(0.000075, 0.00023, 0);
 
   // public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator,
   // MotorType.kBrushless);
