@@ -16,6 +16,7 @@ public class RobotMap {
     public static final int LEFT_AXIS = 1;
     public static final int RIGHT_AXIS = 5;
     
+    public static final int Turning = 0;
     
     public static final int INTAKE_MOTOR = 6;
     public static final int TURRET_ROTATOR = 9; 

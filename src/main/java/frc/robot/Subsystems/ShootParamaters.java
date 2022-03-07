@@ -87,6 +87,12 @@ public class ShootParamaters extends SubsystemBase {
 
   }
 
+  public void ManualTurretRotation(){
+
+    m_turretRotator.set(m_oi.GetTurretRotationAxis());
+
+  }
+
   public void updateTurretRotation() {
     setTurretRotatorSpeed(updateLimelightTracking() / 60);
   }
