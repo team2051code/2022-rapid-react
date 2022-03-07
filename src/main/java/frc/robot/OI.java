@@ -14,6 +14,10 @@ public class OI {
     return m_controller.getRawAxis(axis);
   }
 
+  public double GetTurretRotationAxis(){
+    return m_controller.getRawAxis(RobotMap.Turning);
+  }
+
   public boolean getAButton2() {
     return m_controller2.getAButton();
   }
