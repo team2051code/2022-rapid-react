@@ -5,6 +5,7 @@
 package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,8 +19,13 @@ public class ClimbControls extends SubsystemBase {
   private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
   private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
 
+  private RelativeEncoder m_encoder;
+  private RelativeEncoder m_encoder2;
+
   /** Creates a new ClimbControls. */
   public ClimbControls() {
+    m_encoder = ClimbMotor1.getEncoder();
+    m_encoder2 = ClimbMotor2.getEncoder();
 
   }
 
@@ -40,17 +46,17 @@ public class ClimbControls extends SubsystemBase {
 
   }
 
-  public void BackwardsClimbSpeed() {
-    if (m_oi.getLeftBumper()) {
-      ClimbMotor1.set(-.5);
-      ClimbMotor2.set(-.5);
-    } else {
+  // public void BackwardsClimbSpeed() {
+  //   if (m_oi.getLeftBumper()) {
+  //     ClimbMotor1.set(-.5);
+  //     ClimbMotor2.set(-.5);
+  //   } else {
 
-      ClimbMotor1.set(0);
-      ClimbMotor2.set(0);
+  //     ClimbMotor1.set(0);
+  //     ClimbMotor2.set(0);
 
-    }
+  //   }
 
-  }
+ // }
 
 }
