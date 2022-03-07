@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Subsystems.BallSensor;
 import frc.robot.Subsystems.ClimbControls;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.LimeLight;
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
   private SingulatorInformation m_singulator = new SingulatorInformation();
   public PIDController m_shooterController;
   public ClimbControls m_climb = new ClimbControls();
+  public BallSensor m_ballz = new BallSensor();
 
   //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
@@ -192,7 +194,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, m_climb);
+      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, m_climb, m_ballz);
       
       CommandScheduler.getInstance().schedule(commands);
      }

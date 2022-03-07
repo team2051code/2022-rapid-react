@@ -27,11 +27,14 @@ public class BallSensor extends SubsystemBase {
 
     CloseIntake.get();
     CloseShooter.get();
+    System.out.println(CloseShooter.get());
   }
-
   public void CurrentSensorState() {
 
+
+
     if (CloseIntake.get()) {
+      
       SmartDashboard.putString("Ball?", "OneBall");
     } else {
       SmartDashboard.putString("Ball?", "NoBall");

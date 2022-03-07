@@ -138,36 +138,27 @@ public class DriveTrain extends SubsystemBase {
 
   public void SlowerControls(){
 
-    if(m_oi.getXButton())
+    while(m_oi.getXButton())
       {
-      m_driveTrain.tankDrive(-.5, .5);
+        m_driveTrain.tankDrive(-.5, .5);
       }
-      else{
-      m_driveTrain.tankDrive(0, 0);
-      }
+     
 
-
-      if(m_oi.GetAButton())
+      while(m_oi.GetAButton())
       {
         m_driveTrain.tankDrive(-.5, -.5);
       }
-      else{
-        m_driveTrain.tankDrive(0, 0);
-      }
+      
 
-      if(m_oi.getYButton()){
+      while(m_oi.getYButton()){
       m_driveTrain.tankDrive(.5, .5);
       }
-      else{
-      m_driveTrain.tankDrive(0, 0);  
-      }
+     
 
-      if(m_oi.getBButton()){
+     while(m_oi.getBButton()){
       m_driveTrain.tankDrive(.5, -.5);
       }
-      else{
-      m_driveTrain.tankDrive(0, 0);
-      }
+      
       }
 
     
