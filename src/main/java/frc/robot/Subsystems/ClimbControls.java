@@ -20,22 +20,16 @@ public class ClimbControls extends SubsystemBase {
 
   private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
   private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
-/*
+
   private RelativeEncoder m_encoder;
 
 
 
   /** Creates a new ClimbControls. */
   public ClimbControls() {
-<<<<<<< HEAD
-   /* m_encoder = ClimbMotor1.getEncoder();
-    m_encoder2 = ClimbMotor2.getEncoder();
-*/
-=======
 
     m_encoder = ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
 
->>>>>>> 418825686aa901616d85893437821e73a7a3703b
   }
 
   @Override
@@ -44,15 +38,11 @@ public class ClimbControls extends SubsystemBase {
   }
 
   public void ReadClimbEncoders() {
-/*
+
     SmartDashboard.putNumber("Encoder Position", m_encoder.getPosition());
-<<<<<<< HEAD
-    SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
-*/
-=======
+
     //SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
 
->>>>>>> 418825686aa901616d85893437821e73a7a3703b
   }
 
   public void ForwardClimbSpeed() {
