@@ -42,22 +42,15 @@ public class Pneumatics extends SubsystemBase {
 
   }
 
-  public void backwards(){
-    if(m_oi.GetStartButton2()){
+  public void backwards() {
+    if (m_oi.GetStartButton2()) {
       m_doubleSolenoid2.set(Value.kReverse);
-    }else{
-        m_doubleSolenoid2.set(Value.kOff);
-
-      }
-
-
+    } else {
+      m_doubleSolenoid2.set(Value.kOff);
 
     }
 
-
-  
-
-
+  }
 
   public void solenoidState() {
     Value state = m_doubleSolenoid.get();

@@ -40,7 +40,7 @@ public class Wait extends CommandBase {
   // // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  SmartDashboard.putNumber("CurrentTime", m_timer.get());
+    SmartDashboard.putNumber("CurrentTime", m_timer.get());
 
   }
 
@@ -56,7 +56,6 @@ public class Wait extends CommandBase {
   public boolean isFinished() {
     double currentTime = m_timer.get();
 
-    
     return currentTime >= m_wait;
 
   }

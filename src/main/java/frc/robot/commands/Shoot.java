@@ -40,18 +40,17 @@ public class Shoot extends CommandBase {
     m_shooterController.setSetpoint(targetRpm);
     double measuredRpm = m_shoot.m_shooterLeft.getSelectedSensorVelocity();
     double outputValue = m_shooterController.calculate(measuredRpm);
-    
+
     outputValue = Math.max(-1, Math.min(1, outputValue));
 
     m_shoot.shootSpeedRight(outputValue);
     m_shoot.shootSpeedLeft(outputValue);
 
-
     if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
       SmartDashboard.putBoolean("ShootReady", true);
       m_driveTrain.setIntakeSpeed();
       m_singulator.setSingulatorSpeed();
-      
+
     } else {
       SmartDashboard.putBoolean("ShootReady", false);
     }
@@ -104,7 +103,6 @@ public class Shoot extends CommandBase {
 
     return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
   }
-
 
   // Called when the command is initially scheduled.
   @Override

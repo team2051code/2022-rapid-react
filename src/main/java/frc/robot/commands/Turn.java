@@ -10,13 +10,17 @@ import frc.robot.Subsystems.DriveTrain;
 public class Turn extends CommandBase {
   private DriveTrain m_driveTrain;
   private double m_turnDegrees;
-  /** Creates a new Turn. 
-   * @param drivetrain */
+
+  /**
+   * Creates a new Turn.
+   * 
+   * @param drivetrain
+   */
   public Turn(DriveTrain driveTrain, double turnDegrees) {
 
-  m_driveTrain = driveTrain;
+    m_driveTrain = driveTrain;
 
-  m_turnDegrees = turnDegrees;
+    m_turnDegrees = turnDegrees;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -25,8 +29,7 @@ public class Turn extends CommandBase {
   @Override
   public void initialize() {
 
-  m_driveTrain.resetGyro();    
-
+    m_driveTrain.resetGyro();
 
   }
 
@@ -34,17 +37,12 @@ public class Turn extends CommandBase {
   @Override
   public void execute() {
 
-    if(m_turnDegrees > 0)
-    {
+    if (m_turnDegrees > 0) {
       System.out.println("RobotTurning");
       m_driveTrain.tankDrive(-.5, .5);
-    }
-    else{
+    } else {
       m_driveTrain.tankDrive(.5, -.5);
     }
-
-
-
 
   }
 
@@ -54,21 +52,20 @@ public class Turn extends CommandBase {
 
     m_driveTrain.tankDrive(0, 0);
 
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  System.out.println(m_driveTrain.getGyroAngleDegrees());
+    System.out.println(m_driveTrain.getGyroAngleDegrees());
 
-    if(m_turnDegrees < 0){
-        
+    if (m_turnDegrees < 0) {
+
       return (m_driveTrain.getGyroAngleDegrees() <= m_turnDegrees);
-      
-      }
 
-  return (m_driveTrain.getGyroAngleDegrees() >= m_turnDegrees);
-  
+    }
+
+    return (m_driveTrain.getGyroAngleDegrees() >= m_turnDegrees);
+
   }
 }
