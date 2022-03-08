@@ -10,34 +10,39 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BallSensor extends SubsystemBase {
 
-  DigitalInput CloseIntake = new DigitalInput(0);
-  DigitalInput CloseShooter = new DigitalInput(1);
+  private DigitalInput CloseIntake; 
+  private DigitalInput CloseShooter; 
 
+  
   /** Creates a new BallSensor. */
   public BallSensor() {
+
+  CloseIntake = new DigitalInput(0);
+  CloseShooter = new DigitalInput(1);
+
   }
 
   @Override
   public void periodic() {
-    if (!CloseIntake.get()) {
+    // if (!CloseIntake.get()) {
       
-      SmartDashboard.putString("Ball?", "OneBall");
-    } else {
-      SmartDashboard.putString("Ball?", "NoBall");
-    }
+    //   SmartDashboard.putString("Ball?", "OneBall");
+    // } else {
+    //   SmartDashboard.putString("Ball?", "NoBall");
+    // }
 
-    if (!CloseShooter.get()) {
+    // if (!CloseShooter.get()) {
 
-      SmartDashboard.putString("Secondball?", "SecondBall");
-    } else {
-      SmartDashboard.putString("SecondBall?", "NoSecondBall");
-    }
+    //   SmartDashboard.putString("Secondball?", "SecondBall");
+    // } else {
+    //   SmartDashboard.putString("SecondBall?", "NoSecondBall");
+    // }
 
-    if (!CloseIntake.get() && !CloseShooter.get()) {
-      SmartDashboard.putString("Bothballs?", "BothBalls");
-    } else {
-      SmartDashboard.putString("BothBalls?", "NoBothBalls");
-    }
+    // if (!CloseIntake.get() && !CloseShooter.get()) {
+    //   SmartDashboard.putString("Bothballs?", "BothBalls");
+    // } else {
+    //   SmartDashboard.putString("BothBalls?", "NoBothBalls");
+    // }
   }
     // This method will be called once per scheduler run
   
@@ -46,6 +51,9 @@ public class BallSensor extends SubsystemBase {
 
     CloseIntake.get();
     CloseShooter.get();
+
+    
+
     //System.out.println(CloseShooter.get());
   }
 }
