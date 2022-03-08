@@ -17,7 +17,7 @@ public class AutonomousShooting extends SequentialCommandGroup {
                 new SpinUpShooter(shootParamaters),
                 // Shoot balls in singulator
                 new StartSingulator(singulatorInformation),
-                new Wait(2),
+                new Wait(1),
                 new StopAll(
                         drivetrain,
                         pneumatics,

@@ -48,9 +48,6 @@ public class Shoot extends CommandBase {
 
     if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
       SmartDashboard.putBoolean("ShootReady", true);
-      m_driveTrain.setIntakeSpeed();
-      m_singulator.setSingulatorSpeed();
-
     } else {
       SmartDashboard.putBoolean("ShootReady", false);
     }

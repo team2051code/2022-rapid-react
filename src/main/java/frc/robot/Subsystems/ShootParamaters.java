@@ -120,7 +120,6 @@ public class ShootParamaters extends SubsystemBase {
       setTargetSpeedToCalculatedSpeed();
 
     } else {
-
       setShooterTargetSpeed(0);
     }
 
@@ -153,6 +152,10 @@ public class ShootParamaters extends SubsystemBase {
     double limeangleD = ty + 25;
     // distance between ballshooter and target
     double distance = ((((targetHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
+
+    
+
+
 
     // speed of the ball needed to reach the target
     double ballspeed = Math.sqrt(((distance + 7) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
