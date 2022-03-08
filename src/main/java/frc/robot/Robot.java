@@ -19,6 +19,7 @@ import frc.robot.Subsystems.DriveTrain;
 import frc.robot.Subsystems.Pneumatics;
 import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
+import frc.robot.commands.AutonomousIntake;
 import frc.robot.commands.AutonomousShooting;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
@@ -121,14 +122,16 @@ public class Robot extends TimedRobot {
      SequentialCommandGroup commands = new SequentialCommandGroup(
 
      //Start of Autonomous Code for Blue Tarmac At Bottom of Field
-    new Drive(m_driveTrain, m_ShootParamaters, 36),
+    new Drive(m_driveTrain, m_ShootParamaters, 24),
     new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
     new Wait(1),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-          new Wait(1),
+        //new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+          //new Wait(1),
             new Turn(m_driveTrain, -82.5),
               new Wait(1), 
-               new Drive(m_driveTrain, m_ShootParamaters, -129.2)
+                new AutonomousIntake(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+                  new Drive(m_driveTrain, m_ShootParamaters, -129.2)
+
     // End of Autonomous Code For Blue Tarmac at Bottom Of Field
 
     //Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
