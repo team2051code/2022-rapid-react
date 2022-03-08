@@ -75,7 +75,7 @@ m_ballz.ReadLineSensors();
 //Commands to GearShift and Raise/Lower the intake
 m_pneumatics.forwards();
 m_pneumatics.gearShift();
-m_pneumatics.backwards();
+//m_pneumatics.backwards();
 
 //Command to set the Speed of the Singulator
 m_singulator.setSingulatorSpeed();

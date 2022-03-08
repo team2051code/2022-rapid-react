@@ -23,7 +23,8 @@ public class Pneumatics extends SubsystemBase {
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
   public OI m_oi = new OI();
   DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-  DoubleSolenoid m_doubleSolenoid2 = new DoubleSolenoid(PneumaticsModuleType.REVPH, 3, 4);
+  Solenoid m_SingleFirst = new Solenoid(PneumaticsModuleType.REVPH, 3);
+  Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH, 4);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
   public void gearShift() {
@@ -34,20 +35,44 @@ public class Pneumatics extends SubsystemBase {
   }
 
   public void forwards() {
-    if (m_oi.getBackButton2()) {
-      m_doubleSolenoid2.set(Value.kForward);
-    } else {
-      m_doubleSolenoid2.set(Value.kOff);
+
+    if(m_oi.GetStartButton2())
+    {
+        m_SingleFirst.set(true);
+        m_SingleSecond.set(false);
+    }
+    else{
+      m_SingleSecond.set(true);
+      m_SingleFirst.set(false);
     }
 
-  }
 
-  public void backwards() {
-    if (m_oi.GetStartButton2()) {
-      m_doubleSolenoid2.set(Value.kReverse);
-    }
+    // if (m_oi.GetStartButton2()) {
+    //   m_SingleFirst.set(true);
+    // }
+    //   else{
+    //     if(m_oi.getBackButton2()){
+    //       m_SingleSecond.set(true);
+    //         }
+    //         else{
+    //           m_SingleFirst.set(false);
+    //           m_SingleSecond.set(false);
 
-  }
+    //         }
+        //}
+      }
+
+
+
+  // public void backwards() {
+  // if (m_oi.GetStartButton2()) {
+  // m_SingleSecond.set(true);
+  // }
+  // else{
+  // m_SingleSecond.set(false);
+  // }
+
+  // }
 
   public void solenoidState() {
     Value state = m_doubleSolenoid.get();

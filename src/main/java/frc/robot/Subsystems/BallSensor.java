@@ -27,7 +27,7 @@ public class BallSensor extends SubsystemBase {
 
     CloseIntake.get();
     CloseShooter.get();
-    System.out.println(CloseShooter.get());
+    //System.out.println(CloseShooter.get());
   }
   public void CurrentSensorState() {
 
