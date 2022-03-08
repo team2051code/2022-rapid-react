@@ -51,10 +51,23 @@ public class BallSensor extends SubsystemBase {
 
     CloseIntake.get();
     CloseShooter.get();
-
-    
-
     //System.out.println(CloseShooter.get());
   }
-}
+
+  public boolean ReadFirstSensor(){
+
+    return !CloseIntake.get();
+  }
+
+  public boolean ReadSecondSensor(){
+    return !CloseShooter.get();
+  }
+
   
+public void PrintSensor(){
+SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
+SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
+
+
+}
+}

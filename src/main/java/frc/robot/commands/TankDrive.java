@@ -69,7 +69,8 @@ m_driveTrain.setIntakeSpeed();
 //Sets the Speed That The Climb Raises
 //m_ballz.CurrentSensorState();
 m_ballz.ReadLineSensors();
-
+m_ballz.ReadFirstSensor();
+m_ballz.ReadSecondSensor();
 //m_oi.UpdateToggle();
 
 //Commands to GearShift and Raise/Lower the intake
