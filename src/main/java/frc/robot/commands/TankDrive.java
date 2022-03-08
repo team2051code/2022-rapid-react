@@ -67,7 +67,7 @@ M_shoot.calculatedShootSpeed();
 //Sets the Intake Speed To a Certain Value
 m_driveTrain.setIntakeSpeed();
 //Sets the Speed That The Climb Raises
-m_ballz.CurrentSensorState();
+//m_ballz.CurrentSensorState();
 m_ballz.ReadLineSensors();
 
 //m_oi.UpdateToggle();

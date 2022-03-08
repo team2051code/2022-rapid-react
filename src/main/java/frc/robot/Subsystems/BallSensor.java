@@ -19,9 +19,28 @@ public class BallSensor extends SubsystemBase {
 
   @Override
   public void periodic() {
+    if (!CloseIntake.get()) {
+      
+      SmartDashboard.putString("Ball?", "OneBall");
+    } else {
+      SmartDashboard.putString("Ball?", "NoBall");
+    }
 
-    // This method will be called once per scheduler run
+    if (!CloseShooter.get()) {
+
+      SmartDashboard.putString("Secondball?", "SecondBall");
+    } else {
+      SmartDashboard.putString("SecondBall?", "NoSecondBall");
+    }
+
+    if (!CloseIntake.get() && !CloseShooter.get()) {
+      SmartDashboard.putString("Bothballs?", "BothBalls");
+    } else {
+      SmartDashboard.putString("BothBalls?", "NoBothBalls");
+    }
   }
+    // This method will be called once per scheduler run
+  
 
   public void ReadLineSensors() {
 
@@ -29,29 +48,5 @@ public class BallSensor extends SubsystemBase {
     CloseShooter.get();
     //System.out.println(CloseShooter.get());
   }
-  public void CurrentSensorState() {
-
-
-
-    if (CloseIntake.get()) {
-      
-      SmartDashboard.putString("Ball?", "OneBall");
-    } else {
-      SmartDashboard.putString("Ball?", "NoBall");
-    }
-
-    if (CloseShooter.get()) {
-
-      SmartDashboard.putString("Secondball?", "SecondBall");
-    } else {
-      SmartDashboard.putString("SecondBall?", "NoSecondBall");
-    }
-
-    if (CloseIntake.get() && CloseShooter.get()) {
-      SmartDashboard.putString("Bothballs?", "BothBalls");
-    } else {
-      SmartDashboard.putString("BothBalls?", "NoBothBalls");
-    }
-  }
-
 }
+  
