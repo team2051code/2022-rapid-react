@@ -150,12 +150,12 @@ public class ShootParamaters extends SubsystemBase {
     // angle of the ball shooter in degrees
     double shootangleD = 55;
     // angle between middle of limelight and target in degrees
-    double limeangleD = ty + 35;
+    double limeangleD = ty + 25;
     // distance between ballshooter and target
     double distance = ((((targetHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
 
     // speed of the ball needed to reach the target
-    double ballspeed = Math.sqrt(((distance + 9) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
+    double ballspeed = Math.sqrt(((distance + 7) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
     // final velocity of the ball
     double vf = wheelToBall * ballspeed;
     // speed of the wheel needed to accelerate the ball

@@ -36,7 +36,7 @@ public class Pneumatics extends SubsystemBase {
 
   public void forwards() {
 
-    if(m_oi.GetStartButton2())
+    if(m_oi.getBackButton2())
     {
         m_SingleFirst.set(true);
         m_SingleSecond.set(false);
