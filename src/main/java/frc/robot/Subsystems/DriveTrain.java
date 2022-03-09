@@ -27,8 +27,10 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX m_rightFollow = new WPI_TalonFX(RobotMap.MOTOR_RIGHT_FOLLOW);
   private WPI_TalonFX m_left = new WPI_TalonFX(RobotMap.MOTOR_LEFT);
   private WPI_TalonFX m_leftFollow = new WPI_TalonFX(RobotMap.MOTOR_LEFT_FOLLOW);
+  private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
+  private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
   public OI m_oi = new OI();
-
+  
   private CANSparkMax m_intakMethod = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
 
   private MotorControllerGroup m_leftSide = new MotorControllerGroup(m_left, m_leftFollow);
@@ -135,6 +137,28 @@ public class DriveTrain extends SubsystemBase {
   public double getRightMotorSpeed() {
     return m_rightSide.get();
   }
+
+  public void ForwardClimbSpeed() {
+    ClimbMotor2.setInverted(true);
+    
+    if (m_oi.getRightBumper()) {
+      ClimbMotor1.set(.2);
+      ClimbMotor2.set(.2);
+    }
+    else if (m_oi.getLeftBumper()){
+      ClimbMotor1.set(-.2);
+      ClimbMotor2.set(-.2);
+    }
+    else {
+
+      ClimbMotor1.set(0);
+      ClimbMotor2.set(0);
+    }
+   
+   
+  }
+ 
+
 
   public void SlowerControls(){
 
