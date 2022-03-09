@@ -77,11 +77,15 @@ m_pneumatics.forwards();
 m_pneumatics.gearShift();
 //m_pneumatics.backwards();
 
+m_climb.ReadClimbEncoders();
+
 //Command to set the Speed of the Singulator
 m_singulator.setSingulatorSpeed();
 //Sets the Paramaters and Controls For The Climb Mechanism
+//m_climb.ForwardClimbSpeed();
 m_climb.ForwardClimbSpeed();
-m_climb.ReadClimbEncoders();
+
+//m_climb.ReadClimbEncoders();
 
 //Subsytem for the Caluated Shoot Speed
 //double CalculatedShootSpeed = M_shoot.computeShooterVelocity();

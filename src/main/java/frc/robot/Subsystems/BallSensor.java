@@ -65,8 +65,10 @@ public class BallSensor extends SubsystemBase {
 
   
 public void PrintSensor(){
-SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
-SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
+//SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
+//SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
+// System.out.println(ReadFirstSensor());
+// System.out.print(ReadSecondSensor());
 
 
 }

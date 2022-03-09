@@ -94,7 +94,7 @@ public class ShootParamaters extends SubsystemBase {
   }
 
   public void updateTurretRotation() {
-    setTurretRotatorSpeed(updateLimelightTracking() / 60);
+    setTurretRotatorSpeed(updateLimelightTracking() / 40);
   }
 
   public boolean isTurretCentered() {
@@ -145,15 +145,15 @@ public class ShootParamaters extends SubsystemBase {
     // distance from ground to limelight
     final double limeToGround = .679;
     // distance from the limelight to the shooter
-    final double limeToShooter = 0;
+    final double limeToShooter = .2286;
     // angle of the ball shooter in degrees
     double shootangleD = 55;
     // angle between middle of limelight and target in degrees
-    double limeangleD = ty + 25;
+    double limeangleD = ty + 27.5;
     // distance between ballshooter and target
     double distance = ((((targetHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
 
-    
+    double distance2 = (distance / 2) * 3.281;
 
 
 
@@ -172,13 +172,14 @@ public class ShootParamaters extends SubsystemBase {
     // SmartDashboard.putNumber("wheel speed", wheelspeed);
     // SmartDashboard.putNumber("ball speed", ballspeed);
     // SmartDashboard.putNumber("TY", Math.abs(ty));
-    // SmartDashboard.putNumber("distance to target", distance);
+     SmartDashboard.putNumber("distance to target", distance2);
 
     // TODO: boost output by 15% of max RPM (fudge factor)
     final double ENCODER_TICKS_PER_REVOLUTION = 2048;
     final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
     return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
+    
   }
 
   @Override
@@ -194,9 +195,9 @@ public class ShootParamaters extends SubsystemBase {
       double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
       double outputValue = m_shooterController.calculate(measuredRpm);
       System.out.print(" t: ");
-      System.out.print(targetRpm);
+      System.out.print(targetRpm / (2048.0 / 600));
       System.out.print(" m: ");
-      System.out.print(measuredRpm);
+      System.out.print(measuredRpm / (2048.0 / 600));
       System.out.print(" o: ");
       System.out.println(outputValue);
       outputValue = Math.max(-1, Math.min(1, outputValue));
@@ -219,6 +220,7 @@ public class ShootParamaters extends SubsystemBase {
     double targetRpm = computeShooterVelocity();
     setShooterTargetSpeed(targetRpm);
   }
+ 
   // public void TurretRotatorLimits()
   // {
   // if (TurretRotatorEncoder.getPosition() >= 150)
