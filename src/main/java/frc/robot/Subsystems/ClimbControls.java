@@ -4,6 +4,9 @@
 
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -15,26 +18,25 @@ import frc.robot.OI;
 import frc.robot.RobotMap;
 
 public class ClimbControls extends SubsystemBase {
-  private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
-  private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
+  TalonSRX talon = new TalonSRX(11);
+  TalonSRX talon2 = new TalonSRX(12);
+
   public OI m_oi = new OI();
+
+  public static final int kCPR = 4096;
 
   //private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
   //private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
 
-  private RelativeEncoder m_encoder;
-  private RelativeEncoder m_encoder2;
+  
 
 
   /** Creates a new ClimbControls. */
   public ClimbControls() {
 
-    ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
-    m_encoder = ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
-    ClimbMotor2.getAlternateEncoder(Type.kQuadrature, 4096);
-    m_encoder2 = ClimbMotor2.getAlternateEncoder(Type.kQuadrature, 4096);
-    m_encoder.getPosition();
-    m_encoder2.getPosition();
+    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    talon.getSelectedSensorPosition();
+    
   }
 
   @Override
@@ -44,31 +46,34 @@ public class ClimbControls extends SubsystemBase {
 
 
   public void ForwardClimbSpeed() {
-    ClimbMotor2.setInverted(true);
+    talon2.setInverted(true);
     
     if (m_oi.getRightBumper()) {
-      ClimbMotor1.set(.2);
-      ClimbMotor2.set(.2);
+      talon.set(ControlMode.PercentOutput, .3);
+      talon2.set(ControlMode.PercentOutput, .3);
 
-    SmartDashboard.putNumber("Encoder Position", m_encoder.getPosition());
-    SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
+   talon.getSelectedSensorPosition();
+   talon2.getSelectedSensorPosition();
+
+
+    SmartDashboard.putNumber("Encoder Position", talon.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Encoder Position2", talon2.getSelectedSensorPosition());
 
     }
     else if (m_oi.getLeftBumper()){
-      ClimbMotor1.set(-.2);
-      ClimbMotor2.set(-.2);
+      talon.set(ControlMode.PercentOutput, -.2);
+      talon2.set(ControlMode.PercentOutput, -.2);
     }
     else {
 
-      ClimbMotor1.set(0);
-      ClimbMotor2.set(0);
+      talon.set(ControlMode.PercentOutput, 0);
+      talon2.set(ControlMode.PercentOutput, 0);
     }
   }
 
 
   public void ReadClimbEncoders() {
-    //m_encoder.getPosition();
-    //m_encoder2.getPosition();
+    
     
 
     //SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
@@ -77,6 +82,8 @@ public class ClimbControls extends SubsystemBase {
 
 
   public void ResetEncoders(){
+   talon.setSelectedSensorPosition(0);
+   talon2.setSelectedSensorPosition(0);
 
 
   }
