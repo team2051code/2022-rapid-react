@@ -122,36 +122,40 @@ public class Robot extends TimedRobot {
      SequentialCommandGroup commands = new SequentialCommandGroup(
 
      //Start of Autonomous Code for Blue Tarmac At Bottom of Field
-    new Drive(m_driveTrain, m_ShootParamaters, 24),
-    new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-    new Wait(1),
-        //new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-          //new Wait(1),
-            new Turn(m_driveTrain, -82.5),
-              new Wait(1), 
-                new AutonomousIntake(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-                  new Drive(m_driveTrain, m_ShootParamaters, -129.2)
+    // new Drive(m_driveTrain, m_ShootParamaters, 24),
+    // new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    // new Wait(1),
+    //     //new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //       //new Wait(1),
+    //         new Turn(m_driveTrain, -82.5),
+    //           new Wait(1), 
+    //             new AutonomousIntake(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //               new Drive(m_driveTrain, m_ShootParamaters, -129.2),
 
     // End of Autonomous Code For Blue Tarmac at Bottom Of Field
 
     //Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
-      //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
+    // new Drive(m_driveTrain, m_ShootParamaters, 24),
+    //   new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
     //     new Wait(1),
-    //      new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-    //        new Wait(1),
+    //      //new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+    //        //new Wait(1),
     //          new Turn(m_driveTrain, 106),
     //           new Wait(1),
     //             new Drive(m_driveTrain, m_ShootParamaters, -88),
+    //               new AutonomousIntake(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
     // //End of Autonomous Code for Blue Tarmac on The Top Left Of The Field
 
     // //Start of Autonomous Code for Red Tarmac On the Bottom Right Of The Field
-    //    //new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
-    //    new Wait(1),
-    //      new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-    //        new Wait(1),
-    //          new Turn(m_driveTrain, 74),
-    //            new Wait(1),
-    //             new Drive(m_driveTrain, m_ShootParamaters, -88),
+      new Drive(m_driveTrain, m_ShootParamaters, 24),
+       new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new Wait(1),
+         //new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+           //new Wait(1),
+             new Turn(m_driveTrain, 74),
+               new Wait(1),
+                new Drive(m_driveTrain, m_ShootParamaters, -88),
+                  new AutonomousIntake(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
     // //End of Autonomous Code For Red Tarmac On The Bottom Right Of The Field
 
     // //Start of Autonomous Code For Red Tarmac On The Top Right Of The Field

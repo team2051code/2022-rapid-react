@@ -53,6 +53,7 @@ public class TankDrive extends CommandBase {
 @Override public void initialize(){
 //Sets the left and Right encoder sensors to 0 every time the robot starts up 
 m_driveTrain.resetEncoders();
+m_climb.ResetEncoders();
 }
 
 @Override public void execute(){
