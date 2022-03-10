@@ -17,100 +17,96 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 
-public class ClimbControls extends SubsystemBase {
-  TalonSRX talon = new TalonSRX(11);
-  TalonSRX talon2 = new TalonSRX(12);
+// public class ClimbControls extends SubsystemBase {
+//   private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
+//   private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
+//   public OI m_oi = new OI();
 
-  public OI m_oi = new OI();
+//   //private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
+//   //private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
 
-  public static final int kCPR = 4096;
-
-  //private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
-  //private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
-
-  
+//   private RelativeEncoder m_encoder;
+//   private RelativeEncoder m_encoder2;
 
 
-  /** Creates a new ClimbControls. */
-  public ClimbControls() {
+//   /** Creates a new ClimbControls. */
+//   public ClimbControls() {
 
-    talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-    talon.getSelectedSensorPosition();
+//     ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
+//     m_encoder = ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
+//     ClimbMotor2.getAlternateEncoder(Type.kQuadrature, 4096);
+//     m_encoder2 = ClimbMotor2.getAlternateEncoder(Type.kQuadrature, 4096);
+//     m_encoder.getPosition();
+//     m_encoder2.getPosition();
+//   }
+
+//   @Override
+//   public void periodic() {
+//     // This method will be called once per scheduler run
+//   }
+
+
+//   public void ForwardClimbSpeed() {
+//     ClimbMotor2.setInverted(true);
     
-  }
+//     if (m_oi.getRightBumper()) {
+//       ClimbMotor1.set(.2);
+//       ClimbMotor2.set(.2);
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+//     SmartDashboard.putNumber("Encoder Position", m_encoder.getPosition());
+//     SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
 
+//     }
+//     else if (m_oi.getLeftBumper()){
+//       ClimbMotor1.set(-.2);
+//       ClimbMotor2.set(-.2);
+//     }
+//     else {
 
-  public void ForwardClimbSpeed() {
-    talon2.setInverted(true);
-    
-    if (m_oi.getRightBumper()) {
-      talon.set(ControlMode.PercentOutput, .3);
-      talon2.set(ControlMode.PercentOutput, .3);
-
-   talon.getSelectedSensorPosition();
-   talon2.getSelectedSensorPosition();
-
-
-    SmartDashboard.putNumber("Encoder Position", talon.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Encoder Position2", talon2.getSelectedSensorPosition());
-
-    }
-    else if (m_oi.getLeftBumper()){
-      talon.set(ControlMode.PercentOutput, -.2);
-      talon2.set(ControlMode.PercentOutput, -.2);
-    }
-    else {
-
-      talon.set(ControlMode.PercentOutput, 0);
-      talon2.set(ControlMode.PercentOutput, 0);
-    }
-  }
+//       ClimbMotor1.set(0);
+//       ClimbMotor2.set(0);
+//     }
+//   }
 
 
-  public void ReadClimbEncoders() {
-    
+//   public void ReadClimbEncoders() {
+//     //m_encoder.getPosition();
+//     //m_encoder2.getPosition();
     
 
-    //SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
+//     //SmartDashboard.putNumber("Encoder Position2", m_encoder2.getPosition());
 
-  } 
-
-
-  public void ResetEncoders(){
-   talon.setSelectedSensorPosition(0);
-   talon2.setSelectedSensorPosition(0);
+//   } 
 
 
-  }
+//   public void ResetEncoders(){
 
-  // public void ForwardClimbSpeed() {
-  //   if (m_oi.getRightBumper()) {
-  //     ClimbMotor1.set(.5);
-  //     ClimbMotor2.set(.5);
-  //   } else {
 
-  //     ClimbMotor1.set(0);
-  //     ClimbMotor2.set(0);
-  //   }
+//   }
 
-  //}
+//   // public void ForwardClimbSpeed() {
+//   //   if (m_oi.getRightBumper()) {
+//   //     ClimbMotor1.set(.5);
+//   //     ClimbMotor2.set(.5);
+//   //   } else {
 
-  // public void BackwardsClimbSpeed() {
-  // if (m_oi.getLeftBumper()) {
-  // ClimbMotor1.set(-.5);
-  // ClimbMotor2.set(-.5);
-  // } else {
+//   //     ClimbMotor1.set(0);
+//   //     ClimbMotor2.set(0);
+//   //   }
 
-  // ClimbMotor1.set(0);
-  // ClimbMotor2.set(0);
+//   //}
 
-  // }
+//   // public void BackwardsClimbSpeed() {
+//   // if (m_oi.getLeftBumper()) {
+//   // ClimbMotor1.set(-.5);
+//   // ClimbMotor2.set(-.5);
+//   // } else {
 
-  // }
+//   // ClimbMotor1.set(0);
+//   // ClimbMotor2.set(0);
 
-}
+//   // }
+
+//   // }
+
+// }
