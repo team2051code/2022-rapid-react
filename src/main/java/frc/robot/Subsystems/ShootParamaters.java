@@ -192,12 +192,12 @@ public class ShootParamaters extends SubsystemBase {
       shootSpeedLeft(0);
       m_shooterController.reset();
     } else {
-      double measuredRpm = m_shooterLeft.getSelectedSensorVelocity();
+      double measuredRpm = m_shooterRight.getSelectedSensorVelocity();
       double outputValue = m_shooterController.calculate(measuredRpm);
       System.out.print(" t: ");
-      System.out.print(targetRpm / (2048.0 / 600));
+      System.out.print(targetRpm);
       System.out.print(" m: ");
-      System.out.print(measuredRpm / (2048.0 / 600));
+      System.out.print(measuredRpm);
       System.out.print(" o: ");
       System.out.println(outputValue);
       outputValue = Math.max(-1, Math.min(1, outputValue));

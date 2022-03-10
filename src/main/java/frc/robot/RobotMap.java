@@ -9,7 +9,7 @@ public class RobotMap {
     public static final int MOTOR_LEFT_FOLLOW = 4;
     public static final int XBOX_CONTROLLER_USB_PORT = 0;
 
-    public static final int SHOOTING_MOTOR_1 = 0;
+    public static final int SHOOTING_MOTOR_1 = 12;
     public static final int SHOOTING_MOTOR_2 = 5;
     
     
@@ -23,6 +23,6 @@ public class RobotMap {
     public static final int SINGULATOR_MOTOR = 7;
     public static final int SINGULATOR_MOTOR_2 = 10;
     public static final int ClimbMotor1 = 11;
-    public static final int ClimbMotor2 = 12;
+    //public static final int ClimbMotor2 = 12;
 
 }
