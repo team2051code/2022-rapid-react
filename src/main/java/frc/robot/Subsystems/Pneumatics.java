@@ -17,14 +17,20 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
+import frc.robot.RobotMap;
 
 public class Pneumatics extends SubsystemBase {
   /** Creates a new Pneumatics. */
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
   public OI m_oi = new OI();
-  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
-  Solenoid m_SingleFirst = new Solenoid(PneumaticsModuleType.REVPH, 3);
-  Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH, 4);
+  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(
+    PneumaticsModuleType.REVPH, 
+    RobotMap.GEARBOX_FORWARD_PCM_CHANNEL, 
+    RobotMap.GEARBOX_REVERSE_PCM_CHANNEL);
+  Solenoid m_SingleFirst = new Solenoid(PneumaticsModuleType.REVPH,
+    RobotMap.INTAKE_DOWN_CHANNEL);
+  Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH,
+    RobotMap.INTAKE_UP_CHANNEL);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
 
   public void gearShift() {
