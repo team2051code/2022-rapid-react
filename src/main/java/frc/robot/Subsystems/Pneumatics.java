@@ -22,7 +22,7 @@ public class Pneumatics extends SubsystemBase {
   /** Creates a new Pneumatics. */
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
   public OI m_oi = new OI();
-  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 5);
   Solenoid m_SingleFirst = new Solenoid(PneumaticsModuleType.REVPH, 3);
   Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH, 4);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
@@ -32,7 +32,14 @@ public class Pneumatics extends SubsystemBase {
       m_doubleSolenoid.set(Value.kReverse);
       m_doubleSolenoid.toggle();
     }
+    
   }
+
+  public void AutonomousForward(){
+  m_SingleFirst.set(true);
+  m_SingleSecond.set(false);
+  }
+  
 
   public void forwards() {
 
@@ -45,6 +52,8 @@ public class Pneumatics extends SubsystemBase {
       m_SingleSecond.set(true);
       m_SingleFirst.set(false);
     }
+
+
 
 
     // if (m_oi.GetStartButton2()) {

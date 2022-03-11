@@ -18,7 +18,6 @@ public class Drive extends CommandBase {
         M_Shoot = Shootparamaters;
         m_driveTrain = driveTrain;
         m_desiredDistance = distanceInches;
-
     }
 
     @Override
@@ -35,11 +34,13 @@ public class Drive extends CommandBase {
         System.out.println("Driving Forwards");
 
         if (m_desiredDistance > 0) {
+            m_driveTrain.SetAutonomousIntake();
             m_driveTrain.tankDrive(.5, .5);
         } else {
-
+            m_driveTrain.SetAutonomousIntake();
             m_driveTrain.tankDrive(-.5, -.5);
         }
+
 
         SmartDashboard.putNumber("DistanceTraveled", m_driveTrain.getEncoderInches());
 
@@ -51,6 +52,7 @@ public class Drive extends CommandBase {
     public void end(boolean interrupt) {
 
         m_driveTrain.tankDrive(0, 0);
+        m_driveTrain.StopIntake();
 
     }
 
