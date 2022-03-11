@@ -38,7 +38,14 @@ public class Pneumatics extends SubsystemBase {
       m_doubleSolenoid.set(Value.kReverse);
       m_doubleSolenoid.toggle();
     }
+    
   }
+
+  public void AutonomousForward(){
+  m_SingleFirst.set(true);
+  m_SingleSecond.set(false);
+  }
+  
 
   public void forwards() {
 
@@ -51,6 +58,8 @@ public class Pneumatics extends SubsystemBase {
       m_SingleSecond.set(true);
       m_SingleFirst.set(false);
     }
+
+
 
 
     // if (m_oi.GetStartButton2()) {
