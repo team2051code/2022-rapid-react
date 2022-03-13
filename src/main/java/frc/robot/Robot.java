@@ -39,15 +39,15 @@ import frc.robot.simulation.PoseEstimator;
  * project.
  */
 public class Robot extends TimedRobot {
-  public OI m_oi;
+  private OI m_oi = new OI();
   private static final String DEFAULT_AUTO = "Default";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   
-  private DriveTrain m_driveTrain = new DriveTrain();
-  private ShootParamaters m_ShootParamaters = new ShootParamaters();
-  private Pneumatics m_pneumatics = new Pneumatics();
-  private SingulatorInformation m_singulator = new SingulatorInformation();
+  private DriveTrain m_driveTrain = new DriveTrain(m_oi);
+  private ShootParamaters m_ShootParamaters = new ShootParamaters(m_oi);
+  private Pneumatics m_pneumatics = new Pneumatics(m_oi);
+  private SingulatorInformation m_singulator = new SingulatorInformation(m_oi);
   public PIDController m_shooterController;
  // public ClimbControls m_climb = new ClimbControls();
   public BallSensor m_ballz = new BallSensor();
@@ -137,7 +137,7 @@ public class Robot extends TimedRobot {
     // End of Autonomous Code For Blue Tarmac at Bottom Of Field
 
     //Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
-      new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController, m_singulator),
+      new Shoot(m_ShootParamaters, m_driveTrain, m_singulator),
         new Wait(1),
          new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
            new Wait(1),
@@ -201,7 +201,7 @@ public class Robot extends TimedRobot {
 
    // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, /*m_climb*/ m_ballz);
+      CommandBase commands = new TankDrive(m_oi, m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, /*m_climb*/ m_ballz);
       
       CommandScheduler.getInstance().schedule(commands);
      }

@@ -20,7 +20,7 @@ import frc.robot.RobotMap;
 // public class ClimbControls extends SubsystemBase {
 //   private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
 //   private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
-//   public OI m_oi = new OI();
+//   public OI m_oi;
 
 //   //private CANSparkMax ClimbMotor1 = new CANSparkMax(RobotMap.ClimbMotor1, MotorType.kBrushed);
 //   //private CANSparkMax ClimbMotor2 = new CANSparkMax(RobotMap.ClimbMotor2, MotorType.kBrushed);
@@ -30,7 +30,7 @@ import frc.robot.RobotMap;
 
 
 //   /** Creates a new ClimbControls. */
-//   public ClimbControls() {
+//   public ClimbControls(OI oi) {
 
 //     ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
 //     m_encoder = ClimbMotor1.getAlternateEncoder(Type.kQuadrature, 4096);
@@ -38,6 +38,7 @@ import frc.robot.RobotMap;
 //     m_encoder2 = ClimbMotor2.getAlternateEncoder(Type.kQuadrature, 4096);
 //     m_encoder.getPosition();
 //     m_encoder2.getPosition();
+      //  m_oi = oi;
 //   }
 
 //   @Override

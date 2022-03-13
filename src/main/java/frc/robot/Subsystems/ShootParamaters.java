@@ -21,9 +21,9 @@ public class ShootParamaters extends SubsystemBase {
    *
    */
   private static final double TURRET_CENTER_X = 1.0;
-  XboxController m_controller = new XboxController(RobotMap.XBOX_CONTROLLER_USB_PORT);
+  
   boolean m_LimelightHasValidTarget = false;
-  public OI m_oi = new OI();
+  public OI m_oi;
   public WPI_TalonFX m_shooterLeft = new WPI_TalonFX(RobotMap.SHOOTING_MOTOR_1);
   WPI_TalonFX m_shooterRight = new WPI_TalonFX(RobotMap.SHOOTING_MOTOR_2);
   CANSparkMax m_turretRotator = new CANSparkMax(RobotMap.TURRET_ROTATOR, MotorType.kBrushless);
@@ -33,6 +33,10 @@ public class ShootParamaters extends SubsystemBase {
   // public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator,
   // MotorType.kBrushless);
 
+public ShootParamaters(OI oi)
+{
+  m_oi = oi;
+}
   public double updateLimelightTracking() {
     // double tv =
     // NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);

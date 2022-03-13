@@ -23,7 +23,7 @@ public class TankDrive extends CommandBase {
     public DriveTrain m_intakeMethod;
     public DriveTrain m_setIntakeSpeed;
     public DriveTrain m_driveTrain;
-    public OI m_oi = new OI();
+    public OI m_oi;
     public SingulatorInformation m_singulator;
    // public ClimbControls m_climb;
     public BallSensor m_ballz;
@@ -32,7 +32,7 @@ public class TankDrive extends CommandBase {
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation, /*ClimbControls climbControls,*/ BallSensor ballSensor){
+    public TankDrive(OI oi, DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation, /*ClimbControls climbControls,*/ BallSensor ballSensor){
     //These next four lines define our subsystems so our Commands can access them
     m_singulator = singulatorInformation;
     M_shoot = Shootparameters;
@@ -40,6 +40,7 @@ public class TankDrive extends CommandBase {
     m_pneumatics = pneumatics;
     //m_climb = climbControls;
     m_ballz = ballSensor;
+    m_oi = oi;
     
     //This forces the Command to require these 4 subsystems to fuction
      addRequirements(m_driveTrain, m_pneumatics, m_singulator, M_shoot);
@@ -53,7 +54,7 @@ public class TankDrive extends CommandBase {
 @Override public void initialize(){
 //Sets the left and Right encoder sensors to 0 every time the robot starts up 
 m_driveTrain.resetEncoders();
-m_climb.ResetEncoders();
+//m_climb.ResetEncoders();
 }
 
 @Override public void execute(){

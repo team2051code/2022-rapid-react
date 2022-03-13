@@ -21,11 +21,19 @@ import frc.robot.OI;
 public class Pneumatics extends SubsystemBase {
   /** Creates a new Pneumatics. */
   Debouncer m_debouncer = new Debouncer(0.09, DebounceType.kRising);
-  public OI m_oi = new OI();
-  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 2);
+  public OI m_oi;
+  DoubleSolenoid m_doubleSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 1, 5);
   Solenoid m_SingleFirst = new Solenoid(PneumaticsModuleType.REVPH, 3);
   Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH, 4);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
+
+public Pneumatics(OI oi){
+
+m_oi = oi;
+
+}
+
+
 
   public void gearShift() {
     if (m_debouncer.calculate(m_oi.stickClick())) {
@@ -33,6 +41,7 @@ public class Pneumatics extends SubsystemBase {
       m_doubleSolenoid.toggle();
     }
   }
+
 
   public void forwards() {
 
