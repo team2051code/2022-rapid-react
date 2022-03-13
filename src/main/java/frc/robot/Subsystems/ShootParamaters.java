@@ -73,10 +73,6 @@ public ShootParamaters(OI oi)
 
   }
 
-  public void turretRotatorSpeed(double speed) {
-    m_turretRotator.set(speed);
-  }
-
   public void setTurretRotatorSpeed(double speed) {
     m_turretRotator.set(speed);
   }
@@ -85,7 +81,7 @@ public ShootParamaters(OI oi)
 
     if (m_oi.getAButton2()) {
       updateTurretRotation();
-    } else {
+    } else if(!m_oi.manualAimMode()) {
       setTurretRotatorSpeed(0);
     }
 
@@ -214,6 +210,9 @@ public ShootParamaters(OI oi)
       } else {
         SmartDashboard.putBoolean("ShootReady", false);
       }
+    }
+    if(m_oi.manualAimMode()){
+      ManualTurretRotation();
     }
   }
 

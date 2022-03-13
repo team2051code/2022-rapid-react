@@ -18,7 +18,7 @@ public class OI extends SubsystemBase {
   }
 
   public double GetTurretRotationAxis(){
-    return m_controller.getRawAxis(RobotMap.Turning);
+    return Math.pow(m_controller2.getRawAxis(RobotMap.Turning), 3) / 2;
   }
 
   public boolean getAButton2() {
@@ -90,11 +90,9 @@ public class OI extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(m_controller2.getLeftStickButtonPressed());
-    // TODO Auto-generated method stub
-   if(m_controller2.getLeftStickButtonPressed()){
-     m_manualAimMode = !m_manualAimMode;
-     
+    if(m_controller2.getLeftStickButtonPressed()){
+      System.out.println("Toggle");
+      m_manualAimMode = !m_manualAimMode;
    }
    SmartDashboard.putBoolean("ManualAim?", m_manualAimMode);
   }
