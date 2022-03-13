@@ -104,12 +104,14 @@ public ShootParamaters(OI oi)
 
   }
 
-  public void shootSpeedLeft(double speed) {
+  /** Set private because the controller in this subsystem should drive the speeds */
+  private void shootSpeedLeft(double speed) {
     m_shooterLeft.setInverted(true);
     m_shooterLeft.set(speed);
   }
 
-  public void shootSpeedRight(double speed) {
+  /** Set private because the controller in this subsystem should drive the speeds */
+  private void shootSpeedRight(double speed) {
     m_shooterRight.setInverted(false);
     m_shooterRight.set(speed);
   }
