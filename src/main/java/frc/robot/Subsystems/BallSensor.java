@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BallSensor extends SubsystemBase {
 
-  private DigitalInput CloseIntake; 
-  private DigitalInput CloseShooter; 
+  private DigitalInput m_closeIntake; 
+  private DigitalInput m_closeShooter; 
 
   
   /** Creates a new BallSensor. */
   public BallSensor() {
 
-  CloseIntake = new DigitalInput(0);
-  CloseShooter = new DigitalInput(1);
+  m_closeIntake = new DigitalInput(0);
+  m_closeShooter = new DigitalInput(1);
 
   }
 
@@ -49,24 +49,24 @@ public class BallSensor extends SubsystemBase {
 
   public void ReadLineSensors() {
 
-    CloseIntake.get();
-    CloseShooter.get();
+    m_closeIntake.get();
+    m_closeShooter.get();
     //System.out.println(CloseShooter.get());
   }
 
   public boolean ReadFirstSensor(){
 
-    return !CloseIntake.get();
+    return !m_closeIntake.get();
   }
 
   public boolean ReadSecondSensor(){
-    return !CloseShooter.get();
+    return !m_closeShooter.get();
   }
 
   
 public void PrintSensor(){
-//SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
-//SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
+SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
+SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
 // System.out.println(ReadFirstSensor());
 // System.out.print(ReadSecondSensor());
 
