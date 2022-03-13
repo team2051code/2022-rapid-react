@@ -90,6 +90,7 @@ public class OI extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(m_controller2.getLeftStickButtonPressed());
     // TODO Auto-generated method stub
    if(m_controller2.getLeftStickButtonPressed()){
      m_manualAimMode = !m_manualAimMode;

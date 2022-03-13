@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
   private Pneumatics m_pneumatics = new Pneumatics(m_oi);
   private SingulatorInformation m_singulator = new SingulatorInformation(m_oi);
   public PIDController m_shooterController;
-  public ClimbControls m_climb = new ClimbControls();
+  public ClimbControls m_climb = new ClimbControls(m_oi);
   public BallSensor m_ballz = new BallSensor();
 
   //private LimeLight m_LimeLight = new LimeLight();
