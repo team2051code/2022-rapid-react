@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.Subsystems.BallSensor;
-//import frc.robot.Subsystems.ClimbControls;
+import frc.robot.Subsystems.ClimbControls;
 import frc.robot.Subsystems.DriveTrain;
 //import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.Pneumatics;
@@ -25,20 +25,20 @@ public class TankDrive extends CommandBase {
     public DriveTrain m_driveTrain;
     public OI m_oi;
     public SingulatorInformation m_singulator;
-   // public ClimbControls m_climb;
+    public ClimbControls m_climb;
     public BallSensor m_ballz;
     //public DriveTrain Shooter1;
     //public DriveTrain Shooter2;
     //public DriveTrain setShootSpeed;
     //public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator, MotorType.kBrushless);
     
-    public TankDrive(OI oi, DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation, /*ClimbControls climbControls,*/ BallSensor ballSensor){
+    public TankDrive(OI oi, DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters Shootparameters, SingulatorInformation singulatorInformation, ClimbControls climbControls, BallSensor ballSensor){
     //These next four lines define our subsystems so our Commands can access them
     m_singulator = singulatorInformation;
     M_shoot = Shootparameters;
     m_driveTrain = drivetrain;
     m_pneumatics = pneumatics;
-    //m_climb = climbControls;
+    m_climb = climbControls;
     m_ballz = ballSensor;
     m_oi = oi;
     
@@ -84,7 +84,7 @@ m_pneumatics.gearShift();
 //Command to set the Speed of the Singulator
 m_singulator.setSingulatorSpeed();
 //Sets the Paramaters and Controls For The Climb Mechanism
-//m_climb.ForwardClimbSpeed();
+m_climb.ForwardClimbSpeed();
 //m_climb.ForwardClimbSpeed();
 
 //m_climb.ReadClimbEncoders();

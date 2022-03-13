@@ -207,6 +207,7 @@ public ShootParamaters(OI oi)
       outputValue = Math.max(-1, Math.min(1, outputValue));
       shootSpeedRight(outputValue);
       shootSpeedLeft(outputValue);
+      
       if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
 
         SmartDashboard.putBoolean("ShootReady", true);
