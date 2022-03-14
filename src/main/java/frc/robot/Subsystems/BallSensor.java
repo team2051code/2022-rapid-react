@@ -18,18 +18,18 @@ public class BallSensor extends SubsystemBase {
   public BallSensor() {
 
   CloseIntake = new DigitalInput(0);
-  CloseShooter = new DigitalInput(1);
+  //CloseShooter = new DigitalInput(1);
 
   }
 
   @Override
   public void periodic() {
-    // if (!CloseIntake.get()) {
+    if (!CloseIntake.get()) {
       
-    //   SmartDashboard.putString("Ball?", "OneBall");
-    // } else {
-    //   SmartDashboard.putString("Ball?", "NoBall");
-    // }
+       SmartDashboard.putString("Ball?", "OneBall");
+     } else {
+      SmartDashboard.putString("Ball?", "NoBall");
+     }
 
     // if (!CloseShooter.get()) {
 
@@ -50,7 +50,7 @@ public class BallSensor extends SubsystemBase {
   public void ReadLineSensors() {
 
     CloseIntake.get();
-    CloseShooter.get();
+    //CloseShooter.get();
     //System.out.println(CloseShooter.get());
   }
 
@@ -65,7 +65,7 @@ public class BallSensor extends SubsystemBase {
 
   
 public void PrintSensor(){
-//SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
+SmartDashboard.putBoolean("ReadFirstSensor", ReadFirstSensor());
 //SmartDashboard.putBoolean("ReadSecondSensor", ReadSecondSensor());
 // System.out.println(ReadFirstSensor());
 // System.out.print(ReadSecondSensor());

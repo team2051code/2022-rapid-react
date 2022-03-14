@@ -14,7 +14,10 @@ public class StartSingulator extends CommandBase {
 
     @Override
     public void execute() {
+
+
         m_singulatorInformation.turnSingulatorOn();
+        
     }
 
     @Override

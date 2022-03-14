@@ -6,15 +6,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.DriveTrain;
+import frc.robot.Subsystems.Pneumatics;
+
 
 
 public class RunIntake extends CommandBase {
   /** Creates a new RunIntake. */
   private DriveTrain m_driveTrain;
+  private Pneumatics m_pneumatics;
 
 
-  public RunIntake(DriveTrain driveTrain) {
+  public RunIntake(DriveTrain driveTrain, Pneumatics pneumatics) {
 
+    m_pneumatics = pneumatics;
     m_driveTrain = driveTrain;
 
     
@@ -30,6 +34,7 @@ public class RunIntake extends CommandBase {
   public void execute() {
 
     m_driveTrain.SetAutonomousIntake();
+    m_pneumatics.AutonomousForward();
 
   }
 
