@@ -27,7 +27,7 @@ public class DriveTrain extends SubsystemBase {
   private WPI_TalonFX m_rightFollow = new WPI_TalonFX(RobotMap.MOTOR_RIGHT_FOLLOW);
   private WPI_TalonFX m_left = new WPI_TalonFX(RobotMap.MOTOR_LEFT);
   private WPI_TalonFX m_leftFollow = new WPI_TalonFX(RobotMap.MOTOR_LEFT_FOLLOW);
-  public OI m_oi = new OI();
+  public OI m_oi;
   
   private CANSparkMax m_intakMethod = new CANSparkMax(RobotMap.INTAKE_MOTOR, MotorType.kBrushless);
 
@@ -44,11 +44,12 @@ public class DriveTrain extends SubsystemBase {
   private double m_simulatedLeftEncoder = 0;
   private double m_simulatedRightEncoder = 0;
 
-  public DriveTrain() {
+  public DriveTrain(OI oi) {
     m_left.setSelectedSensorPosition(0);
     // leftEncoder.setPosition(0);
     // rightEncoder.setPosition(0);
     m_gyro = new ADXRS450_Gyro();
+    m_oi = oi;
 
     // leftEncoder.getPositionConversionFactor();
 

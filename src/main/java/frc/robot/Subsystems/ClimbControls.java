@@ -20,15 +20,15 @@ import frc.robot.RobotMap;
 
 public class ClimbControls extends SubsystemBase {
 
-  public OI m_oi = new OI();
+  public OI m_oi;
 
   private WPI_TalonSRX ClimbMotor1 = new WPI_TalonSRX(RobotMap.ClimbMotor1);
   private WPI_TalonSRX ClimbMotor2 = new WPI_TalonSRX(RobotMap.ClimbMotor2);
 
 
   /** Creates a new ClimbControls. */
-  public ClimbControls() {
-
+  public ClimbControls(OI oi) {
+        m_oi = oi;
 }
 
   @Override

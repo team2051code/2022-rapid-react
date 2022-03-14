@@ -25,4 +25,9 @@ public class RobotMap {
     public static final int ClimbMotor1 = 11;
     public static final int ClimbMotor2 = 13;
 
+    public static final int GEARBOX_FORWARD_PCM_CHANNEL = 1;
+    public static final int GEARBOX_REVERSE_PCM_CHANNEL = 5;
+    public static final int INTAKE_DOWN_CHANNEL = 3;
+    public static final int INTAKE_UP_CHANNEL = 4;
+
 }

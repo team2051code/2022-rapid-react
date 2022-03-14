@@ -1,21 +1,24 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class OI {
+public class OI extends SubsystemBase {
   public boolean m_toggleOn = false;
-  boolean m_togglePressed = false;
+  boolean m_manualModeTogglePressed = false;
 
   private XboxController m_controller = new XboxController(RobotMap.XBOX_CONTROLLER_PORT);
   private XboxController m_controller2 = new XboxController(RobotMap.XBOX_CONTROLLER_PORT_2);
   boolean m_toggleReady = m_controller.getYButton();
+  private boolean m_manualAimMode = false;
 
   public double getDriverRawAxis(int axis) {
     return m_controller.getRawAxis(axis);
   }
 
   public double GetTurretRotationAxis(){
-    return m_controller.getRawAxis(RobotMap.Turning);
+    return Math.pow(m_controller2.getRawAxis(RobotMap.Turning), 3) / 2;
   }
 
   public boolean getAButton2() {
@@ -75,21 +78,24 @@ public class OI {
   public boolean GetBButton2(){
     return m_controller2.getBButton();
   }
+  
 
 
-  public void updateToggle() {
-
-    if (m_controller.getYButton()) {
-      if (!m_togglePressed) {
-        m_toggleOn = !m_toggleOn;
-        m_togglePressed = true;
-      }
-    } else {
-
-      m_togglePressed = false;
-
-    }
+ 
+  
+  public boolean manualAimMode(){
+    return m_manualAimMode;
 
   }
+
+  @Override
+  public void periodic() {
+    if(m_controller2.getLeftStickButtonPressed()){
+      System.out.println("Toggle");
+      m_manualAimMode = !m_manualAimMode;
+   }
+   SmartDashboard.putBoolean("ManualAim?", m_manualAimMode);
+  }
+  
 
 }

@@ -14,10 +14,11 @@ import frc.robot.RobotMap;
 public class SingulatorInformation extends SubsystemBase {
 
   CANSparkMax m_singulatorMotor2 = new CANSparkMax(RobotMap.SINGULATOR_MOTOR_2, MotorType.kBrushless);
-  public OI m_oi = new OI();
+  public OI m_oi;
 
   /** Creates a new SingulatorInformation. */
-  public SingulatorInformation() {
+  public SingulatorInformation(OI oi) {
+    m_oi = oi;
   }
 
   @Override

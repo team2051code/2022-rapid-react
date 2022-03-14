@@ -38,25 +38,11 @@ public class Shoot extends CommandBase {
 
     double targetRpm = computeShooterVelocity();
     m_shooterController.setSetpoint(targetRpm);
-    double measuredRpm = m_shoot.m_shooterLeft.getSelectedSensorVelocity();
-    double outputValue = m_shooterController.calculate(measuredRpm);
-
-    outputValue = Math.max(-1, Math.min(1, outputValue));
-
-    m_shoot.shootSpeedRight(outputValue);
-    m_shoot.shootSpeedLeft(outputValue);
-
-    if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
-      SmartDashboard.putBoolean("ShootReady", true);
-    } else {
-      SmartDashboard.putBoolean("ShootReady", false);
-    }
-
+    m_shoot.setShooterTargetSpeed(targetRpm);
   }
 
   public double computeShooterVelocity() {
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     // acceration due to gravity
     final double G = 9.8;
@@ -95,10 +81,10 @@ public class Shoot extends CommandBase {
     // SmartDashboard.putNumber("distance to target", distance);
 
     // TODO: boost output by 15% of max RPM (fudge factor)
-    final double ENCODER_TICKS_PER_REVOLUTION = 2048;
-    final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
+    //final double ENCODER_TICKS_PER_REVOLUTION = 2048;
+    //final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
-    return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
+    return (rpm / 60);
   }
 
   // Called when the command is initially scheduled.
