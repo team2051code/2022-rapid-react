@@ -81,10 +81,10 @@ public class Shoot extends CommandBase {
     // SmartDashboard.putNumber("distance to target", distance);
 
     // TODO: boost output by 15% of max RPM (fudge factor)
-    final double ENCODER_TICKS_PER_REVOLUTION = 2048;
-    final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
+    //final double ENCODER_TICKS_PER_REVOLUTION = 2048;
+    //final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
-    return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
+    return (rpm / 60);
   }
 
   // Called when the command is initially scheduled.

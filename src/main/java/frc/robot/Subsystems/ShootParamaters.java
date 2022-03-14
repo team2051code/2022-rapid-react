@@ -8,8 +8,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,8 +30,8 @@ public class ShootParamaters extends SubsystemBase {
   WPI_TalonFX m_shooterRight = new WPI_TalonFX(RobotMap.SHOOTING_MOTOR_2);
   CANSparkMax m_turretRotator = new CANSparkMax(RobotMap.TURRET_ROTATOR, MotorType.kBrushless);
   RelativeEncoder m_turretRotatorEncoder;
-  PIDController m_shooterController = new PIDController(0.000075, 0.00023, 0);
-
+  SimpleMotorFeedforward m_shooterController = new SimpleMotorFeedforward(0.47988, 0.10918, 0.0059959);
+  double m_flywheelSetpoint = 0;
   // public CANSparkMax TurretRotator = new CANSparkMax(RobotMap.TurretRotator,
   // MotorType.kBrushless);
 
@@ -107,13 +109,13 @@ public ShootParamaters(OI oi)
   /** Set private because the controller in this subsystem should drive the speeds */
   private void shootSpeedLeft(double speed) {
     m_shooterLeft.setInverted(true);
-    m_shooterLeft.set(speed);
+    m_shooterLeft.setVoltage(speed);
   }
 
   /** Set private because the controller in this subsystem should drive the speeds */
   private void shootSpeedRight(double speed) {
     m_shooterRight.setInverted(false);
-    m_shooterRight.set(speed);
+    m_shooterRight.setVoltage(speed);
   }
 
   public void calculatedShootSpeed() {
@@ -153,14 +155,14 @@ public ShootParamaters(OI oi)
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 27.5;
     // distance between ballshooter and target
-    double distance = ((((targetHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
+    double distance = ((((testHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
 
     double distance2 = (distance / 2) * 3.281;
 
 
 
     // speed of the ball needed to reach the target
-    double ballspeed = Math.sqrt(((distance + 7) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
+    double ballspeed = Math.sqrt(((distance ) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
     // final velocity of the ball
     double vf = wheelToBall * ballspeed;
     // speed of the wheel needed to accelerate the ball
@@ -177,32 +179,33 @@ public ShootParamaters(OI oi)
      SmartDashboard.putNumber("distance to target", distance2);
 
     // TODO: boost output by 15% of max RPM (fudge factor)
-    final double ENCODER_TICKS_PER_REVOLUTION = 2048;
-    final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
+    //final double ENCODER_TICKS_PER_REVOLUTION = 2048;
+   // final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
-    return (rpm * (ENCODER_TICKS_PER_REVOLUTION / TENTHS_OF_A_SECOND_PER_MINUTE));
+    return (rpm / 60);
     
   }
 
   @Override
   public void periodic() {
     // TODO Auto-generated method stub
-
-    double targetRpm = m_shooterController.getSetpoint();
-    if (m_shooterController.getSetpoint() == 0) {
+    
+    double targetRpm = m_flywheelSetpoint;
+    if (m_flywheelSetpoint == 0) {
       shootSpeedRight(0);
       shootSpeedLeft(0);
-      m_shooterController.reset();
+      
     } else {
       double measuredRpm = m_shooterRight.getSelectedSensorVelocity();
-      double outputValue = m_shooterController.calculate(measuredRpm);
+      double outputValue = m_shooterController.calculate(m_flywheelSetpoint);
       System.out.print(" t: ");
       System.out.print(targetRpm);
       System.out.print(" m: ");
-      System.out.print(measuredRpm);
+      System.out.print(measuredRpm * (10.0 / 2048.0));
       System.out.print(" o: ");
       System.out.println(outputValue);
-      outputValue = Math.max(-1, Math.min(1, outputValue));
+      System.out.println(RobotController.getBatteryVoltage());
+      //outputValue = Math.max(-1, Math.min(1, outputValue));
       shootSpeedRight(outputValue);
       shootSpeedLeft(outputValue);
       
@@ -219,7 +222,7 @@ public ShootParamaters(OI oi)
   }
 
   public void setShooterTargetSpeed(double speed) {
-    m_shooterController.setSetpoint(speed);
+    m_flywheelSetpoint = speed;
   }
 
   public void setTargetSpeedToCalculatedSpeed() {
