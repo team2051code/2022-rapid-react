@@ -1,18 +1,14 @@
 package frc.robot.Subsystems;
 
-import java.lang.annotation.Target;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
@@ -135,7 +131,6 @@ public ShootParamaters(OI oi)
    */
   public double computeShooterVelocity() {
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
     // acceration due to gravity
     final double g = 9.8;
@@ -154,14 +149,18 @@ public ShootParamaters(OI oi)
     // angle between middle of limelight and target in degrees
     double limeangleD = ty + 27.5;
     // distance between ballshooter and target
-    double distance = ((((testHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
+    double distance = ((((targetHeight - limeToGround) / Math.tan(Math.toRadians((limeangleD)))) + limeToShooter) * 2);
 
     double distance2 = (distance / 2) * 3.281;
 
+    double offset = 7;
 
+if (distance2 > 12.5){
+  offset = 8;
+}
 
     // speed of the ball needed to reach the target
-    double ballspeed = Math.sqrt(((distance ) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
+    double ballspeed = Math.sqrt(((distance + offset) * g) / Math.sin(2 * (Math.toRadians(shootangleD))));
     // final velocity of the ball
     double vf = wheelToBall * ballspeed;
     // speed of the wheel needed to accelerate the ball
@@ -208,7 +207,7 @@ public ShootParamaters(OI oi)
       shootSpeedRight(outputValue);
       shootSpeedLeft(outputValue);
       
-      if (measuredRpm <= targetRpm + 50 && measuredRpm >= targetRpm - 50) {
+      if (measuredRpm * (10.0 / 2048.0) <= targetRpm + 5 && measuredRpm * (10.0 / 2048.0) >= targetRpm - 5) {
 
         SmartDashboard.putBoolean("ShootReady", true);
       } else {

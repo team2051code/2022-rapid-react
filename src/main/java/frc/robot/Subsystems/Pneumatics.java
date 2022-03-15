@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 
@@ -13,11 +14,13 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.OI;
 import frc.robot.RobotMap;
+
 
 public class Pneumatics extends SubsystemBase {
   /** Creates a new Pneumatics. */
@@ -32,7 +35,7 @@ public class Pneumatics extends SubsystemBase {
   Solenoid m_SingleSecond = new Solenoid(PneumaticsModuleType.REVPH,
     RobotMap.INTAKE_UP_CHANNEL);
   Compressor m_pcmCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
-
+  Timer m_timer = new Timer();
 public Pneumatics(OI oi){
 
 m_oi = oi;
@@ -51,25 +54,44 @@ m_oi = oi;
   }
 
   public void AutonomousForward(){
-  m_SingleFirst.set(true);
-  m_SingleSecond.set(false);
+    m_timer.start();
+
+    if(m_timer.get() < 1){
+    m_SingleFirst.set(true);
+    m_SingleSecond.set(false);
   }
+  else{
+    m_SingleSecond.set(false);
+    m_SingleFirst.set(false);
+}
+}
   
   
 
 
   public void forwards() {
 
+    
     if(m_oi.getBackButton2())
     {
+        m_timer.start();
+
+        if(m_timer.get() < 1){
         m_SingleFirst.set(true);
         m_SingleSecond.set(false);
+      }
+      else{
+        m_SingleSecond.set(true);
+        m_SingleFirst.set(true);
     }
-    else{
-      m_SingleSecond.set(true);
-      m_SingleFirst.set(false);
+  }
+      else{
+        m_timer.stop();
+        m_timer.reset();
+        m_SingleSecond.set(true);
+        m_SingleFirst.set(false);
     }
-
+  }
 
 
 
@@ -86,7 +108,7 @@ m_oi = oi;
 
     //         }
         //}
-      }
+      
 
 
 
