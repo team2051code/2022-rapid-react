@@ -56,14 +56,9 @@ public class Robot extends TimedRobot {
   public ClimbControls m_climb = new ClimbControls(m_oi);
   public BallSensor m_ballz = new BallSensor();
   public UsbCamera camera = CameraServer.startAutomaticCapture();
-
-  // private LimeLight m_LimeLight = new LimeLight();
-  // private ShootParamaters m_shooter = new ShootParamaters();
-
   private PoseEstimator m_poseEstimator; // might be null
   private Field2d m_fieldInfo; // might be null
 
-  // private MotorControllerGroup spinGroup = new MotorControllerGroup(spin1,
   // spin2);
 
   // UsbCamera camera1 = CameraServer.startAutomaticCapture();
