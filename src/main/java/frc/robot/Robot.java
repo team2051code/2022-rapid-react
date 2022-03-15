@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -51,7 +53,7 @@ public class Robot extends TimedRobot {
   public PIDController m_shooterController;
   public ClimbControls m_climb = new ClimbControls(m_oi);
   public BallSensor m_ballz = new BallSensor();
-
+  public UsbCamera camera = CameraServer.startAutomaticCapture();
   //private LimeLight m_LimeLight = new LimeLight();
   //private ShootParamaters m_shooter = new ShootParamaters();
 
