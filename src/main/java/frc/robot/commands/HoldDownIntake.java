@@ -7,12 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.Pneumatics;
 
-public class AutonomousHoldDownIntake extends CommandBase {
-  private Pneumatics m_Pneumatics;
-  /** Creates a new AutonomousHoldDownIntake. */
-  public AutonomousHoldDownIntake(Pneumatics pneumatics) {
+public class HoldDownIntake extends CommandBase {
+private Pneumatics m_Pneumatics; 
+
+  /** Creates a new HoldDownIntake. */
+  public HoldDownIntake(Pneumatics pneumatics) {
     m_Pneumatics = pneumatics;
-    addRequirements(m_Pneumatics);
+
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -24,8 +25,8 @@ public class AutonomousHoldDownIntake extends CommandBase {
   @Override
   public void execute() {
 
+  m_Pneumatics.AutonomousForward();
 
-    
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +36,6 @@ public class AutonomousHoldDownIntake extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

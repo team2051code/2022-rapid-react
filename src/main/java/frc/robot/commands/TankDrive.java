@@ -88,6 +88,7 @@ m_climb.ForwardClimbSpeed();
 //m_climb.ForwardClimbSpeed();
 
 //m_climb.ReadClimbEncoders();
+m_ballz.PrintSensor();
 
 //Subsytem for the Caluated Shoot Speed
 //double CalculatedShootSpeed = M_shoot.computeShooterVelocity();

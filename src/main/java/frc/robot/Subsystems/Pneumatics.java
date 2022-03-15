@@ -45,6 +45,7 @@ m_oi = oi;
     if (m_debouncer.calculate(m_oi.stickClick())) {
       m_doubleSolenoid.set(Value.kReverse);
       m_doubleSolenoid.toggle();
+      
     }
     
   }
@@ -54,6 +55,8 @@ m_oi = oi;
   m_SingleSecond.set(false);
   }
   
+  
+
 
   public void forwards() {
 
@@ -101,9 +104,9 @@ m_oi = oi;
     Value state = m_doubleSolenoid.get();
 
     if (state == Value.kForward) {
-      SmartDashboard.putBoolean("InLowGear", true);
-    } else {
       SmartDashboard.putBoolean("InLowGear", false);
+    } else {
+      SmartDashboard.putBoolean("InLowGear", true);
 
     }
   }

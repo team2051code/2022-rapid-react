@@ -14,15 +14,24 @@ public class SpinUpShooter extends CommandBase {
     // no end implemented; shooter should keep running
     // when we exit this command
 
+
+    @Override public void end(boolean interrupt) {
+    }
+
     @Override
     public void execute() {
         // TODO Auto-generated method stub
+
+        
+
         m_shootParamaters.setTargetSpeedToCalculatedSpeed();
+
     }
 
     @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
+        
         return SmartDashboard.getBoolean("ShootReady", false);
     }
 

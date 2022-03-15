@@ -18,7 +18,8 @@ import frc.robot.Subsystems.SingulatorInformation;
 public class AutonomousIntake extends SequentialCommandGroup {
   /** Creates a new RunIntake. */
   public AutonomousIntake(DriveTrain drivetrain, Pneumatics pneumatics, ShootParamaters shootParamaters, SingulatorInformation singulatorInformation) { super(
-    new RunIntake(drivetrain),
+  
+    new RunIntake(drivetrain, pneumatics),
       new Wait(1),
         new StopAll(drivetrain, pneumatics, shootParamaters, singulatorInformation)
   );

@@ -79,7 +79,12 @@
       "/LiveWindow/Ungrouped/Talon SRX [11]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [13]": "Motor Controller",
       "/SmartDashboard/Auto choices": "String Chooser",
+      "/SmartDashboard/AutoCommand1": "Command",
+      "/SmartDashboard/AutoCommand2": "Command",
+      "/SmartDashboard/AutoCommand3": "Command",
+      "/SmartDashboard/AutoCommand4": "Command",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Scheduler": "Scheduler",
       "/SmartDashboard/field": "Field2d"
     },
     "windows": {
@@ -89,6 +94,11 @@
         }
       },
       "/LiveWindow/DriveTrain": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Auto choices": {
         "window": {
           "visible": true
         }

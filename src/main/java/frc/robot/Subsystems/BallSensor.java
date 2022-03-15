@@ -24,12 +24,12 @@ public class BallSensor extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // if (!CloseIntake.get()) {
+    if (!m_closeIntake.get()) {
       
-    //   SmartDashboard.putString("Ball?", "OneBall");
-    // } else {
-    //   SmartDashboard.putString("Ball?", "NoBall");
-    // }
+       SmartDashboard.putString("Ball?", "OneBall");
+     } else {
+      SmartDashboard.putString("Ball?", "NoBall");
+     }
 
     // if (!CloseShooter.get()) {
 

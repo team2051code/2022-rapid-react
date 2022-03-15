@@ -122,7 +122,6 @@ public ShootParamaters(OI oi)
 
     if (m_oi.getRightBumper2()) {
       setTargetSpeedToCalculatedSpeed();
-
     } else {
       setShooterTargetSpeed(0);
     }
@@ -182,7 +181,7 @@ public ShootParamaters(OI oi)
     //final double ENCODER_TICKS_PER_REVOLUTION = 2048;
    // final double TENTHS_OF_A_SECOND_PER_MINUTE = 600;
 
-    return (rpm / 60);
+    return (rpm / 60 + m_oi.targetingOffset());
     
   }
 
