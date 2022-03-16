@@ -153,7 +153,7 @@ public ShootParamaters(OI oi)
 
     double distance2 = (distance / 2) * 3.281;
 
-    double offset = 7;
+    double offset = 6;
 
 if (distance2 > 12.5){
   offset = 8;
