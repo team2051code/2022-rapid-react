@@ -23,7 +23,6 @@ import frc.robot.Subsystems.Pneumatics;
 import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.Subsystems.SingulatorInformation;
 import frc.robot.commands.AlignShooter;
-import frc.robot.commands.AutonomousIntake;
 import frc.robot.commands.AutonomousShooting;
 //import frc.robot.Subsystems.ShootParamaters;
 import frc.robot.commands.Drive;
@@ -131,23 +130,18 @@ public class Robot extends TimedRobot {
 
     SequentialCommandGroup AutoProgram1 = new SequentialCommandGroup(
         // Start of Autonomous Code fo r Blue Tarmac At Bottom of Field
-
-        new Drive(m_driveTrain, m_ShootParamaters, 24),
         new HoldDownIntake(m_pneumatics),
+        new Drive(m_driveTrain, m_ShootParamaters, -36),
         new Wait(1),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
         new AlignShooter(m_ShootParamaters),
         new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
         new Wait(1),
-        new Turn(m_driveTrain, -75.3),
-        new Wait(1),
-        new Drive(m_driveTrain, m_ShootParamaters, -131.51),
-        new Turn(m_driveTrain, 131.5),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
     // End of Autonomous Code For Blue Tarmac at Bottom Of Field
     );
 
     SequentialCommandGroup AutoProgram2 = new SequentialCommandGroup(
+
         // Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
         new Drive(m_driveTrain, m_ShootParamaters, 24),
         new HoldDownIntake(m_pneumatics),
@@ -206,12 +200,13 @@ public class Robot extends TimedRobot {
 
     SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-    m_chooser.setDefaultOption("FirstProgram", AutoProgram1);
+    //m_chooser.setDefaultOption("FirstProgram", AutoProgram1);
     m_chooser.addOption("AutoProgram1", AutoProgram1);
     m_chooser.addOption("AutoProgram2", AutoProgram2);
     m_chooser.addOption("AutoProgram3", AutoProgram3);
     m_chooser.addOption("AutoProgram4", AutoProgram4);
 
+    //Creates a button to be able to switch between autonomous programs
     SmartDashboard.putData(CommandScheduler.getInstance());
     SmartDashboard.putData("AutoCommand1", AutoProgram1);
     SmartDashboard.putData(CommandScheduler.getInstance());
