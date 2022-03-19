@@ -45,9 +45,8 @@ import frc.robot.simulation.PoseEstimator;
 public class Robot extends TimedRobot {
   private OI m_oi = new OI();
   private static final String DEFAULT_AUTO = "Default";
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  
   private DriveTrain m_driveTrain = new DriveTrain(m_oi);
   private ShootParamaters m_ShootParamaters = new ShootParamaters(m_oi);
   private Pneumatics m_pneumatics = new Pneumatics(m_oi);
@@ -69,8 +68,80 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // build our four auto program options here
+    SequentialCommandGroup AutoProgram1 = new SequentialCommandGroup(
+        // Start of Autonomous Code fo r Blue Tarmac At Bottom of Field
+        new HoldDownIntake(m_pneumatics),
+        new Drive(m_driveTrain, m_ShootParamaters, -36),
+        new Wait(1),
+        new AlignShooter(m_ShootParamaters),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new Wait(1),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
+    // End of Autonomous Code For Blue Tarmac at Bottom Of Field
+    );
 
-    m_chooser.setDefaultOption("Default Auto", DEFAULT_AUTO);
+    SequentialCommandGroup AutoProgram2 = new SequentialCommandGroup(
+
+        // Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
+        new Drive(m_driveTrain, m_ShootParamaters, 24),
+        new HoldDownIntake(m_pneumatics),
+        new Wait(1),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new AlignShooter(m_ShootParamaters),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new Wait(1),
+        // new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        // new Wait(1),
+        new Turn(m_driveTrain, -75),
+        new Wait(1),
+        new Drive(m_driveTrain, m_ShootParamaters, -131),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new Turn(m_driveTrain, 59),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
+
+    // //End of Autonomous Code for Blue Tarmac on The Top Left Of The Field
+    );
+    SequentialCommandGroup AutoProgram3 = new SequentialCommandGroup(
+        // Start of Autonomous Code for Red Tarmac On the Bottom Right Of The Field
+        new Drive(m_driveTrain, m_ShootParamaters, 24),
+        new Wait(1),
+        new AlignShooter(m_ShootParamaters),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new HoldDownIntake(m_pneumatics),
+        new Wait(1),
+        new Turn(m_driveTrain, 96),
+        new Wait(1),
+        new Drive(m_driveTrain, m_ShootParamaters, 85.5),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        // new Wait(1),
+        new Turn(m_driveTrain, 85),
+        new Wait(1),
+        new Drive(m_driveTrain, m_ShootParamaters, -88),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator));
+
+    // End of Autonomous Code For Red Tarmac On The Bottom Right Of The Field);
+    SequentialCommandGroup AutoProgram4 = new SequentialCommandGroup(
+
+        // //Start of Autonomous Code For Red Tarmac On The Top Right Of The Field
+        new Drive(m_driveTrain, m_ShootParamaters, 24),
+        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        // new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController,
+        // m_singulator),
+        new Wait(1),
+        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
+        new Wait(1),
+        new Turn(m_driveTrain, 106),
+        new Wait(1),
+        new Drive(m_driveTrain, m_ShootParamaters, -88)
+    // End Of Autonomous Code For Red Tarmac On The Top Right Of The Field
+    );
+
+    // have the chooser hold onto our four program options
+    m_chooser.setDefaultOption("AutoProgram1", AutoProgram1);
+    m_chooser.addOption("AutoProgram2", AutoProgram2);
+    m_chooser.addOption("AutoProgram3", AutoProgram3);
+    m_chooser.addOption("AutoProgram4", AutoProgram4);
     SmartDashboard.putData("Auto choices", m_chooser);
   }
 
@@ -127,108 +198,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
-    SequentialCommandGroup AutoProgram1 = new SequentialCommandGroup(
-        // Start of Autonomous Code fo r Blue Tarmac At Bottom of Field
-        new HoldDownIntake(m_pneumatics),
-        new Drive(m_driveTrain, m_ShootParamaters, -36),
-        new Wait(1),
-        new AlignShooter(m_ShootParamaters),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new Wait(1),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
-    // End of Autonomous Code For Blue Tarmac at Bottom Of Field
-    );
-
-    SequentialCommandGroup AutoProgram2 = new SequentialCommandGroup(
-
-        // Start of Autonomous Code for Blue Tarmac On The Top Left of The Field
-        new Drive(m_driveTrain, m_ShootParamaters, 24),
-        new HoldDownIntake(m_pneumatics),
-        new Wait(1),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new AlignShooter(m_ShootParamaters),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new Wait(1),
-        // new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        // new Wait(1),
-        new Turn(m_driveTrain, -75),
-        new Wait(1),
-        new Drive(m_driveTrain, m_ShootParamaters, -131),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new Turn(m_driveTrain, 59),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
-
-
-    // //End of Autonomous Code for Blue Tarmac on The Top Left Of The Field
-    );
-    SequentialCommandGroup AutoProgram3 = new SequentialCommandGroup(
-        // Start of Autonomous Code for Red Tarmac On the Bottom Right Of The Field
-        new Drive(m_driveTrain, m_ShootParamaters, 24),
-        new Wait(1),
-        new AlignShooter(m_ShootParamaters), 
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new HoldDownIntake(m_pneumatics),
-        new Wait(1),
-        new Turn(m_driveTrain, 96),
-        new Wait(1),
-        new Drive(m_driveTrain, m_ShootParamaters, 85.5),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        // new Wait(1),
-        new Turn(m_driveTrain, 85),
-        new Wait(1),
-        new Drive(m_driveTrain, m_ShootParamaters, -88),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator)
-    );
-
-    // End of Autonomous Code For Red Tarmac On The Bottom Right Of The Field);
-    SequentialCommandGroup AutoProgram4 = new SequentialCommandGroup(
-
-        // //Start of Autonomous Code For Red Tarmac On The Top Right Of The Field
-        new Drive(m_driveTrain, m_ShootParamaters, 24),
-        new AutonomousShooting(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        // new Shoot(m_ShootParamaters, m_driveTrain, m_shooterController,
-        // m_singulator),
-        new Wait(1),
-        new StopAll(m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator),
-        new Wait(1),
-        new Turn(m_driveTrain, 106),
-        new Wait(1),
-        new Drive(m_driveTrain, m_ShootParamaters, -88)
-    // End Of Autonomous Code For Red Tarmac On The Top Right Of The Field
-    );
-
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
-
-    //m_chooser.setDefaultOption("FirstProgram", AutoProgram1);
-    m_chooser.addOption("AutoProgram1", AutoProgram1);
-    m_chooser.addOption("AutoProgram2", AutoProgram2);
-    m_chooser.addOption("AutoProgram3", AutoProgram3);
-    m_chooser.addOption("AutoProgram4", AutoProgram4);
-
-    //Creates a button to be able to switch between autonomous programs
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putData("AutoCommand1", AutoProgram1);
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putData("AutoCommand2", AutoProgram2);
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putData("AutoCommand3", AutoProgram3);
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putData("AutoCommand4", AutoProgram4);
-
-    if (AutoProgram1 != null) {
-      AutoProgram1.schedule();
-    }
-    if (AutoProgram2 != null) {
-      AutoProgram2.schedule();
-    }
-    if (AutoProgram3 != null) {
-      AutoProgram3.schedule();
-    }
-    if (AutoProgram4 != null) {
-      AutoProgram4.schedule();
-    }
-
+    // whichever program was held by the chooser, run that program
+    var selectedProgram = m_chooser.getSelected();
+    selectedProgram.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -247,10 +219,11 @@ public class Robot extends TimedRobot {
 
     // UsbCamera camera2 = CameraServer.startAutomaticCapture();
 
-      CommandBase commands = new TankDrive(m_oi, m_driveTrain,m_pneumatics, m_ShootParamaters, m_singulator, m_climb, m_ballz);
-      
-      CommandScheduler.getInstance().schedule(commands);
-     }
+    CommandBase commands = new TankDrive(m_oi, m_driveTrain, m_pneumatics, m_ShootParamaters, m_singulator, m_climb,
+        m_ballz);
+
+    CommandScheduler.getInstance().schedule(commands);
+  }
 
   /** This function is called periodically during operator control. */
   @Override
